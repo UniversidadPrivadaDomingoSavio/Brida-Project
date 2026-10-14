@@ -1,0 +1,268 @@
+<!-- proyectos.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Proyectos ejecutados por BRIDA S.R.L. a nivel nacional: galpones industriales, estructuras metálicas, plataformas, casas de campo, balnearios y remodelaciones en Santa Cruz, La Paz, Cochabamba y Tarija.">
+    <title>Proyectos | BRIDA S.R.L. - Ingeniería de Proyectos y Oil & Gas</title>
+
+    <!-- Fuentes e Iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos Principales -->
+    <link rel="stylesheet" href="assets/css/main.css">
+
+</head>
+<body id="page-proyectos">
+
+    <!-- ========== HEADER (Componente — inyectado por header-menu.js) ==========
+         El menú completo vive en assets/js/components/header-menu.js.
+         Edítalo UNA vez y se actualiza en todas las páginas.
+         El estado is-active se detecta automáticamente según la URL. -->
+    <div id="header-placeholder"></div>
+    
+    <!-- ========== HERO INTERNO (Cabecera de Página - Componente Global) ========== -->
+    <section class="hero-interno">
+        <div class="hero-interno__fondo" style="background-image: url('assets/img/proyectos/Inicio/Proyecto_Portada.jpeg');"></div>
+        <div class="hero-interno__superposicion"></div>
+        
+        <!-- Usamos hero-animar en lugar de reveal-up para proteger el centrado vertical -->
+        <div class="hero-interno__contenido hero-animar">
+            <div class="section-title-group">
+                <span class="section-eyebrow">Obras Ejecutadas a Nivel Nacional</span>
+                <h1 class="section-title">PROYECTOS</h1>
+                <span class="section-title-line"></span>
+            </div>
+
+            <p class="hero-interno__descripcion">
+                Excelencia y cumplimiento de plazos en cada obra. Explore nuestro portafolio filtrando por línea de servicio.
+            </p>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SECCIÓN PROYECTOS (Rejilla dinámica — proyectos.js)
+         ================================================================
+         QUÉ ES:  portafolio de obras filtrable por LÍNEA DE SERVICIO.
+         MÓVIL:   la fila de filtros se desliza horizontalmente:
+                  - La flecha pulsante aparece SOLO en los extremos
+                    (inicio → flecha derecha; final → flecha izquierda).
+                  - El filtro activo se auto-centra al ser tocado.
+         CLASES:  prefijo proy-* (ver proyectos.css, guía numerada).
+         ================================================================ -->
+    <section id="proy-seccion" class="proy-seccion">
+        <div class="proy-contenedor">
+
+            <!-- Título de la sección -->
+            <div class="section-title-group center reveal-up" style="margin-bottom: 40px;">
+                <span class="section-eyebrow">Portafolio por Línea de Servicio</span>
+                <h2 class="section-title">NUESTROS PROYECTOS</h2>
+                <span class="section-title-line"></span>
+            </div>
+
+            <!-- ============================================================
+                 ZONA DE FILTROS (con CANDADO INICIAL en el markup)
+                 ============================================================
+                 QUÉ ES: envoltura posicionada que ancla las flechas.
+
+                 CANDADO INICIAL: la zona arranca pre-marcada con
+                 "tiene-deslizable tiene-derecha" — el estado correcto
+                 del primer frame (fila al inicio → señal a la derecha).
+                 - En ESCRITORIO es inofensivo: la flecha base es
+                   display:none fuera del breakpoint móvil.
+                 - proyectos.js VALIDA el estado real en cuanto carga
+                   (y de nuevo en window.load y fonts.ready) y corrige
+                   las clases si el estado difiere (por ejemplo, si
+                   Live Server restauró una posición de scroll).
+                 ============================================================ -->
+            <div class="proy-filtros-zona tiene-deslizable tiene-derecha" id="proy-filtros-zona">
+
+                <!-- Filtros por servicio.
+                     data-filter = propiedad `servicio` en proyectos.js
+                     (deben coincidir EXACTAMENTE para que funcione el
+                     filtrado, incluido el ampersand & en el JS).
+                     Al tocar un filtro, éste se auto-centra en la fila. -->
+                <nav class="proy-filtros" id="proy-filtros">
+                    <button class="proy-filtros-boton es-activo" data-filter="all">Todos</button>
+                    <button class="proy-filtros-boton" data-filter="Ingeniería &amp; Consultoría">Ingeniería &amp; Consultoría</button>
+                    <button class="proy-filtros-boton" data-filter="Obras Civiles &amp; Construcción">Obras Civiles &amp; Construcción</button>
+                    <button class="proy-filtros-boton" data-filter="Mecánica &amp; Metalurgia">Mecánica &amp; Metalurgia</button>
+                    <button class="proy-filtros-boton" data-filter="Electricidad &amp; Automatización">Electricidad &amp; Automatización</button>
+                    <button class="proy-filtros-boton" data-filter="Infraestructura Gas &amp; Datos">Infraestructura Gas &amp; Datos</button>
+                    <button class="proy-filtros-boton" data-filter="Seguridad &amp; Servicios">Seguridad &amp; Servicios</button>
+                </nav>
+
+                <!-- Flechas indicadoras (decorativas):
+                     - OCULTAS en escritorio (display:none base).
+                     - En móvil, el CSS las enciende según las clases
+                       de estado que gestiona proyectos.js:
+                       · tiene-derecha   → fila al INICIO  → flecha derecha pulsa.
+                       · tiene-izquierda → fila al FINAL   → flecha izquierda pulsa.
+                     - Cada flecha visible entra en ciclo: pulsa 2 veces,
+                       se retira unos segundos y vuelve (recordatorio
+                       recurrente, no invasivo). -->
+                <span class="proy-filtros-flecha proy-filtros-flecha--derecha" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </span>
+                <span class="proy-filtros-flecha proy-filtros-flecha--izquierda" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </span>
+
+            </div>
+
+            <!-- Rejilla de proyectos: proyectos.js inyecta aquí las
+                 tarjetas-enlace (a detalle) o el aviso de servicio
+                 sin obras (proy-vacio) -->
+            <div class="proy-rejilla" id="proy-rejilla"></div>
+
+            <!-- Paginación: se oculta sola cuando hay 1 sola página.
+                 Al cambiar de página, el JS aterriza el scroll en los
+                 filtros con aire bajo el menú fijo. -->
+            <div class="proy-paginacion" id="proy-paginacion">
+                <button class="proy-paginacion-boton" id="proy-paginacion-anterior" aria-label="Página anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                <span class="proy-paginacion-numeros" id="proy-paginacion-numeros"></span>
+                <button class="proy-paginacion-boton" id="proy-paginacion-siguiente" aria-label="Página siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========== SECCIÓN CONTACTO CTA (Global) ========== -->
+    <section id="contacto-cta" class="contacto-cta">
+        <div class="contacto-cta__contenedor">
+            <div class="contacto-cta__grid">
+                
+                <!-- Panel Izquierdo (Título + Textos) -->
+                <div class="contacto-cta__panel-izq reveal-up">
+                    
+                    <!-- Título Reutilizable (Alineado a la izquierda en desktop) -->
+                    <div class="section-title-group left">
+                        <span class="section-eyebrow">Contacto Directo</span>
+                        <h2 class="section-title">EVALÚE SU PRÓXIMO PROYECTO</h2>
+                        <span class="section-title-line"></span>
+                    </div>
+
+                    <p class="contacto-cta__descripcion">
+                        <strong>Nuestro equipo técnico y comercial está listo para atender su requerimiento:</strong> desde el diseño y los estudios de ingeniería hasta la ejecución, supervisión y puesta en marcha de su obra.
+                    </p>
+                </div>
+                
+                <!-- Panel Derecho (Tarjetas) -->
+                <div class="contacto-cta__panel-der">
+                    <!-- Tarjeta WhatsApp -->
+                    <a href="https://wa.me/59176644531?text=Hola%20BRIDA%20S.R.L.%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20proyectos%20y%20servicios" class="contacto-cta__tarjeta" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+                        <div class="contacto-cta__icono">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                        <div class="contacto-cta__contenido">
+                            <span class="contacto-cta__etiqueta">Respuesta Inmediata</span>
+                            <span class="contacto-cta__titulo">WhatsApp: 76644531</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right contacto-cta__flecha"></i>
+                    </a>
+                    
+                    <!-- Tarjeta Correo -->
+                    <a href="mailto:bridabolivia@gmail.com?subject=Solicitud%20de%20Cotizaci%C3%B3n%20-%20BRIDA%20S.R.L." class="contacto-cta__tarjeta" aria-label="Enviar correo electrónico">
+                        <div class="contacto-cta__icono">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="contacto-cta__contenido">
+                            <span class="contacto-cta__etiqueta">Propuestas y Cotizaciones</span>
+                            <span class="contacto-cta__titulo">Correo Electrónico</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right contacto-cta__flecha"></i>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer-brida" id="main-footer">
+        <div class="footer-brida__container">
+            <div class="footer-brida__grid">
+                <!-- COLUMNA 1: MARCA -->
+                <div class="footer-brida__col footer-brida__col--brand reveal-up">
+                    <div class="footer-brida__logo-box">
+                        <img src="assets/img/icons/logo-brida.png" alt="BRIDA Logo" class="footer-brida__logo-img">
+                    </div>
+                    <p class="footer-brida__desc">Ingeniería de Proyectos • Oil &amp; Gas Energía • Construcciones Metálicas. Empresa boliviana con proyectos ejecutados a nivel nacional en obra civil, metalmecánica, obras eléctricas y automatización industrial.</p>
+                    <p class="footer-brida__desc" style="font-size: 11px; opacity: 0.75;">NIT: 38878023 · Registro de Comercio: 00425954</p>
+                    <div class="footer-brida__socials">
+                        <a href="https://wa.me/59176644531" target="_blank" rel="noopener noreferrer" class="footer-brida__social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://www.instagram.com/brida.bolivia" target="_blank" rel="noopener noreferrer" class="footer-brida__social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="mailto:bridabolivia@gmail.com" class="footer-brida__social-link" aria-label="Correo Electrónico"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+                <!-- COLUMNA 2: INFORMACIÓN -->
+                <div class="footer-brida__col reveal-up">
+                    <h3 class="footer-brida__title">Información</h3>
+                    <ul class="footer-brida__list">
+                        <li class="footer-brida__item"><a href="quienes-somos.html" class="footer-brida__link">Empresa</a></li>
+                        <li class="footer-brida__item"><a href="servicios.html" class="footer-brida__link">Servicios</a></li>
+                        <li class="footer-brida__item"><a href="proyectos.html" class="footer-brida__link">Proyectos</a></li>
+                        <li class="footer-brida__item"><a href="contacto.html" class="footer-brida__link">Contacto</a></li>
+                    </ul>
+                </div>
+                <!-- COLUMNA 3: DIRECCIÓN -->
+                <div class="footer-brida__col reveal-up">
+                    <h3 class="footer-brida__title">Dirección</h3>
+                    <ul class="footer-brida__list footer-brida__list--contact">
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-location-dot footer-brida__icon"></i>
+                            <div class="footer-brida__text"><strong>Oficina Principal</strong>Calle Galaxia #499<br>Barrio Urbarí, 3er Anillo<br>Santa Cruz de la Sierra, Bolivia</div>
+                        </li>
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-phone footer-brida__icon"></i>
+                            <div class="footer-brida__text">
+                                <a href="tel:+59176644531" class="footer-brida__text-link">+591 76644531</a>
+                            </div>
+                        </li>
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-envelope footer-brida__icon"></i>
+                            <div class="footer-brida__text"><a href="mailto:bridabolivia@gmail.com" class="footer-brida__text-link">bridabolivia@gmail.com</a></div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- COLUMNA 4: COBERTURA -->
+                <div class="footer-brida__col reveal-up">
+                    <h3 class="footer-brida__title">Cobertura Nacional</h3>
+                    <ul class="footer-brida__list footer-brida__list--contact">
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <div class="footer-brida__text"><strong>Santa Cruz de la Sierra</strong>Sede Principal</div>
+                        </li>
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <div class="footer-brida__text">La Paz</div>
+                        </li>
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <div class="footer-brida__text">Cochabamba</div>
+                        </li>
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <div class="footer-brida__text">Tarija</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-brida__bottom reveal-up">
+                <p class="footer-brida__copy">&copy; 2026 <a href="index.html">BRIDA S.R.L.</a> Todos los derechos reservados.</p>
+                <div class="footer-brida__legal">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script type="module" src="assets/js/main.js"></script>
+
+</body>
+</html>

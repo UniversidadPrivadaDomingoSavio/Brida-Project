@@ -1,0 +1,673 @@
+/* ════════════════════════════════════════════════════════════════
+   GUÍA DE ESTILOS — SECCIÓN PROYECTOS (BRIDA S.R.L.)
+   Archivo: assets/css/pages/proyectos.css
+   ════════════════════════════════════════════════════════════════
+
+   PREFIJO:  proy-  →  todas las clases pertenecen EXCLUSIVAMENTE
+             a la sección de proyectos (proyectos.html). Esto evita
+             cualquier colisión con el inicio o con otros módulos.
+
+   FILTROS:  son las LÍNEAS DE SERVICIO (las mismas 6 del catálogo),
+             de modo que el portafolio queda conectado con servicios.
+
+   ESCALA RESPONSIVE OFICIAL:
+             Escritorio (>1024px) → 3 columnas
+             iPad (768–1024px)    → 2 columnas (incluye portrait 768px)
+             Móvil (≤767px)       → 1 columna
+
+   REGLA DE TÁCTIL: en iPad y móvil la información del proyecto
+             (servicio, título, ubicación, periodo) está SIEMPRE
+             expuesta, sin depender de hover ni de puntero fino.
+
+   LÓGICA DE FLECHAS (filtros deslizables en móvil):
+             La fila de filtros desborda horizontalmente →
+             - Fila al INICIO  (extremo izquierdo) → clase
+               tiene-derecha   → flecha DERECHA en ciclo pulsante.
+             - Fila al FINAL   (extremo derecho)   → clase
+               tiene-izquierda → flecha IZQUIERDA en ciclo pulsante.
+             - En el MEDIO no hay flechas (el fade de bordes ya
+               insinúa el deslizamiento).
+             IMPORTANTE: SIN scroll-snap a propósito — el snap
+             interfería con el auto-centrado del filtro activo.
+
+   ⭐ AUDITORÍA TIPOGRÁFICA (alineada a variables.css):
+   - CERO texto por debajo del piso de 12px: el chip de estado
+     (0.65/0.6/0.55rem → 8.8–10.4px, el peor del sitio) y los
+     tamaños ≤480 de servicio/detalles/filtros (0.7rem = 11.2px)
+     fueron elevados a var(--fs-micro).
+   - Tokenizados donde el valor coincidía: filtros (--fs-small),
+     paginación (--fs-body), vacío-texto (--fs-body), vacío-titulo
+     (--fs-h3), labels meta (--fs-small / --fs-micro).
+   - Título de tarjeta unificado a UN clamp fluido (patrón del
+     modal de integrante) → los 3 overrides móviles de font-size
+     se eliminaron (misma escala visual, menos reglas).
+   - Font-family hardcodeadas ('Inter') → var(--font-body).
+   - Los ICONOS decorativos (flecha 0.7rem, punto del chip 7px)
+     NO son texto → quedan por debajo del piso legítimamente.
+
+   MAPA DEL ARCHIVO:
+   01. Sección principal y contenedor
+   02. Filtros por servicio (escritorio)
+   03. Rejilla de proyectos (escritorio: 3 columnas)
+   04. Tarjeta de proyecto (capa, servicio, título, detalles)
+   05. Chip de estado del proyecto
+   06. Aviso de servicio sin obras (estado vacío)
+   07. Paginación
+   08. Flechas indicadoras en extremos (móvil) + sus ciclos
+   09. Responsive — iPad (768–1024px): 2 columnas
+   10. Responsive — Móvil (≤767px): 1 columna + filtros deslizables
+   11. Responsive — Móvil pequeño (≤480px)
+   12. Responsive — Landscape (móvil horizontal)
+   13. Comportamiento táctil (hover:none + pointer:coarse)
+   14. Accesibilidad — movimiento reducido
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ────────────────────────────────────────────────────────────────
+   01. SECCIÓN PRINCIPAL Y CONTENEDOR
+   QUÉ ES:  el <section> que envuelve todo el portafolio.
+   QUÉ HACE: fondo con textura de puntos (identidad BRIDA) y
+             relleno lateral del 5%.
+   DÓNDE:    proyectos.html → <section class="proy-seccion">
+   ──────────────────────────────────────────────────────────────── */
+.proy-seccion {
+    padding: 60px 5%;
+    background-color: var(--bg-main);
+    position: relative;
+    overflow: hidden;
+    background-image: radial-gradient(rgba(49, 38, 131, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+/* QUÉ ES:  caja interior que centra el contenido a 1300px máx.
+   DÓNDE:   proyectos.html → <div class="proy-contenedor">          */
+.proy-contenedor { max-width: 1300px; margin: 0 auto; position: relative; z-index: 1; }
+
+
+/* ────────────────────────────────────────────────────────────────
+   02. FILTROS POR SERVICIO (escritorio)
+   QUÉ ES:  la fila de píldoras: Todos + 6 líneas de servicio.
+   QUÉ HACE: en escritorio se CENTRAN y SÍ ENVUELVEN en varias
+             líneas si no caben (no hay scroll horizontal).
+   DETALLE: scroll-margin-top = aire de seguridad para que el
+             scroll de paginación (JS) no aterrice pegado al menú.
+   ⭐ var(--fs-small): tokenizado (era 0.85rem literal, idéntico).
+   DÓNDE:   proyectos.html → <nav class="proy-filtros">
+   ──────────────────────────────────────────────────────────────── */
+.proy-filtros {
+    display: flex; justify-content: center; flex-wrap: wrap;
+    gap: 12px; margin-bottom: 40px;
+    scroll-margin-top: 100px;
+}
+
+/* QUÉ ES:  cada píldora/botón de filtro (JS le agrega es-activo).
+   QUÉ HACE: estilo píldora con borde suave; hover con acento.     */
+.proy-filtros-boton {
+    font-family: var(--font-heading); font-size: var(--fs-small); /* ⭐ token */
+    font-weight: 700;
+    text-transform: uppercase; color: var(--text-muted);
+    background: var(--primary-soft); border: 1px solid var(--primary-border);
+    padding: 10px 24px; border-radius: 50px; cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s var(--header-ease);
+}
+.proy-filtros-boton:hover { color: var(--primary); border-color: var(--primary); }
+
+/* ESTADO:  filtro seleccionado (lo controla proyectos.js)         */
+.proy-filtros-boton.es-activo {
+    background: var(--primary); color: #fff; border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(49, 38, 131, 0.2);
+}
+.proy-filtros-boton:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+
+/* ────────────────────────────────────────────────────────────────
+   03. REJILLA DE PROYECTOS (escritorio: 3 columnas)
+   QUÉ ES:  el grid donde proyectos.js inyecta las tarjetas.
+   QUÉ HACE: 3 columnas en escritorio con gap fluido (clamp).
+   ──────────────────────────────────────────────────────────────── */
+.proy-rejilla {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(16px, 1.8vw, 24px);
+    min-height: 300px;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   04. TARJETA DE PROYECTO
+   QUÉ ES:  un <a> generado por proyectos.js que navega directo
+             a la página de detalle (sin modal).
+   QUÉ HACE: cuadrada (1:1), con entrada animada (opacity 0 →
+             es-visible la revela) y elevación al hover.
+   ──────────────────────────────────────────────────────────────── */
+.proy-tarjeta {
+    position: relative; display: block;
+    aspect-ratio: 1 / 1;
+    min-height: 260px;
+    overflow: hidden;
+    text-decoration: none;
+    border-radius: 16px;
+    border: 1px solid var(--primary-border);
+    box-shadow: 0 10px 30px rgba(49, 38, 131, 0.05);
+    opacity: 0; transform: translateY(40px);
+    transition: transform 0.5s var(--header-ease), box-shadow 0.5s var(--header-ease),
+                border-color 0.3s ease, opacity 0.5s ease;
+}
+/* ESTADO: tarjeta revelada (JS la activa en cascada al render)   */
+.proy-tarjeta.es-visible { opacity: 1; transform: translateY(0); }
+.proy-tarjeta:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 64px rgba(49, 38, 131, 0.1);
+    border-color: rgba(49, 38, 131, 0.25);
+}
+.proy-tarjeta:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+
+/* Imagen de la obra: cubre toda la tarjeta con zoom suave al hover */
+.proy-tarjeta img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s ease;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden; /* anti-parpadeo */
+}
+.proy-tarjeta:hover img { transform: scale(1.08); }
+
+/* ── CAPA DE INFORMACIÓN ────────────────────────────────────────
+   QUÉ ES:  el degradado morado que sube desde abajo y contiene
+            servicio + título + detalles.
+   QUÉ HACE: en ESCRITORIO está oculta (opacity 0) y aparece al
+            hover/focus. En iPad y móvil el responsive la deja
+            SIEMPRE visible (regla de táctil).                     */
+.proy-tarjeta-capa {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(49, 38, 131, 0.95), rgba(15, 23, 42, 0.4), transparent);
+    display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;
+    padding: 30px; opacity: 0; transition: opacity 0.4s ease;
+}
+.proy-tarjeta:hover .proy-tarjeta-capa,
+.proy-tarjeta:focus-visible .proy-tarjeta-capa { opacity: 1; }
+
+/* ── LÍNEA DE SERVICIO (etiqueta amarilla sobre el título) ──────
+   QUÉ ES:  la primera línea de texto de la capa. Muestra la
+            LÍNEA DE SERVICIO del proyecto. Así, en táctil, el
+            usuario lee: servicio → título → ubicación, sin hover.
+   Tamaño: 0.8rem base (12.8px — pasa el piso). Los overrides
+   móviles bajan a var(--fs-micro) (12px — ver secciones 10/11).  */
+.proy-tarjeta-servicio {
+    font-family: var(--font-heading); color: var(--stripe-yellow);
+    font-size: 0.8rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px;
+    transform: translateY(20px); transition: transform 0.4s ease 0.1s;
+}
+
+/* ── TÍTULO DEL PROYECTO ────────────────────────────────────────
+   ⭐ UN CLAMP FLUIDO (patrón del modal de integrante): cubre los
+   3 responsive — 375px→17.1px · 767px→19.4px · ≥1440px→22.4px,
+   reproduciendo los valores calibrados de los overrides que
+   elimina (1.4/1.2/1.05rem).                                     */
+.proy-tarjeta-titulo {
+    font-family: var(--font-heading); color: white;
+    font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.4rem); /* ⭐ fluido */
+    font-weight: 700;
+    line-height: 1.2; transform: translateY(20px); transition: transform 0.4s ease 0.2s; margin-top: 5px;
+}
+/* Animación de subida de textos al hover (solo escritorio:
+   en táctil el responsive anula estos transforms)                */
+.proy-tarjeta:hover .proy-tarjeta-servicio,
+.proy-tarjeta:hover .proy-tarjeta-titulo,
+.proy-tarjeta:focus-visible .proy-tarjeta-servicio,
+.proy-tarjeta:focus-visible .proy-tarjeta-titulo { transform: translateY(0); }
+
+/* ── DETALLES (ubicación · periodo) ─────────────────────────────
+   QUÉ ES:  segunda línea informativa de la capa. JS solo la
+            renderiza si el dato consta en el documento oficial
+            (nunca se inventa información).
+   ⭐ var(--font-body): la tipografía estaba HARDCODEADA ('Inter').
+   Tamaño: 0.8rem base (12.8px); móviles → var(--fs-micro).       */
+.proy-tarjeta-detalles {
+    display: flex; flex-wrap: wrap; gap: 6px 16px;
+    margin-top: 10px;
+    font-family: var(--font-body); /* ⭐ era 'Inter' hardcodeada */
+    font-size: 0.8rem; font-weight: 400; line-height: 1.4;
+    color: rgba(255, 255, 255, 0.85);
+    transform: translateY(20px);
+    transition: transform 0.4s ease 0.3s;
+}
+.proy-tarjeta-detalles span { display: inline-flex; align-items: center; gap: 6px; }
+.proy-tarjeta-detalles i { font-size: 10px; color: var(--stripe-yellow); } /* icono decorativo */
+.proy-tarjeta:hover .proy-tarjeta-detalles,
+.proy-tarjeta:focus-visible .proy-tarjeta-detalles { transform: translateY(0); }
+
+
+/* ────────────────────────────────────────────────────────────────
+   05. CHIP DE ESTADO DEL PROYECTO
+   QUÉ ES:  píldora blanca fija en la esquina superior izquierda
+            (siempre visible, no depende de hover).
+   QUÉ HACE: informa el ciclo de vida del proyecto. proyectos.js
+            le asigna la variante de color con estadoClase():
+            es-concluido (verde) | es-desarrollo (ámbar) |
+            es-operacion (azul).
+   ⭐ var(--fs-micro) en TODOS los breakpoints: era 0.65/0.6/0.55rem
+   (10.4/9.6/8.8px) — TEXTO REAL de información ("Proyecto
+   Concluido") ilegible, el peor valor de todo el sitio. El chip
+   crece levemente: precio justo por legibilidad.
+   El <i> (7px) es el PUNTO de color decorativo → no es texto,
+   queda bajo el piso legítimamente.                              */
+.proy-tarjeta-estado {
+    position: absolute; top: 20px; left: 20px; z-index: 5;
+    background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    padding: 6px 14px; border-radius: 50px;
+    font-family: var(--font-heading); font-size: var(--fs-micro); /* ⭐ token (era 0.65rem) */
+    font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary);
+    display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    pointer-events: none; /* decorativo: nunca roba el toque */
+}
+.proy-tarjeta-estado i { font-size: 7px; } /* punto decorativo */
+.proy-tarjeta-estado.es-concluido i { color: #16a34a; }
+.proy-tarjeta-estado.es-desarrollo i { color: #d97706; }
+.proy-tarjeta-estado.es-operacion i { color: #2563eb; }
+
+
+/* ────────────────────────────────────────────────────────────────
+   06. AVISO DE SERVICIO SIN OBRAS (estado vacío)
+   QUÉ ES:  bloque que proyectos.js renderiza cuando se filtra
+            por una línea de servicio que aún no tiene proyectos
+            publicados (Infraestructura Gas & Datos, Seguridad).
+   QUÉ HACE: mensaje profesional con CTA a contacto, en lugar de
+            una rejilla vacía y confusa.
+   ⭐ Título tokenizado a --fs-h3; texto a --fs-body + tipografía
+   del sistema (ambas estaban hardcodeadas/fijas).
+   ──────────────────────────────────────────────────────────────── */
+.proy-vacio {
+    grid-column: 1 / -1; /* ocupa el ancho completo de la rejilla */
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    gap: 14px;
+    padding: 70px 24px;
+    border: 1px dashed var(--primary-border);
+    border-radius: 16px;
+    background-color: var(--bg-main);
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s var(--header-ease);
+}
+.proy-vacio.es-visible { opacity: 1; transform: translateY(0); }
+.proy-vacio i { font-size: 2.2rem; color: var(--primary); opacity: 0.45; }
+.proy-vacio-titulo {
+    font-family: var(--font-heading); font-size: var(--fs-h3); /* ⭐ token (era 1.15rem fijo) */
+    font-weight: 700;
+    color: var(--text-body); line-height: 1.3;
+}
+.proy-vacio-texto {
+    font-family: var(--font-body); /* ⭐ era 'Inter' hardcodeada */
+    font-size: var(--fs-body); /* ⭐ token (era 0.9rem literal) */
+    color: var(--text-muted); line-height: 1.6; max-width: 420px;
+}
+.proy-vacio-boton {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 6px; padding: 12px 26px;
+    border-radius: 50px;
+    background: var(--primary-soft); border: 1px solid var(--primary-border);
+    color: var(--primary);
+    font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; /* control (12.8px — pasa piso) */
+    text-transform: uppercase; letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: all 0.3s var(--header-ease);
+}
+.proy-vacio-boton:hover { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(49, 38, 131, 0.2); }
+.proy-vacio-boton:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+
+/* ────────────────────────────────────────────────────────────────
+   07. PAGINACIÓN
+   QUÉ ES:  flechas anterior/siguiente + números de página.
+   QUÉ HACE: al cambiar de página, proyectos.js desplaza el scroll
+            hasta los filtros (ver irAPagina en el JS). Se oculta
+            sola cuando hay una sola página.
+   ⭐ var(--fs-body): tokenizado (era 0.9rem literal, idéntico).
+   ──────────────────────────────────────────────────────────────── */
+.proy-paginacion {
+    display: flex; justify-content: center; align-items: center;
+    gap: 12px; margin-top: 50px; flex-wrap: wrap;
+}
+.proy-paginacion-numeros { display: flex; align-items: center; gap: 8px; }
+.proy-paginacion-boton {
+    width: 45px; height: 45px; border-radius: 50%;
+    border: 1px solid var(--primary-border); background: var(--bg-main);
+    display: flex; justify-content: center; align-items: center;
+    font-family: var(--font-heading); font-weight: 700; font-size: var(--fs-body); /* ⭐ token */
+    color: var(--text-muted); cursor: pointer;
+    transition: all 0.3s var(--header-ease);
+}
+.proy-paginacion-boton:hover:not(:disabled) {
+    background: var(--primary-soft); color: var(--primary);
+    border-color: var(--primary); transform: translateY(-2px);
+}
+.proy-paginacion-boton.es-activo {
+    background: var(--primary); color: #fff; border-color: var(--primary);
+    transform: scale(1.1); box-shadow: 0 4px 12px rgba(49, 38, 131, 0.3);
+}
+.proy-paginacion-boton:disabled { opacity: 0.3; cursor: not-allowed; }
+.proy-paginacion-boton:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+
+/* ────────────────────────────────────────────────────────────────
+   08. FLECHAS INDICADORAS EN EXTREMOS DE FILTROS (móvil)
+   QUÉ ES:  dos chevrons (derecha/izquierda) que señalan hacia
+            donde queda contenido por ver en la fila de filtros.
+   QUÉ HACE: en MOVÍL, cuando la fila desborda horizontalmente,
+            proyectos.js activa tiene-deslizable en la zona y,
+            según la POSICIÓN del scroll, enciende:
+            - tiene-derecha   → fila al INICIO → flecha derecha.
+            - tiene-izquierda → fila al FINAL  → flecha izquierda.
+            Cada flecha visible entra en un CICLO: aparece, pulsa
+            2 veces, se retira y vuelve (recordatorio recurrente).
+            Nunca bloquean el toque (pointer-events: none).
+   EN DESKTOP: display:none → nunca aparecen (regla base).
+   SALIDA SUAVE: la transición de la base hace que, al retirar
+            JS la clase de extremo, la flecha se desvanezca en
+            lugar de cortarse de golpe.
+   NOTA: el bloque base vive SOLO dentro del breakpoint móvil
+   (una sola definición, sin duplicados fuera).
+   El 0.7rem es el ICONO chevron (decorativo) — no texto.
+   ──────────────────────────────────────────────────────────────── */
+.proy-filtros-zona { scroll-margin-top: 100px; } /* aire al anclar scroll */
+.proy-filtros-flecha { display: none; }          /* OCULTA por defecto y en escritorio */
+
+@media screen and (max-width: 767px) {
+
+    /* La zona se vuelve referente de posición para anclar las flechas */
+    .proy-filtros-zona { position: relative; }
+
+    /* BASE COMÚN de las flechas (solo aplica si JS activó el
+       mecanismo con tiene-deslizable; invisibles hasta que una
+       clase de extremo las enciende) */
+    .proy-filtros-zona.tiene-deslizable .proy-filtros-flecha {
+        position: absolute;
+        top: 50%;
+        width: 34px; height: 34px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: #fff;
+        border: 2px solid var(--bg-main);
+        box-shadow: 0 4px 14px rgba(49, 38, 131, 0.35);
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem; /* icono decorativo — no texto */
+        pointer-events: none; /* nunca roban el toque de un chip */
+        z-index: 2;
+        opacity: 0;
+        visibility: hidden;
+        /* SALIDA SUAVE: al retirar la clase de extremo, la flecha
+           se desvanece en vez de desaparecer de golpe */
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    /* FLECHA DERECHA: fila al INICIO (extremo izquierdo)
+       → hay más contenido hacia la derecha que descubrir */
+    .proy-filtros-zona.tiene-deslizable.tiene-derecha .proy-filtros-flecha--derecha {
+        right: 0;
+        display: flex;
+        visibility: visible;
+        animation: proy-flecha-ciclo-derecha 7s ease-in-out infinite;
+    }
+
+    /* FLECHA IZQUIERDA: fila al FINAL (extremo derecho)
+       → hay más contenido hacia la izquierda que revisar */
+    .proy-filtros-zona.tiene-deslizable.tiene-izquierda .proy-filtros-flecha--izquierda {
+        left: 0;
+        display: flex;
+        visibility: visible;
+        animation: proy-flecha-ciclo-izquierda 7s ease-in-out infinite;
+    }
+}
+
+/* CICLO DE LA FLECHA DERECHA (duración total: 7s, infinito)
+   0–8%   : aparece (fade in)
+   8–40%  : permanece visible PULSANDO 2 veces hacia la derecha
+   40–50% : se retira (fade out)
+   50–100%: pausa invisible (~3.5s) y el ciclo se repite        */
+@keyframes proy-flecha-ciclo-derecha {
+    0%   { opacity: 0; transform: translateY(-50%) translateX(0); }
+    8%   { opacity: 1; transform: translateY(-50%) translateX(0); }
+    14%  {           transform: translateY(-50%) translateX(7px); }
+    22%  {           transform: translateY(-50%) translateX(0); }
+    30%  {           transform: translateY(-50%) translateX(7px); }
+    40%  { opacity: 1; transform: translateY(-50%) translateX(0); }
+    50%  { opacity: 0; transform: translateY(-50%) translateX(0); }
+    100% { opacity: 0; }
+}
+
+/* CICLO DE LA FLECHA IZQUIERDA (espejo: pulsa hacia la izquierda) */
+@keyframes proy-flecha-ciclo-izquierda {
+    0%   { opacity: 0; transform: translateY(-50%) translateX(0); }
+    8%   { opacity: 1; transform: translateY(-50%) translateX(0); }
+    14%  {           transform: translateY(-50%) translateX(-7px); }
+    22%  {           transform: translateY(-50%) translateX(0); }
+    30%  {           transform: translateY(-50%) translateX(-7px); }
+    40%  { opacity: 1; transform: translateY(-50%) translateX(0); }
+    50%  { opacity: 0; transform: translateY(-50%) translateX(0); }
+    100% { opacity: 0; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   09. RESPONSIVE — IPAD / TABLET (768px–1024px): 2 COLUMNAS
+   QUÉ HACE: media query única que INCLUYE el iPad portrait de
+            768px exactos (antes quedaba atrapado por el breakpoint
+            móvil y mostraba 1 columna). Además aplica la REGLA DE
+            TÁCTIL: capa permanente + textos sin animación.
+   ⭐ El 0.8rem del filtro pasa el piso (12.8px) — se conserva
+   como calibración deliberada de tablet.
+   ──────────────────────────────────────────────────────────────── */
+@media screen and (max-width: 1024px) {
+    .proy-seccion { padding: 50px 4%; }
+    .proy-rejilla { grid-template-columns: repeat(2, 1fr); }
+
+    /* Capa SIEMPRE visible con degradado suave → info legible sin hover */
+    .proy-tarjeta-capa {
+        opacity: 1;
+        background: linear-gradient(to top,
+            rgba(49, 38, 131, 0.9) 0%,
+            rgba(15, 23, 42, 0.5) 55%,
+            rgba(15, 23, 42, 0.1) 100%);
+    }
+
+    /* Sin animación de entrada de letras: información expuesta
+       directamente (iPad/móvil operan por toques, no hay mouse) */
+    .proy-tarjeta-servicio,
+    .proy-tarjeta-titulo,
+    .proy-tarjeta-detalles {
+        transform: none;
+        transition: none;
+    }
+
+    /* Filtros en modo píldora táctil (patrón de inicio.css) */
+    .proy-filtros-boton {
+        padding: 14px 28px;
+        background: var(--primary-soft);
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        font-size: 0.8rem; /* 12.8px — pasa el piso */
+    }
+    .proy-filtros-boton.es-activo { background: var(--primary); border-color: var(--primary); }
+    .proy-filtros-boton:active { background: rgba(49, 38, 131, 0.15); border-color: var(--primary); }
+
+    .proy-vacio { padding: 55px 20px; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   10. RESPONSIVE — MÓVIL (≤767px): 1 COLUMNA + FILTROS DESLIZABLES
+   QUÉ HACE: rejilla a 1 columna y los filtros se convierten en
+            un carrusel horizontal (7 píldoras con textos largos
+            no caben en wrap sin quedar en 3-4 líneas).
+            Sangrado a los bordes para aprovechar el ancho, fade
+            en los extremos como pista visual, scrollbar oculto.
+   ⚠️ IMPORTANTE — SIN SCROLL-SNAP a propósito: el snap re-encajaba
+            el chip en cada frame de la animación de auto-centrado
+            (proyectos.js) y lo anulaba visualmente. El centrado
+            programático del JS cumple esa función de forma superior.
+   ⭐ TIPOGRAFÍA: servicio/detalles/estado → var(--fs-micro) (12px,
+   piso del sitio — sustituye a 0.75/0.75/0.6rem); el título ya
+   viene fluido del clamp base (override eliminado).
+   ──────────────────────────────────────────────────────────────── */
+@media screen and (max-width: 767px) {
+    .proy-seccion { padding: 50px 4%; }
+
+    /* Carrusel horizontal de filtros */
+    .proy-filtros {
+        gap: 8px; margin-bottom: 30px;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* inercia suave en iOS */
+        /* Sangrado a los bordes de la sección */
+        margin-left: -4%; margin-right: -4%;
+        padding-left: 4%; padding-right: 4%;
+        padding-bottom: 6px;
+        /* Ocultar scrollbar + fade en bordes (pista de scroll) */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+    }
+    .proy-filtros::-webkit-scrollbar { display: none; }
+
+    /* Píldora dentro del carrusel: NO se encoge al desbordar.
+       (Sin scroll-snap-align: el centrado del JS la posiciona.) */
+    .proy-filtros-boton { flex-shrink: 0; padding: 12px 20px; font-size: var(--fs-micro); } /* ⭐ token */
+
+    /* Rejilla a 1 columna */
+    .proy-rejilla { grid-template-columns: 1fr; gap: 16px; }
+
+    /* Tarjeta proporcional 4:3 para mostrar más obra */
+    .proy-tarjeta { aspect-ratio: 4 / 3; min-height: 220px; }
+    .proy-tarjeta-capa { padding: 22px; }
+    .proy-tarjeta-servicio { font-size: var(--fs-micro); }   /* ⭐ token (era 0.75rem) */
+    /* ⭐ El título NO lleva override: el clamp base lo cubre fluido */
+    .proy-tarjeta-detalles { font-size: var(--fs-micro); gap: 4px 12px; } /* ⭐ token */
+    .proy-tarjeta-estado { top: 14px; left: 14px; padding: 5px 11px; } /* ⭐ font-size ya es --fs-micro de la base */
+
+    /* Aviso vacío compacto */
+    .proy-vacio { padding: 45px 18px; }
+    /* ⭐ Texto ya es var(--fs-body) de la base — override eliminado */
+
+    /* Paginación compacta */
+    .proy-paginacion { margin-top: 35px; gap: 10px; }
+    .proy-paginacion-boton { width: 40px; height: 40px; font-size: 0.85rem; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   11. RESPONSIVE — MÓVIL PEQUEÑO (≤480px)
+   QUÉ HACE: ajustes finos de espaciado y sangrado (iPhone SE,
+            Galaxy A y similares).
+   ⭐ TIPOGRAFÍA: los 3 valores por debajo del piso (0.7rem y
+   0.55rem) quedaron en var(--fs-micro) (12px) — heredados del
+   bloque ≤767 en servicio/detalles/estado; solo el filtro llevaba
+   un font-size propio que ahora usa el token.
+   ──────────────────────────────────────────────────────────────── */
+@media screen and (max-width: 480px) {
+    .proy-seccion { padding: 40px 5%; }
+
+    .proy-filtros {
+        margin-left: -5%; margin-right: -5%;
+        padding-left: 5%; padding-right: 5%;
+        gap: 6px;
+    }
+    .proy-filtros-boton { padding: 10px 16px; font-size: var(--fs-micro); letter-spacing: 0.5px; } /* ⭐ token (era 0.7rem = 11.2px) */
+
+    .proy-tarjeta { aspect-ratio: 4 / 3; min-height: 190px; }
+    .proy-tarjeta-capa { padding: 16px; }
+    /* ⭐ servicio/detalles/estado heredan var(--fs-micro) del
+       bloque ≤767 — sin overrides que las bajen del piso */
+
+    .proy-paginacion-boton { width: 36px; height: 36px; font-size: 0.8rem; } /* 12.8px — pasa piso */
+    .proy-paginacion { gap: 8px; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   12. RESPONSIVE — LANDSCAPE (móvil horizontal)
+   QUÉ HACE: cuando hay poca altura y el teléfono está girado,
+            la rejilla pasa a 2 columnas compactas para aprovechar
+            el ancho sin que las tarjetas aplasten la pantalla.
+   ──────────────────────────────────────────────────────────────── */
+@media (max-height: 500px) and (orientation: landscape) {
+    .proy-seccion { padding: 40px 5%; }
+    .proy-filtros { margin-bottom: 20px; }
+    .proy-rejilla { grid-template-columns: repeat(2, 1fr); gap: 15px; min-height: auto; }
+    .proy-tarjeta { aspect-ratio: auto; height: 220px; min-height: 0; }
+    .proy-tarjeta-capa { padding: 20px; }
+    /* ⭐ El título ya es fluido desde el clamp base — sin override */
+    .proy-tarjeta-estado { top: 12px; left: 12px; padding: 4px 10px; }
+    .proy-paginacion { margin-top: 25px; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   13. COMPORTAMIENTO TÁCTIL (hover:none + pointer:coarse)
+   QUÉ HACE: refuerza la regla de ≤1024px en CUALQUIER pantalla
+            táctil (incluye iPads con trackpad que reportan
+            hover:hover): capa permanente, textos sin animación,
+            sin transformaciones de hover falsas y feedback de
+            presión (:active) al tocar tarjeta, filtros y paginación.
+   ──────────────────────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+    .proy-tarjeta-capa {
+        opacity: 1;
+        background: linear-gradient(to top,
+            rgba(49, 38, 131, 0.92) 0%,
+            rgba(15, 23, 42, 0.55) 55%,
+            rgba(15, 23, 42, 0.15) 100%);
+    }
+    .proy-tarjeta-servicio,
+    .proy-tarjeta-titulo,
+    .proy-tarjeta-detalles {
+        transform: none;
+        transition: none;
+    }
+
+    /* Sin transformaciones de hover (no hay cursor que las dispare) */
+    .proy-tarjeta:hover { transform: none; box-shadow: 0 10px 30px rgba(49, 38, 131, 0.05); border-color: var(--primary-border); }
+    .proy-tarjeta:hover img { transform: none; }
+
+    /* Feedback de presión: la tarjeta "hunde" al tocarla */
+    .proy-tarjeta:active { transform: scale(0.98); border-color: var(--primary); }
+
+    .proy-filtros-boton:active { background: rgba(49, 38, 131, 0.2); border-color: var(--primary); color: var(--primary); }
+    .proy-filtros-boton.es-activo:active { background: var(--primary); color: #fff; }
+    .proy-paginacion-boton:active:not(:disabled) { background: var(--primary); color: #fff; border-color: var(--primary); transform: none; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   14. ACCESIBILIDAD — MOVIMIENTO REDUCIDO
+   QUÉ HACE: para usuarios con prefers-reduced-motion activo,
+            elimina todas las transiciones/animaciones y deja las
+            tarjetas y avisos VISIBLES de inmediato (sin cascada).
+            Las flechas indicadoras quedan ESTÁTICAS pero VISIBLES
+            cuando la posición del scroll determine que corresponden
+            (la clase tiene-derecha/tiene-izquierda las controla).
+   ──────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .proy-tarjeta, .proy-tarjeta img, .proy-tarjeta-capa,
+    .proy-tarjeta-servicio, .proy-tarjeta-titulo, .proy-tarjeta-detalles,
+    .proy-vacio, .proy-filtros-boton, .proy-paginacion-boton,
+    .proy-filtros-flecha {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+    .proy-tarjeta, .proy-vacio { opacity: 1; transform: none; }
+
+    /* Flechas: sin ciclo animado, pero visibles y estáticas
+       cuando la lógica de extremos (JS) las active. El selector
+       de 4 clases gana a la base (opacity 0) por orden y peso. */
+    .proy-filtros-zona.tiene-deslizable.tiene-derecha .proy-filtros-flecha--derecha,
+    .proy-filtros-zona.tiene-deslizable.tiene-izquierda .proy-filtros-flecha--izquierda {
+        animation: none;
+        opacity: 1;
+        visibility: visible;
+    }
+}

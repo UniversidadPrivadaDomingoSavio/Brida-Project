@@ -1,0 +1,94 @@
+/* assets/css/base/variables.css */
+/* ════════════════════════════════════════════════════════════════
+   TOKENS GLOBALES — BRIDA S.R.L.
+   Archivo: assets/css/base/variables.css
+   ════════════════════════════════════════════════════════════════
+   ÚNICA FUENTE DE VERDAD del sitio. Nada define estos tokens en
+   otro archivo (solo se permiten OVERRIDES dentro de media queries
+   de su propio componente, como el header en breakpoints).
+
+   MAPA:
+   01. Colores corporativos
+   02. Tipografías (familias)
+   03. Easing global
+   04. Header (consumido también por section-ui.css)
+   05. Sistema de espaciado (escala 8px + tokens semánticos)
+   06. Escala tipográfica
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+    /* ── 01. COLORES CORPORATIVOS ──────────────────────────────── */
+    --primary: #312683;
+    --primary-soft: rgba(49, 38, 131, 0.08);
+    --primary-border: rgba(49, 38, 131, 0.15);
+    --bg-main: #FFFFFF;
+    --bg-soft: #F6F5F9;
+    --bg-hover: #F3F4F8;
+    --text-body: #1F2937;
+    --text-muted: #6B7280;
+
+    /* Franja tricolor (identidad boliviana del logo)              */
+    --stripe-red: #D32F2F;
+    --stripe-yellow: #FBC02D;
+    --stripe-green: #388E3C;
+
+    /* ── 02. TIPOGRAFÍAS (familias) ────────────────────────────── */
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    /* ── 03. EASING GLOBAL ───────────────────────────────────────
+       Curva de aceleración estándar del sitio (transiciones de
+       header, tarjetas, secciones). Definida UNA sola vez aquí.   */
+    --header-ease: cubic-bezier(0.25, 1, 0.5, 1);
+
+    /* ── 04. HEADER ──────────────────────────────────────────────
+       ⚠️ Definidas aquí (y no en header.css) porque las consumen
+       otros componentes globales: section-ui.css usa --header-h,
+       --header-h-scrolled y --header-ease en el hero interno.
+       Los OVERRIDES por breakpoint viven en header.css.           */
+    --header-h: 80px;
+    --header-h-scrolled: 70px;
+
+    /* ── 05. SISTEMA DE ESPACIADO ────────────────────────────────
+       REGLA DE ORO: ningún padding/margin vertical fuera de estos
+       tokens. Escala base 8px:
+       1=micro (gaps de iconos) · 2=chico (grids) · 3=tarjetas ·
+       4=bloques · 5=cabecera→contenido · 6-9=secciones           */
+    --sp-1: 8px;
+    --sp-2: 16px;
+    --sp-3: 24px;
+    --sp-4: 32px;
+    --sp-5: 40px;
+    --sp-6: 48px;
+    --sp-7: 64px;
+    --sp-8: 80px;
+    --sp-9: 96px;
+
+    /* RITMO VERTICAL DE SECCIONES (fluido: 1 token, 3 responsive)
+       ESTÁNDAR:      375px→48px · 768px→~54px · ≥1143px→80px
+       DESTACADA:     secciones oscuras de impacto (Pilares,
+                      Valores, Contacto CTA) — más presencia      */
+    --seccion-pad: clamp(48px, 7vw, 60px);
+    --seccion-pad-destacada: clamp(64px, 9vw, 60px);
+
+    /* RITMO LATERAL
+       Desktop 5% · tablet/móvil 4% (patrón de facto del sitio)   */
+    --pad-x: 5%;
+    --pad-x-compacto: 4%;
+
+    /* CABECERA → CONTENIDO de cada sección
+       Sustituye a los 40/50/55/70/80px dispersos entre archivos  */
+    --cabecera-gap: clamp(32px, 4.5vw, 48px);
+
+    /* ── 06. ESCALA TIPOGRÁFICA (fluida) ─────────────────────────
+       Tamaños de letra RELEVANTES GLOBALEMENTE. Los componentes de
+       página (timeline, bento, etc.) conservan sus clamps propios
+       mientras migran gradualmente.                              */
+    --fs-eyebrow: clamp(0.75rem, 0.8vw, 0.85rem);  /* antetítulos   */
+    --fs-display: clamp(1.8rem, 3vw, 2.8rem);      /* H2 de sección */
+    --fs-h1-hero: clamp(2.1rem, 3.6vw, 3.3rem);    /* H1 del hero (jerarquía > H2) */
+    --fs-h3: clamp(1.05rem, 1.25vw, 1.35rem);      /* títulos de tarjeta */
+    --fs-body: clamp(0.9rem, 0.95vw, 1rem);        /* párrafos */
+    --fs-small: 0.85rem;                           /* meta/detalles */
+    --fs-micro: 0.75rem;                           /* chips pequeños */
+}

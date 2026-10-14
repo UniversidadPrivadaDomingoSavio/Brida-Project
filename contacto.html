@@ -1,0 +1,368 @@
+<!-- contacto.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contacte a BRIDA S.R.L. — WhatsApp, correo y oficina en Santa Cruz de la Sierra. Solicite cotización de proyectos de ingeniería, Oil & Gas, obras civiles, metalmecánica, electricidad y automatización en Bolivia.">
+    <title>Contacto | BRIDA S.R.L. - Ingeniería de Proyectos y Oil & Gas</title>
+
+    <!-- Fuentes e Iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicon (suprime la petición automática /favicon.ico) -->
+    <link rel="icon" type="image/png" href="assets/img/icons/logo-brida.png">
+
+    <!-- Estilos Principales -->
+    <link rel="stylesheet" href="assets/css/main.css">
+
+</head>
+<body id="page-contacto">
+
+    <!-- ========== HEADER (Componente — inyectado por header-menu.js) ==========
+         El menú completo vive en assets/js/components/header-menu.js.
+         El estado is-active se detecta automáticamente según la URL. -->
+    <div id="header-placeholder"></div>
+
+    <!-- ========== HERO INTERNO (Cabecera de Página - Componente Global) ========== -->
+    <section class="hero-interno">
+        <!-- TODO: Confirmar portada. Se usa imagen local del repositorio
+             (la versión anterior cargaba Unsplash, externa y no controlada). -->
+        <div class="hero-interno__fondo" style="background-image: url('assets/img/proyectos/Inicio/Portada 3.jpeg');"></div>
+        <div class="hero-interno__superposicion"></div>
+
+        <!-- hero-animar (no reveal-up) protege el centrado vertical -->
+        <div class="hero-interno__contenido hero-animar">
+            <div class="section-title-group">
+                <span class="section-eyebrow">Hablemos de su Proyecto</span>
+                <h1 class="section-title">CONTACTO</h1>
+                <span class="section-title-line"></span>
+            </div>
+
+            <p class="hero-interno__descripcion">
+                ¿Tiene un proyecto en mente? Nuestro equipo de expertos está listo para brindarle la asesoría y soluciones de ingeniería que necesita. Conectemos.
+            </p>
+        </div>
+    </section>
+
+        <!-- ================================================================
+         COMPUERTAS DE CONTACTO (Conectemos)
+         ================================================================
+         ⚠️ ESTRUCTURA OBLIGATORIA (3 niveles):
+             .ctt-seccion → .ctt-contenedor → .ctt-compuertas
+         Si la escena queda FUERA del contenedor, la escena se pega
+         a los bordes del viewport (sin márgenes laterales).
+         ⭐ CONTRATO CON EL JS (initCompuertas) y CSS (sección 01):
+         - 4 paneles verticales rotados que se expanden al
+           tocar/hover. El panel .es-activa está abierto (WhatsApp
+           primero: canal de conversión principal).
+         - Tap/hover en un panel CERRADO lo expande — NUNCA navega:
+           el CTA real es el <a> interno del panel abierto.
+         - Horario no es accionable → CTA estático (span, no <a>).
+         - Los paneles entran por animation propia (NO reveal-up:
+           el delay inline contaminaría la transición flex).
+         ================================================================ -->
+    <section id="ctt-contacto" class="ctt-seccion bg-soft-pattern">
+        <div class="ctt-contenedor">
+
+            <!-- Cabecera Reutilizable -->
+            <header class="ctt-cabecera reveal-up">
+                <div class="section-title-group center">
+                    <span class="section-eyebrow">Comunicación Directa</span>
+                    <h2 class="section-title">CONECTEMOS</h2>
+                    <span class="section-title-line"></span>
+                </div>
+            </header>
+
+            <!-- Escena de Compuertas -->
+            <div class="ctt-compuertas" id="ctt-compuertas">
+
+                <!-- Compuerta 01: WhatsApp (activa por defecto) -->
+                <article class="ctt-compuerta es-activa">
+                    <div class="ctt-compuerta__cerrado">
+                        <span class="ctt-compuerta__num">01</span>
+                        <span class="ctt-compuerta__nombre">WhatsApp</span>
+                    </div>
+                    <div class="ctt-compuerta__abierto">
+                        <div class="ctt-compuerta__icono"><i class="fa-brands fa-whatsapp"></i></div>
+                        <span class="ctt-compuerta__rol">Respuesta Inmediata</span>
+                        <p class="ctt-compuerta__dato">+591 76644531</p>
+                        <a href="https://wa.me/59176644531?text=Hola%20BRIDA%20S.R.L.%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios" target="_blank" rel="noopener noreferrer" class="ctt-compuerta__cta">Escribir ahora <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Compuerta 02: Correo -->
+                <article class="ctt-compuerta">
+                    <div class="ctt-compuerta__cerrado">
+                        <span class="ctt-compuerta__num">02</span>
+                        <span class="ctt-compuerta__nombre">Correo</span>
+                    </div>
+                    <div class="ctt-compuerta__abierto">
+                        <div class="ctt-compuerta__icono"><i class="fa-solid fa-envelope"></i></div>
+                        <span class="ctt-compuerta__rol">Propuestas y Cotizaciones</span>
+                        <p class="ctt-compuerta__dato">bridabolivia@gmail.com</p>
+                        <a href="mailto:bridabolivia@gmail.com?subject=Solicitud%20de%20Cotizaci%C3%B3n%20-%20BRIDA%20S.R.L." class="ctt-compuerta__cta">Enviar correo <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Compuerta 03: Dirección -->
+                <article class="ctt-compuerta">
+                    <div class="ctt-compuerta__cerrado">
+                        <span class="ctt-compuerta__num">03</span>
+                        <span class="ctt-compuerta__nombre">Dirección</span>
+                    </div>
+                    <div class="ctt-compuerta__abierto">
+                        <div class="ctt-compuerta__icono"><i class="fa-solid fa-location-dot"></i></div>
+                        <span class="ctt-compuerta__rol">Oficina Principal</span>
+                        <p class="ctt-compuerta__dato">Calle Galaxia #499 · Barrio Urbarí, 3er Anillo · Santa Cruz de la Sierra</p>
+                        <a href="https://www.google.com/maps/place/Galaxia+499,+Santa+Cruz+de+la+Sierra" target="_blank" rel="noopener noreferrer" class="ctt-compuerta__cta">Ver en Maps <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Compuerta 04: Horario (no accionable → CTA estático) -->
+                <article class="ctt-compuerta">
+                    <div class="ctt-compuerta__cerrado">
+                        <span class="ctt-compuerta__num">04</span>
+                        <span class="ctt-compuerta__nombre">Horario</span>
+                    </div>
+                    <div class="ctt-compuerta__abierto">
+                        <div class="ctt-compuerta__icono"><i class="fa-solid fa-clock"></i></div>
+                        <!-- TODO: Verificar horario real con la empresa -->
+                        <span class="ctt-compuerta__rol">Atención al Cliente</span>
+                        <p class="ctt-compuerta__dato">Lun–Vie 8:00–18:00 · Sáb 8:00–12:00</p>
+                        <span class="ctt-compuerta__cta ctt-compuerta__cta--estatica">Bolivia (GMT-4) <i class="fa-solid fa-globe"></i></span>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         FORMULARIO Y REDES (Sección oscura premium)
+         ================================================================
+         - Selects dependientes: el JS (contacto.js) llena
+           #ctt-servicio según #ctt-categoria (catálogo A–F).
+         - Labels asociados con for/id (accesibilidad de formulario).
+         - ENVÍO: el JS intercepta el submit y construye un mailto
+           con el cuerpo FORMATEADO (llega legible al correo) y
+           LIMPIA el formulario después (reset + resincronización
+           del select dependiente).
+         ================================================================ -->
+    <section id="ctt-form" class="ctt-form">
+        <div class="ctt-form__contenedor">
+
+            <!-- Cabecera -->
+            <header class="ctt-form__cabecera reveal-up">
+                <div class="section-title-group center">
+                    <span class="section-eyebrow">Cotizaciones y Asesoría</span>
+                    <h2 class="section-title">SOLICITE UNA ASESORÍA</h2>
+                    <span class="section-title-line"></span>
+                </div>
+            </header>
+
+            <!-- Grid Principal -->
+            <div class="ctt-form__grid">
+
+                <!-- IZQUIERDA: FORMULARIO -->
+                <div class="ctt-form__tarjeta reveal-up">
+                    <div class="ctt-form__tarjeta-cabecera">
+                        <h3 class="ctt-form__titulo">Envíe su Solicitud</h3>
+                        <p class="ctt-form__desc">Complete el formulario y reciba respuesta de nuestro equipo técnico-comercial.</p>
+                    </div>
+                    <div class="ctt-form__tarjeta-cuerpo">
+
+                        <!-- ============================================ -->
+                        <!-- CONFIGURACIÓN DE ENVÍO DE FORMULARIO         -->
+                        <!-- Actual: mailto (el JS formatea el cuerpo).   -->
+                        <!-- Recomendada para producción: Formspree.io    -->
+                        <!-- Al migrar: reemplazar el action por el       -->
+                        <!-- enlace de Formspree y eliminar               -->
+                        <!-- initEnvioMailto() del orquestador de         -->
+                        <!-- contacto.js (está señalizado).               -->
+                        <!-- ============================================ -->
+                        <form id="ctt-formulario" action="mailto:bridabolivia@gmail.com" method="POST" enctype="text/plain">
+
+                            <div class="ctt-form__fila">
+                                <div class="ctt-form__grupo">
+                                    <label class="ctt-form__label" for="ctt-nombre">Nombre completo *</label>
+                                    <input type="text" id="ctt-nombre" name="Nombre" class="ctt-form__input" placeholder="Juan Pérez" required>
+                                </div>
+                                <div class="ctt-form__grupo">
+                                    <label class="ctt-form__label" for="ctt-empresa">Empresa</label>
+                                    <input type="text" id="ctt-empresa" name="Empresa" class="ctt-form__input" placeholder="Mi Empresa S.A.">
+                                </div>
+                            </div>
+
+                            <div class="ctt-form__fila">
+                                <div class="ctt-form__grupo">
+                                    <label class="ctt-form__label" for="ctt-email">Correo electrónico *</label>
+                                    <input type="email" id="ctt-email" name="Email" class="ctt-form__input" placeholder="correo@ejemplo.com" required>
+                                </div>
+                                <div class="ctt-form__grupo">
+                                    <label class="ctt-form__label" for="ctt-telefono">Teléfono *</label>
+                                    <input type="tel" id="ctt-telefono" name="Telefono" class="ctt-form__input" placeholder="+591 700 00000" required>
+                                </div>
+                            </div>
+
+                            <!-- Fila completa: Tipo de Servicio (catálogo) -->
+                            <div class="ctt-form__fila ctt-form__fila--completa">
+                                <div class="ctt-form__grupo">
+                                    <label class="ctt-form__label" for="ctt-categoria">Tipo de Servicio *</label>
+                                    <select id="ctt-categoria" name="Categoria_Servicio" class="ctt-form__input" required>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="A">Ingeniería y Consultoría</option>
+                                        <option value="B">Obras Civiles y Construcción</option>
+                                        <option value="C">Mecánica y Metalurgia</option>
+                                        <option value="D">Electricidad, Instrumentación y Automatización</option>
+                                        <option value="E">Infraestructura Específica (Gas y Datos)</option>
+                                        <option value="F">Servicios Complementarios y Varios</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Fila completa: Servicio Específico (dependiente) -->
+                            <div class="ctt-form__fila ctt-form__fila--completa">
+                                <div class="ctt-form__grupo">
+                                    <label class="ctt-form__label" for="ctt-servicio">Servicio Específico *</label>
+                                    <select id="ctt-servicio" name="Servicio_Especifico" class="ctt-form__input ctt-form__input--disabled" disabled required>
+                                        <option value="">Primero seleccione un tipo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="ctt-form__grupo ctt-form__grupo--mensaje">
+                                <label class="ctt-form__label" for="ctt-mensaje">Mensaje *</label>
+                                <textarea id="ctt-mensaje" name="Mensaje" class="ctt-form__input ctt-form__textarea" placeholder="Describa su proyecto..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="ctt-form__btn-enviar">
+                                Enviar Solicitud <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- DERECHA: CONTACTO Y REDES -->
+                <div class="ctt-form__col-derecha">
+
+                    <!-- Card WhatsApp -->
+                    <div class="ctt-form__tarjeta reveal-up">
+                        <div class="ctt-form__tarjeta-cabecera">
+                            <h3 class="ctt-form__titulo">Respuesta Rápida</h3>
+                            <p class="ctt-form__desc">Para consultas urgentes, contáctenos directamente.</p>
+                        </div>
+                        <div class="ctt-form__tarjeta-cuerpo">
+                            <!-- 🔗 CAMBIAR LINK WHATSAPP AQUÍ -->
+                            <a href="https://wa.me/59176644531?text=Hola%20BRIDA%20S.R.L.%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios" target="_blank" rel="noopener noreferrer" class="ctt-form__red-btn ctt-form__red-btn--wa">
+                                <div class="ctt-form__red-icono ctt-form__red-icono--wa">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </div>
+                                <div class="ctt-form__red-texto">
+                                    <span class="ctt-form__red-nombre">WhatsApp</span>
+                                    <span class="ctt-form__red-sub">+591 76644531</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right ctt-form__red-flecha"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card Redes Sociales -->
+                    <div class="ctt-form__tarjeta ctt-form__tarjeta--redes reveal-up">
+                        <div class="ctt-form__tarjeta-cabecera">
+                            <h3 class="ctt-form__titulo">Redes Sociales</h3>
+                            <p class="ctt-form__desc">Síguenos para ver nuestros proyectos recientes.</p>
+                        </div>
+                        <div class="ctt-form__tarjeta-cuerpo">
+
+                            <!-- ⚠️ NOTA DE VERIFICACIÓN: esta página usa
+                                 @brida_ingdeproyectossrl pero el footer
+                                 del componente enlaza @brida.bolivia —
+                                 confirmar el handle real de Instagram
+                                 (pendiente desde el paquete de contacto). -->
+                            <!-- 🔗 LINK TIKTOK -->
+                            <a href="https://www.tiktok.com/@bridabolivia" target="_blank" rel="noopener noreferrer" class="ctt-form__red-btn ctt-form__red-btn--tk">
+                                <div class="ctt-form__red-icono ctt-form__red-icono--tk"><i class="fa-brands fa-tiktok"></i></div>
+                                <div class="ctt-form__red-texto">
+                                    <span class="ctt-form__red-nombre">TikTok</span>
+                                    <span class="ctt-form__red-sub">@bridabolivia</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right ctt-form__red-flecha"></i>
+                            </a>
+
+                            <!-- 🔗 LINK FACEBOOK -->
+                            <a href="https://www.facebook.com/bridabolivia?locale=es_LA" target="_blank" rel="noopener noreferrer" class="ctt-form__red-btn ctt-form__red-btn--fb">
+                                <div class="ctt-form__red-icono ctt-form__red-icono--fb"><i class="fa-brands fa-facebook-f"></i></div>
+                                <div class="ctt-form__red-texto">
+                                    <span class="ctt-form__red-nombre">Facebook</span>
+                                    <span class="ctt-form__red-sub">/bridabolivia</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right ctt-form__red-flecha"></i>
+                            </a>
+
+                            <!-- 🔗 LINK INSTAGRAM -->
+                            <a href="https://www.instagram.com/brida_ingdeproyectossrl/?hl=es" target="_blank" rel="noopener noreferrer" class="ctt-form__red-btn ctt-form__red-btn--ig">
+                                <div class="ctt-form__red-icono ctt-form__red-icono--ig"><i class="fa-brands fa-instagram"></i></div>
+                                <div class="ctt-form__red-texto">
+                                    <span class="ctt-form__red-nombre">Instagram</span>
+                                    <span class="ctt-form__red-sub">@brida_ingdeproyectossrl</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right ctt-form__red-flecha"></i>
+                            </a>
+
+                            <!-- 🔗 LINK LINKEDIN -->
+                            <a href="https://www.linkedin.com/company/brida-s-r-l/" target="_blank" rel="noopener noreferrer" class="ctt-form__red-btn ctt-form__red-btn--li">
+                                <div class="ctt-form__red-icono ctt-form__red-icono--li"><i class="fa-brands fa-linkedin-in"></i></div>
+                                <div class="ctt-form__red-texto">
+                                    <span class="ctt-form__red-nombre">LinkedIn</span>
+                                    <span class="ctt-form__red-sub">Brida S.R.L.</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right ctt-form__red-flecha"></i>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Mapa (dirección oficial: Galaxia 499, Santa Cruz) -->
+            <div class="ctt-form__mapa-contenedor reveal-up">
+                <div class="ctt-form__mapa-tarjeta">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3798.9193279138735!2d-63.20795515496535!3d-17.795488132104065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93f1e81e269c370f%3A0x3edc1fb4893c7b02!2sGalaxia%20499%2C%20Santa%20Cruz%20de%20la%20Sierra!5e0!3m2!1ses!2sbo!4v1728418909278!5m2!1ses!2sbo"
+                        class="ctt-form__mapa-iframe"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                    <div class="ctt-form__mapa-footer">
+                        <div>
+                            <h4 class="ctt-form__mapa-titulo">Ubicación Principal</h4>
+                            <p class="ctt-form__mapa-direccion">Galaxia 499, Santa Cruz de la Sierra</p>
+                        </div>
+                        <a href="https://www.google.com/maps/place/Galaxia+499,+Santa+Cruz+de+la+Sierra" target="_blank" rel="noopener noreferrer" class="ctt-form__mapa-link">
+                            Abrir en Maps <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER (Componente — inyectado por footer-menu.js) ==========
+         El footer completo vive en assets/js/components/footer-menu.js.
+         Edítalo UNA vez y se actualiza en todas las páginas.
+         Las rutas se adaptan solas (raíz / subpáginas) y el año
+         del copyright es dinámico. -->
+    <div id="footer-placeholder"></div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script type="module" src="assets/js/main.js"></script>
+
+</body>
+</html>

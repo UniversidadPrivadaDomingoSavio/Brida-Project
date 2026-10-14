@@ -1,0 +1,565 @@
+<!-- servicios.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BRIDA S.R.L. — Ingeniería de Proyectos, Oil & Gas Energía y Construcciones Metálicas. Servicios de ingeniería, obras civiles, metalmecánica, obras eléctricas, gas, fibra óptica y automatización industrial en Bolivia.">
+    <title>Servicios | BRIDA S.R.L. - Ingeniería de Proyectos y Oil & Gas</title>
+    
+    <!-- Fuentes e Iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos Principales -->
+    <link rel="stylesheet" href="assets/css/main.css">
+
+</head>
+<body id="page-servicios">
+    
+    <!-- ========== HEADER (Componente — inyectado por header-menu.js) ==========
+         El menú completo vive en assets/js/components/header-menu.js.
+         Edítalo UNA vez y se actualiza en todas las páginas.
+         El estado is-active se detecta automáticamente según la URL. -->
+    <div id="header-placeholder"></div>
+
+    <!-- ========== HERO INTERNO (Cabecera de Página - Componente Global) ========== -->
+    <section class="hero-interno">
+        <div class="hero-interno__fondo" style="background-image: url('assets/img/proyectos/Inicio/Servicio_Portada.jpeg');"></div>
+        <div class="hero-interno__superposicion"></div>
+        
+        <!-- Usamos hero-animar en lugar de reveal-up para proteger el centrado vertical -->
+        <div class="hero-interno__contenido hero-animar">
+            <div class="section-title-group">
+                <span class="section-eyebrow">Soluciones Integrales de Ingeniería</span>
+                <h1 class="section-title">NUESTROS SERVICIOS</h1>
+                <span class="section-title-line"></span>
+            </div>
+
+            <p class="hero-interno__descripcion">
+                Soluciones integrales para los sectores Oil &amp; Gas, energético, minero e industrial, con proyectos ejecutados a nivel nacional. Use el índice para saltar a la línea de servicio que necesita.
+            </p>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         ÍNDICE DEL CATÁLOGO (Navegación por categorías)
+         ================================================================
+         QUÉ ES:  barra de chips que salta a cada sección del catálogo
+                  (scroll suave) y se resalta según la sección visible
+                  (scroll-spy, ver servicios.js).
+         MÓVIL:   funciona como carrusel deslizable con el MISMO
+                  patrón validado de proyectos.html:
+                  - Flechas en extremos (inicio → derecha; final →
+                    izquierda) con ciclo pulsante recurrente.
+                  - Auto-centrado del chip activo al tocarlo.
+         CLASES:  prefijo srv-indice-* (ver servicios.css, parte 2).
+         CANDADO: la zona arranca pre-marcada "tiene-deslizable
+                  tiene-derecha" (estado correcto del primer frame);
+                  servicios.js la valida y corrige contra la realidad.
+         ================================================================ -->
+    <div class="srv-indice-zona tiene-deslizable tiene-derecha" id="srv-indice-zona">
+
+        <nav class="srv-indice" id="srv-indice" aria-label="Índice del catálogo de servicios">
+            <button class="srv-indice-boton" data-objetivo="srv-alcance">Alcance</button>
+            <button class="srv-indice-boton" data-objetivo="srv-cat-a">01 · Ingeniería</button>
+            <button class="srv-indice-boton" data-objetivo="srv-cat-b">02 · Construcción</button>
+            <button class="srv-indice-boton" data-objetivo="srv-cat-c">03 · Metalmecánica</button>
+            <button class="srv-indice-boton" data-objetivo="srv-cat-d">04 · Energía</button>
+            <button class="srv-indice-boton" data-objetivo="srv-cat-e">05 · Gas &amp; Datos</button>
+            <button class="srv-indice-boton" data-objetivo="srv-cat-f">06 · Complementarios</button>
+        </nav>
+
+        <!-- Flechas indicadoras (decorativas): gestionadas por
+             servicios.js según la posición del carrusel, igual que
+             en la página de proyectos -->
+        <span class="srv-indice-flecha srv-indice-flecha--derecha" aria-hidden="true">
+            <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <span class="srv-indice-flecha srv-indice-flecha--izquierda" aria-hidden="true">
+            <i class="fa-solid fa-chevron-left"></i>
+        </span>
+
+    </div>
+
+    <!-- ================================================================
+         BANDA DE ALCANCE Y RESPALDO (Datos reales del documento)
+         Objetivo del chip "Alcance" del índice.
+         ================================================================ -->
+    <section id="srv-alcance" class="srv-seccion bg-soft-pattern">
+        <div class="srv-fondo-acentos srv-fondo-acentos--1" aria-hidden="true"></div>
+        <div class="srv-fondo-acentos srv-fondo-acentos--2" aria-hidden="true"></div>
+        <div class="srv-contenedor">
+            <header class="srv-cabecera reveal-up">
+                <div class="section-title-group center">
+                    <span class="section-eyebrow">BRIDA S.R.L. a Nivel Nacional</span>
+                    <h2 class="section-title">Alcance y Respaldo</h2>
+                    <span class="section-title-line"></span>
+                </div>
+            </header>
+            <div class="srv-grid">
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-map-marked-alt"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Cobertura Nacional</h3>
+                    <p class="srv-tarjeta-descripcion">Proyectos ejecutados en los departamentos de Santa Cruz, La Paz, Cochabamba y Tarija, con capacidad operativa en todo el territorio boliviano.</p>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-industry"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Sectores que Atendemos</h3>
+                    <p class="srv-tarjeta-descripcion">Industria energética, petrolera, manufacturera, minera, industrial, agroindustrial y comercial, con soluciones a la medida de cada rubro.</p>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-award"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Gestión y Estándares</h3>
+                    <p class="srv-tarjeta-descripcion">Sistema integrado de gestión de calidad, seguridad y salud ocupacional, con metodologías trazables bajo lineamientos de la norma ISO.</p>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-trophy"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Respaldo Real</h3>
+                    <p class="srv-tarjeta-descripcion">Portafolio con obras para Ventura Mall Sur, Supermercado TIA, Hotel Radisson Urubo, galpones industriales y proyectos privados a nivel nacional.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SECCIÓN 01 — INGENIERÍA Y CONSULTORÍA
+         Cada cabecera incluye enlace a los proyectos que respaldan
+         esta línea de servicio (conexión servicios ↔ proyectos).
+         ================================================================ -->
+    <section id="srv-cat-a" class="srv-seccion bg-soft-pattern">
+        <div class="srv-fondo-acentos srv-fondo-acentos--1" aria-hidden="true"></div>
+        <div class="srv-fondo-acentos srv-fondo-acentos--2" aria-hidden="true"></div>
+        <div class="srv-contenedor">
+            <header class="srv-cabecera reveal-up">
+                <div class="section-title-group center">
+                    <span class="section-eyebrow">01 — Ingeniería</span>
+                    <h2 class="section-title">Ingeniería y Consultoría</h2>
+                    <span class="section-title-line"></span>
+                </div>
+                <a href="proyectos.html" class="srv-cabecera-enlace">
+                    Ver proyectos relacionados <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </header>
+            <div class="srv-grid">
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-compass-drafting"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Diseño e Ingeniería de Obras Civiles, Mecánicas y Eléctricas</h3>
+                    <p class="srv-tarjeta-descripcion">Desarrollo de ingeniería integral para infraestructura civil, mecánica y eléctrica, con metodologías trazables y documentación técnica conforme a estándares del sector.</p>
+                    <a href="servicios/ingenieria-consultoria.html#diseno-ingenieria" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>                
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Estudios de Ingeniería, Diseño, Rediseño y Evaluación de Proyectos</h3>
+                    <p class="srv-tarjeta-descripcion">Análisis de viabilidad técnica, rediseño y evaluación de proyectos en curso o existentes, para optimizar recursos y asegurar el éxito de la inversión antes de la ejecución.</p>
+                    <a href="servicios/ingenieria-consultoria.html#estudios-ingeneria" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-handshake"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Consultoría, Acompañamiento y Asesoría Técnica e Inspección</h3>
+                    <p class="srv-tarjeta-descripcion">Acompañamiento especializado en los rubros petrolero, minero, industrial y de construcción, durante las fases de planificación, ejecución y cierre del proyecto.</p>
+                    <a href="servicios/ingenieria-consultoria.html#consultoria" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Avalúos y Peritajes de Proyectos</h3>
+                    <p class="srv-tarjeta-descripcion">Servicio especializado para determinar el valor real y el estado técnico de activos y proyectos, con fines financieros, comerciales o legales.</p>
+                    <a href="servicios/ingenieria-consultoria.html#avaluos-peritajes" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-map-location-dot"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Levantamiento Topográfico</h3>
+                    <p class="srv-tarjeta-descripcion">Levantamientos topográficos de precisión para la industria energética, petrolera, manufacturera, minera, industrial y agroindustrial.</p>
+                    <a href="servicios/ingenieria-consultoria.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECCIÓN 02 — OBRAS CIVILES Y CONSTRUCCIÓN ========== -->
+    <section id="srv-cat-b" class="srv-seccion bg-soft-pattern">
+        <div class="srv-fondo-acentos srv-fondo-acentos--1" aria-hidden="true"></div>
+        <div class="srv-fondo-acentos srv-fondo-acentos--2" aria-hidden="true"></div>
+        <div class="srv-contenedor">
+            <header class="srv-cabecera reveal-up">
+                <div class="section-title-group center">
+                    <span class="section-eyebrow">02 — Construcción</span>
+                    <h2 class="section-title">Obras Civiles y Construcción</h2>
+                    <span class="section-title-line"></span>
+                </div>
+                <a href="proyectos.html" class="srv-cabecera-enlace">
+                    Ver proyectos relacionados <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </header>
+            <div class="srv-grid">
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-building"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Construcción de Obras Civiles en General</h3>
+                    <p class="srv-tarjeta-descripcion">Ejecución integral de proyectos de infraestructura civil bajo un sistema integrado de gestión de calidad, seguridad y salud ocupacional.</p>
+                    <a href="servicios/obras-civiles.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-road"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Caminos y Planchadas con Movimientos de Tierras</h3>
+                    <p class="srv-tarjeta-descripcion">Preparación de terrenos, vías de acceso, planchadas y plataformas para operaciones industriales, petroleras, mineras y agroindustriales.</p>
+                    <a href="servicios/obras-civiles.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-helmet-safety"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Proyectos Arquitectónicos, Reparación, Refacciones y Puesta en Marcha</h3>
+                    <p class="srv-tarjeta-descripcion">Construcción y ejecución de proyectos arquitectónicos y de obra civil en general: remodelaciones, refacciones y puesta en marcha de instalaciones.</p>
+                    <a href="servicios/obras-civiles.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECCIÓN 03 — MECÁNICA Y METALURGIA ========== -->
+    <section id="srv-cat-c" class="srv-seccion bg-soft-pattern">
+        <div class="srv-fondo-acentos srv-fondo-acentos--1" aria-hidden="true"></div>
+        <div class="srv-fondo-acentos srv-fondo-acentos--2" aria-hidden="true"></div>
+        <div class="srv-contenedor">
+            <header class="srv-cabecera reveal-up">
+                <div class="section-title-group center">
+                    <span class="section-eyebrow">03 — Metalmecánica</span>
+                    <h2 class="section-title">Mecánica y Metalurgia</h2>
+                    <span class="section-title-line"></span>
+                </div>
+                <a href="proyectos.html" class="srv-cabecera-enlace">
+                    Ver proyectos relacionados <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </header>
+            <div class="srv-grid">
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-industry"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Proyectos Mecánicos, Galpones y Naves Industriales</h3>
+                    <p class="srv-tarjeta-descripcion">Diseño, fabricación y montaje de galpones y naves industriales —incluyendo estructuras tipo parabólica— para usos comerciales e industriales.</p>
+                    <a href="servicios/mecanica-metalurgia.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Estructuras Metálicas y Trabajos de Soldadura en General</h3>
+                    <p class="srv-tarjeta-descripcion">Fabricación y montaje de estructuras metálicas: tinglados, cubiertas, escaleras, mezzanines y equipos, con procesos de soldadura controlados y conforme a procedimientos aprobados.</p>
+                    <a href="servicios/mecanica-metalurgia.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-clipboard-check"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Inspección, Supervisión y Fiscalización de Soldadura</h3>
+                    <p class="srv-tarjeta-descripcion">Control de calidad de todo tipo de soldadura, incluyendo pruebas y ensayos, así como la aprobación de procedimientos de soldadura.</p>
+                    <a href="servicios/mecanica-metalurgia.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-oil-well"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Fabricación y Mantenimiento de Tanques de Almacenamiento de Hidrocarburos</h3>
+                    <p class="srv-tarjeta-descripcion">Fabricación, montaje y mantenimiento de tanques de almacenamiento de hidrocarburos e infraestructura de superficie para el sector Oil &amp; Gas.</p>
+                    <a href="servicios/mecanica-metalurgia.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-gauge-high"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Puentes de Medición y Regulación de Gas</h3>
+                    <p class="srv-tarjeta-descripcion">Fabricación y montaje de puentes de medición y regulación de gas para estaciones de servicio y redes de distribución.</p>
+                    <a href="servicios/mecanica-metalurgia.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-arrow-up-from-ground-water"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Provisión, Instalación y Mantenimiento de Puentes Grúa y Sistemas de Izajes</h3>
+                    <p class="srv-tarjeta-descripcion">Provisión, instalación y mantenimiento de puentes grúa y sistemas de izaje para la manipulación segura de cargas en plantas industriales.</p>
+                    <a href="servicios/mecanica-metalurgia.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECCIÓN 04 — ELECTRICIDAD, INSTRUMENTACIÓN Y AUTOMATIZACIÓN ========== -->
+    <section id="srv-cat-d" class="srv-seccion bg-soft-pattern">
+        <div class="srv-fondo-acentos srv-fondo-acentos--1" aria-hidden="true"></div>
+        <div class="srv-fondo-acentos srv-fondo-acentos--2" aria-hidden="true"></div>
+        <div class="srv-contenedor">
+            <header class="srv-cabecera reveal-up">
+                <div class="section-title-group center">
+                    <span class="section-eyebrow">04 — Energía</span>
+                    <h2 class="section-title">Electricidad, Instrumentación y Automatización</h2>
+                    <span class="section-title-line"></span>
+                </div>
+                <a href="proyectos.html" class="srv-cabecera-enlace">
+                    Ver proyectos relacionados <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </header>
+            <div class="srv-grid">
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-bolt"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Proyectos de Trabajos Eléctricos (Industrial y Comercial)</h3>
+                    <p class="srv-tarjeta-descripcion">Diseño y ejecución de proyectos de trabajos eléctricos para el rubro industrial y comercial, conforme a normativa de seguridad vigente.</p>
+                    <a href="servicios/electricidad-automatizacion.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-eye"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Supervisión de Instalaciones Eléctricas</h3>
+                    <p class="srv-tarjeta-descripcion">Supervisión en todo tipo de instalaciones eléctricas, garantizando el cumplimiento de especificaciones técnicas y estándares de seguridad.</p>
+                    <a href="servicios/electricidad-automatizacion.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-plug-circle-bolt"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Trabajos Eléctricos de Baja, Media y Alta Tensión</h3>
+                    <p class="srv-tarjeta-descripcion">Ejecución de trabajos eléctricos en baja, media y alta tensión, con protocolos estrictos de seguridad para el personal y las instalaciones.</p>
+                    <a href="servicios/electricidad-automatizacion.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-wrench"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Mantenimiento Preventivo y Correctivo de Equipos</h3>
+                    <p class="srv-tarjeta-descripcion">Mantenimiento preventivo y correctivo de equipos eléctricos y equipos rotativos, para maximizar la disponibilidad y vida útil de los activos.</p>
+                    <a href="servicios/electricidad-automatizacion.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-tower-broadcast"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Prediseño, Diseño y Estacado de Redes Eléctricas de Distribución</h3>
+                    <p class="srv-tarjeta-descripcion">Prediseño, diseño y estacado, construcción y puesta en servicio de redes eléctricas de distribución.</p>
+                    <a href="servicios/electricidad-automatizacion.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-tower-cell"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Provisión y Montaje Electromecánico de Subestaciones</h3>
+                    <p class="srv-tarjeta-descripcion">Provisión y montaje electromecánico de subestaciones de alta, media y baja tensión, incluyendo ensamblaje y puesta en marcha.</p>
+                    <a href="servicios/electricidad-automatizacion.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-robot"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Automatización de Procesos Industriales</h3>
+                    <p class="srv-tarjeta-descripcion">Implementación de automatización de procesos industriales y electromecánicos, electrónicos, hidráulicos y sanitarios.</p>
+                    <a href="servicios/electricidad-automatizacion.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECCIÓN 05 — INFRAESTRUCTURA DE GAS Y DATOS ========== -->
+    <section id="srv-cat-e" class="srv-seccion bg-soft-pattern">
+        <div class="srv-fondo-acentos srv-fondo-acentos--1" aria-hidden="true"></div>
+        <div class="srv-fondo-acentos srv-fondo-acentos--2" aria-hidden="true"></div>
+        <div class="srv-contenedor">
+            <header class="srv-cabecera reveal-up">
+                <div class="section-title-group center">
+                    <span class="section-eyebrow">05 — Gas & Datos</span>
+                    <h2 class="section-title">Infraestructura de Gas y Datos</h2>
+                    <span class="section-title-line"></span>
+                </div>
+                <a href="proyectos.html" class="srv-cabecera-enlace">
+                    Ver proyectos relacionados <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </header>
+            <div class="srv-grid">
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-fire-flame-simple"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Mantenimiento y Tendido de Líneas de Gas</h3>
+                    <p class="srv-tarjeta-descripcion">Servicio de mantenimiento y tendido de líneas de gas, garantizando hermeticidad, seguridad operacional y cumplimiento normativo del sector.</p>
+                    <a href="servicios/infraestructura-gas.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-house-chimney"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Instalación de Red Primaria, Secundaria y Acometidas Domiciliarias</h3>
+                    <p class="srv-tarjeta-descripcion">Instalación de red primaria, red secundaria y acometidas de gas domiciliario en urbanizaciones, condominios y edificaciones.</p>
+                    <a href="servicios/infraestructura-gas.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-network-wired"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Provisión, Tendido y Etiquetado de Fibra Óptica</h3>
+                    <p class="srv-tarjeta-descripcion">Provisión, tendido y etiquetado de fibra óptica para redes de telecomunicaciones de alta velocidad y transmisión confiable de datos.</p>
+                    <a href="servicios/infraestructura-gas.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECCIÓN 06 — SERVICIOS COMPLEMENTARIOS Y VARIOS ========== -->
+    <section id="srv-cat-f" class="srv-seccion bg-soft-pattern">
+        <div class="srv-fondo-acentos srv-fondo-acentos--1" aria-hidden="true"></div>
+        <div class="srv-fondo-acentos srv-fondo-acentos--2" aria-hidden="true"></div>
+        <div class="srv-contenedor">
+            <header class="srv-cabecera reveal-up">
+                <div class="section-title-group center">
+                    <span class="section-eyebrow">06 — Complementarios</span>
+                    <h2 class="section-title">Servicios Complementarios y Varios</h2>
+                    <span class="section-title-line"></span>
+                </div>
+                <a href="proyectos.html" class="srv-cabecera-enlace">
+                    Ver proyectos relacionados <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </header>
+            <div class="srv-grid">
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-users-gear"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Provisión de Personal Calificado y Mano de Obra</h3>
+                    <p class="srv-tarjeta-descripcion">Provisión de personal calificado, técnico y mano de obra en general, para cubrir necesidades operativas en campo, planta y oficina técnica.</p>
+                    <a href="servicios/seguridad-servicios.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-truck-loading"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Importaciones y Representación de Maquinarias y Equipos Industriales</h3>
+                    <p class="srv-tarjeta-descripcion">Importación y representación de maquinarias y equipos industriales, con gestión logística integral para la adquisición de tecnología.</p>
+                    <a href="servicios/seguridad-servicios.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Provisión y Calibración de Balanzas Electrónicas</h3>
+                    <p class="srv-tarjeta-descripcion">Provisión y calibración de todo tipo de balanzas electrónicas, asegurando precisión y trazabilidad en operaciones industriales y comerciales.</p>
+                    <a href="servicios/seguridad-servicios.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-print"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Imprenta, Gigantografía y Sublimación</h3>
+                    <p class="srv-tarjeta-descripcion">Producción de impresión de gran formato, gigantografía y sublimación para señalización de obra, identidad corporativa y eventos.</p>
+                    <a href="servicios/seguridad-servicios.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Tendido de Red contra Incendio</h3>
+                    <p class="srv-tarjeta-descripcion">Tendido de redes contra incendio para edificios, plantas petroleras e instalaciones industriales, conforme a estándares de protección y seguridad.</p>
+                    <a href="servicios/seguridad-servicios.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+                <article class="srv-tarjeta">
+                    <div class="srv-icono"><i class="fa-solid fa-building-user"></i></div>
+                    <h3 class="srv-tarjeta-titulo">Instalación Industrial, Viviendas, Edificios y Otros</h3>
+                    <p class="srv-tarjeta-descripcion">Ejecución de instalaciones para uso industrial, viviendas, edificios y otros, adaptadas a los requerimientos específicos de cada proyecto.</p>
+                    <a href="servicios/seguridad-servicios.html" class="srv-tarjeta-enlace">Conocer más <i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECCIÓN CONTACTO CTA (Global) ========== -->
+    <section id="contacto-cta" class="contacto-cta">
+        <div class="contacto-cta__contenedor">
+            <div class="contacto-cta__grid">
+                
+                <!-- Panel Izquierdo (Título + Textos) -->
+                <div class="contacto-cta__panel-izq reveal-up">
+                    
+                    <!-- Título Reutilizable (Alineado a la izquierda en desktop) -->
+                    <div class="section-title-group left">
+                        <span class="section-eyebrow">Contacto Directo</span>
+                        <h2 class="section-title">SOLICITE UNA ASESORÍA</h2>
+                        <span class="section-title-line"></span>
+                    </div>
+
+                    <p class="contacto-cta__descripcion">
+                        <strong>Nuestro equipo técnico y comercial está listo para atender su requerimiento:</strong> desde estudios y diseños hasta la ejecución, supervisión y puesta en marcha de su proyecto.
+                    </p>
+                </div>
+                
+                <!-- Panel Derecho (Tarjetas) -->
+                <div class="contacto-cta__panel-der">
+                    <!-- Tarjeta WhatsApp -->
+                    <a href="https://wa.me/59176644531?text=Hola%20BRIDA%20S.R.L.%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios" class="contacto-cta__tarjeta" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+                        <div class="contacto-cta__icono">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                        <div class="contacto-cta__contenido">
+                            <span class="contacto-cta__etiqueta">Respuesta Inmediata</span>
+                            <span class="contacto-cta__titulo">WhatsApp: 76644531</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right contacto-cta__flecha"></i>
+                    </a>
+                    
+                    <!-- Tarjeta Correo -->
+                    <a href="mailto:bridabolivia@gmail.com?subject=Solicitud%20de%20Informaci%C3%B3n%20-%20BRIDA%20S.R.L." class="contacto-cta__tarjeta" aria-label="Enviar correo electrónico">
+                        <div class="contacto-cta__icono">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="contacto-cta__contenido">
+                            <span class="contacto-cta__etiqueta">Propuestas y Cotizaciones</span>
+                            <span class="contacto-cta__titulo">Correo Electrónico</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right contacto-cta__flecha"></i>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer-brida" id="main-footer">
+        <div class="footer-brida__container">
+            <div class="footer-brida__grid">
+                <!-- COLUMNA 1: MARCA -->
+                <div class="footer-brida__col footer-brida__col--brand reveal-up">
+                    <div class="footer-brida__logo-box">
+                        <img src="assets/img/icons/logo-brida.png" alt="BRIDA Logo" class="footer-brida__logo-img">
+                    </div>
+                    <p class="footer-brida__desc">Ingeniería de Proyectos • Oil &amp; Gas Energía • Construcciones Metálicas. Empresa boliviana con proyectos ejecutados a nivel nacional en obra civil, metalmecánica, obras eléctricas y automatización industrial.</p>
+                    <p class="footer-brida__desc" style="font-size: 11px; opacity: 0.75;">NIT: 38878023 · Registro de Comercio: 00425954</p>
+                    <div class="footer-brida__socials">
+                        <a href="https://wa.me/59176644531" target="_blank" rel="noopener noreferrer" class="footer-brida__social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://www.instagram.com/brida.bolivia" target="_blank" rel="noopener noreferrer" class="footer-brida__social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="mailto:bridabolivia@gmail.com" class="footer-brida__social-link" aria-label="Correo Electrónico"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+                <!-- COLUMNA 2: INFORMACIÓN -->
+                <div class="footer-brida__col reveal-up">
+                    <h3 class="footer-brida__title">Información</h3>
+                    <ul class="footer-brida__list">
+                        <li class="footer-brida__item"><a href="quienes-somos.html" class="footer-brida__link">Empresa</a></li>
+                        <li class="footer-brida__item"><a href="servicios.html" class="footer-brida__link">Servicios</a></li>
+                        <li class="footer-brida__item"><a href="proyectos.html" class="footer-brida__link">Proyectos</a></li>
+                        <li class="footer-brida__item"><a href="contacto.html" class="footer-brida__link">Contacto</a></li>
+                    </ul>
+                </div>
+                <!-- COLUMNA 3: DIRECCIÓN -->
+                <div class="footer-brida__col reveal-up">
+                    <h3 class="footer-brida__title">Dirección</h3>
+                    <ul class="footer-brida__list footer-brida__list--contact">
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-location-dot footer-brida__icon"></i>
+                            <div class="footer-brida__text"><strong>Oficina Principal</strong>Calle Galaxia #499<br>Barrio Urbarí, 3er Anillo<br>Santa Cruz de la Sierra, Bolivia</div>
+                        </li>
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-phone footer-brida__icon"></i>
+                            <div class="footer-brida__text">
+                                <a href="tel:+59176644531" class="footer-brida__text-link">+591 76644531</a>
+                            </div>
+                        </li>
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-envelope footer-brida__icon"></i>
+                            <div class="footer-brida__text"><a href="mailto:bridabolivia@gmail.com" class="footer-brida__text-link">bridabolivia@gmail.com</a></div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- COLUMNA 4: COBERTURA -->
+                <div class="footer-brida__col reveal-up">
+                    <h3 class="footer-brida__title">Cobertura Nacional</h3>
+                    <ul class="footer-brida__list footer-brida__list--contact">
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <div class="footer-brida__text"><strong>Santa Cruz de la Sierra</strong>Sede Principal</div>
+                        </li>
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <div class="footer-brida__text">La Paz</div>
+                        </li>
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <div class="footer-brida__text">Cochabamba</div>
+                        </li>
+                        <li class="footer-brida__contact-item">
+                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <div class="footer-brida__text">Tarija</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-brida__bottom reveal-up">
+                <p class="footer-brida__copy">&copy; 2026 <a href="index.html">BRIDA S.R.L.</a> Todos los derechos reservados.</p>
+                <div class="footer-brida__legal">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script type="module" src="assets/js/main.js"></script>
+
+</body>
+</html>

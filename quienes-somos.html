@@ -1,0 +1,512 @@
+<!-- quienes-somos.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BRIDA S.R.L. — Ingeniería de Proyectos, Oil & Gas Energía y Construcciones Metálicas. Conoce nuestra visión, misión, compromiso y estructura organizacional. Empresa boliviana con cobertura nacional.">
+    <title>Quiénes Somos | BRIDA S.R.L. - Ingeniería de Proyectos y Oil & Gas</title>
+    
+    <!-- Fuentes e Iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon (suprime la petición automática /favicon.ico) -->
+    <link rel="icon" type="image/png" href="assets/img/icons/logo-brida.png">
+
+    <!-- Estilos Principales -->
+    <link rel="stylesheet" href="assets/css/main.css">
+
+</head>
+<body id="page-quienes-somos">
+
+    <!-- ========== HEADER (Componente — inyectado por header-menu.js) ==========
+         El menú completo vive en assets/js/components/header-menu.js.
+         Edítalo UNA vez y se actualiza en todas las páginas.
+         El estado is-active se detecta automáticamente según la URL. -->
+    <div id="header-placeholder"></div>
+
+    <!-- ========== HERO INTERNO (Cabecera de Página) ========== -->
+    <section class="hero-interno">
+        <div class="hero-interno__fondo" style="background-image: url('assets/img/proyectos/Inicio/Portada 2.jpeg');"></div>
+        <div class="hero-interno__superposicion"></div>
+        
+        <div class="hero-interno__contenido hero-animar">
+            <div class="section-title-group">
+                <span class="section-eyebrow">Conócenos</span>
+                <h1 class="section-title">QUIÉNES SOMOS</h1>
+                <span class="section-title-line"></span>
+            </div>
+
+            <p class="hero-interno__descripcion">
+                BRIDA INGENIERÍA DE PROYECTOS – OIL &amp; GAS ENERGÍA S.R.L.: excelencia y confiabilidad en cada obra, con el cumplimiento de plazos y la calidad de los compromisos como base de nuestro éxito y constante crecimiento.
+            </p>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         NUESTRA TRAYECTORIA (Timeline de fases reales)
+         ================================================================
+         FUENTE: documento oficial de la empresa.
+         IMPORTANTE: el documento NO registra fechas históricas, por
+         lo que la línea de tiempo usa FASES (01–04) en lugar de años
+         inventados. Cada fase está respaldada por contenido real:
+         políticas de la empresa, alcance y portafolio verificado.
+         Las imágenes usan fotos locales existentes del proyecto.
+         ⚠️ ESTRUCTURA DEL ITEM (orden obligatorio):
+             contenido → separador → visual.
+         (Los PUNTOS TRICOLOR fueron retirados por decisión de
+         diseño: la línea de progreso tricolor es la única
+         protagonista sobre el riel — corre limpia de inicio a fin
+         con el efecto de scroll. El CSS y el JS ya no consumen
+         ningún marcador por-item.)
+         ================================================================ -->
+    <section class="qs-historia-seccion bg-soft-pattern" id="qs-historia">
+        
+        <!-- Cabecera Reutilizable -->
+        <header class="qs-historia-cabecera">
+            <div class="section-title-group center reveal-up">
+                <span class="section-eyebrow">Historia de Excelencia</span>
+                <h2 class="section-title">NUESTRA TRAYECTORIA</h2>
+                <span class="section-title-line"></span>
+            </div>
+        </header>
+
+        <!-- Contenedor del Timeline -->
+        <div class="qs-historia-contenedor" id="qs-historia-contenedor">
+            <div class="qs-historia-linea-base"></div>
+            <div class="qs-historia-linea-progreso" id="qs-historia-progreso"></div>
+
+            <!-- Fase 01: Nuestro Inicio (Políticas de la empresa)
+                 loading="lazy": las imágenes viven bajo el hero → el
+                 navegador las trae al acercarse (el aspect-ratio del
+                 CSS ya reservó su espacio → cero salto de layout). -->
+            <article class="qs-historia-item">
+                <div class="qs-historia-contenido">
+                    <div class="qs-historia-anio">01</div>
+                    <h3 class="qs-historia-hito">Nuestro Inicio</h3>
+                    <p class="qs-historia-descripcion">
+                        BRIDA INGENIERÍA DE PROYECTOS – OIL &amp; GAS ENERGÍA S.R.L. nace con una visión clara: 
+                        brindar soluciones serias y oportunas para el rubro petrolero, donde la formalidad 
+                        y la puntualidad son vitales en cada compromiso asumido.
+                    </p>
+                </div>
+                <div class="qs-historia-separador"></div>
+                <div class="qs-historia-visual">
+                    <div class="qs-historia-imagen-contenedor">
+                        <img src="assets/img/proyectos/Inicio/nosotros_1.png" alt="Equipo BRIDA S.R.L. en obra" class="qs-historia-imagen" loading="lazy" decoding="async">
+                        <div class="qs-historia-imagen-superposicion"></div>
+                    </div>
+                    <div class="qs-historia-marco"></div>
+                </div>
+            </article>
+
+            <!-- Fase 02: Crecimiento (cita adaptada del alcance de la empresa) -->
+            <article class="qs-historia-item">
+                <div class="qs-historia-contenido">
+                    <div class="qs-historia-anio">02</div>
+                    <h3 class="qs-historia-hito">Crecimiento Sostenido</h3>
+                    <p class="qs-historia-descripcion">
+                        A medida de nuestro crecimiento hasta la constitución formal de la empresa, 
+                        llevamos a cabo con éxito varios proyectos, ampliando nuestras actividades 
+                        según el alcance de nuestras partidas de servicio.
+                    </p>
+                </div>
+                <div class="qs-historia-separador"></div>
+                <div class="qs-historia-visual">
+                    <div class="qs-historia-imagen-contenedor">
+                        <img src="assets/img/proyectos/Inicio/nosotros_2.png" alt="Trabajo técnico de BRIDA S.R.L." class="qs-historia-imagen" loading="lazy" decoding="async">
+                        <div class="qs-historia-imagen-superposicion"></div>
+                    </div>
+                    <div class="qs-historia-marco"></div>
+                </div>
+            </article>
+
+            <!-- Fase 03: Expansión Nacional (cobertura real del documento) -->
+            <article class="qs-historia-item">
+                <div class="qs-historia-contenido">
+                    <div class="qs-historia-anio">03</div>
+                    <h3 class="qs-historia-hito">Expansión Nacional</h3>
+                    <p class="qs-historia-descripcion">
+                        Extendimos nuestra capacidad operativa a todo el territorio boliviano, 
+                        con proyectos ejecutados en los departamentos de Santa Cruz, La Paz, 
+                        Cochabamba y Tarija, para los sectores energético, petrolero, minero, 
+                        industrial y agroindustrial.
+                    </p>
+                </div>
+                <div class="qs-historia-separador"></div>
+                <div class="qs-historia-visual">
+                    <div class="qs-historia-imagen-contenedor">
+                        <img src="assets/img/proyectos/Inicio/nosotros_3.jpg" alt="Proyectos de BRIDA S.R.L. en campo" class="qs-historia-imagen" loading="lazy" decoding="async">
+                        <div class="qs-historia-imagen-superposicion"></div>
+                    </div>
+                    <div class="qs-historia-marco"></div>
+                </div>
+            </article>
+
+            <!-- Fase 04: Respaldo Real (portafolio verificado del documento) -->
+            <article class="qs-historia-item">
+                <div class="qs-historia-contenido">
+                    <div class="qs-historia-anio">04</div>
+                    <h3 class="qs-historia-hito">Respaldo Real Hoy</h3>
+                    <p class="qs-historia-descripcion">
+                        Nuestro portafolio incluye obras para Ventura Mall Sur, Supermercado TIA, 
+                        Hotel Radisson Urubo, galpones industriales y proyectos privados, respaldadas 
+                        por el cumplimiento de plazos y la calidad de los compromisos asumidos.
+                    </p>
+                </div>
+                <div class="qs-historia-separador"></div>
+                <div class="qs-historia-visual">
+                    <div class="qs-historia-imagen-contenedor">
+                        <img src="assets/img/proyectos/Inicio/nosotros_4.jpg" alt="Soldadura y metalmecánica BRIDA S.R.L." class="qs-historia-imagen" loading="lazy" decoding="async">
+                        <div class="qs-historia-imagen-superposicion"></div>
+                    </div>
+                    <div class="qs-historia-marco"></div>
+                </div>
+            </article>
+        </div>
+    </section>
+    
+    <!-- ================================================================
+         VISIÓN, MISIÓN Y COMPROMISO (Pilares Estratégicos)
+         ================================================================
+         FUENTE: texto fiel al documento oficial, reescrito en forma
+         concisa para EQUILIBRAR LOS 3 PILARES (todos ~30 palabras,
+         estructura paralela de tesis + desarrollo) para que ninguna
+         tarjeta se vea más grande que las demás.
+         - Visión: objetivo de liderazgo (documento, pág. 3).
+         - Misión: los 3 puntos reales (Calidad/ISO · Sistema
+           Integrado de Gestión · Plazos y presupuesto).
+         - Compromiso: políticas de la empresa (documento, pág. 2).
+         ⭐ CARRUSEL INFINITO (≤1024px) — CONTRATO HTML ↔ JS ↔ CSS:
+         - .qs-principios-contenedor = VENTANA (el CSS la recorta con
+           overflow:hidden en ≤1024px).
+         - .qs-principios-grid = PISTA (el CSS la vuelve flex; el JS
+           la desplaza con translateX -100% por diapositiva).
+         - LOOP REAL: el JS clona la 1ª tarjeta al final del track al
+           montar el carrusel (y la elimina al desmontar) → de la 3ª
+           se sigue girando a la IZQUIERDA hasta el clon y se encadena
+           con la 1ª real sin salto visible; la saliente se aleja
+           (scale .92 · opacity .4) y la entrante se expande desde
+           atrás hacia el foco. Candado suave: los gestos que llegan
+           durante una vuelta se ENCOLAN y se ejecutan al liberarse
+           (ningún deslizamiento queda sin respuesta).
+         - .qs-principios-controles = INDICADORES: el JS sincroniza
+           .es-activo (puntos) y .es-activa (diapositiva), gestiona
+           el auto-avance ~5s, el swipe táctil y las pausas. En
+           ESCRITORIO este bloque queda oculto (display:none en el
+           CSS base) y las 3 tarjetas se muestran en el grid de 3
+           columnas aprobado — el markup no cambia de forma, solo
+           cambia el comportamiento.
+         ================================================================ -->
+    <section class="qs-principios-seccion" id="qs-principios">
+        <header>
+            <div class="section-title-group center reveal-up">
+                <span class="section-eyebrow">Pilares Estratégicos</span>
+                <h2 class="section-title">NUESTROS PRINCIPIOS</h2>
+                <span class="section-title-line"></span>
+            </div>
+        </header>
+
+        <!-- Contenedor de Tarjetas (= VENTANA del carrusel en ≤1024px) -->
+        <div class="qs-principios-contenedor">
+            <div class="qs-principios-grid">
+                
+                <!-- Tarjeta 1: Visión -->
+                <article class="qs-principios-tarjeta">
+                    <div class="qs-principios-contenido">
+                        <h3 class="qs-principios-titulo">Visión</h3>
+                        <p class="qs-principios-texto">
+                            Ser líderes en ingeniería, provisión y construcción. Ejecutamos obras civiles, 
+                            mecánicas, eléctricas y de automatización industrial con excelencia, mirando 
+                            siempre el futuro del sector.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Tarjeta 2: Misión -->
+                <article class="qs-principios-tarjeta">
+                    <div class="qs-principios-contenido">
+                        <h3 class="qs-principios-titulo">Misión</h3>
+                        <p class="qs-principios-texto">
+                            La calidad es el eje de nuestra labor bajo la Norma ISO. Mantenemos un sistema 
+                            integrado de gestión y seguridad, cumpliendo los plazos y el presupuesto de 
+                            cada proyecto.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Tarjeta 3: Compromiso -->
+                <article class="qs-principios-tarjeta">
+                    <div class="qs-principios-contenido">
+                        <h3 class="qs-principios-titulo">Compromiso</h3>
+                        <p class="qs-principios-texto">
+                            Velar por la satisfacción de nuestros clientes. La excelencia y confiabilidad 
+                            de nuestras obras, junto al cumplimiento de plazos, son la base de nuestro 
+                            éxito y crecimiento constante.
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Indicadores del carrusel VMO (visibles solo ≤1024px;
+                 ocultos en escritorio por el CSS base). El JS los
+                 sincroniza con la diapositiva activa (.es-activo).
+                 Botones nativos → accesibles con Tab/Enter sin
+                 trabajo extra. En reduced-motion el CSS los oculta. -->
+            <div class="qs-principios-controles" id="qs-principios-controles" role="group" aria-label="Ir a pilar">
+                <button class="qs-principios-punto es-activo" type="button" aria-label="Ver Visión"></button>
+                <button class="qs-principios-punto" type="button" aria-label="Ver Misión"></button>
+                <button class="qs-principios-punto" type="button" aria-label="Ver Compromiso"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         ESTRUCTURA ORGANIZACIONAL (Bento de Áreas)
+         ================================================================
+         DISEÑO: jerarquía HÍBRIDA — contención en las tarjetas +
+         rama en T suave como lenguaje de DIAGRAMA (el riel horizontal
+         del CSS une Gerencia con las 3 áreas para que las caídas
+         laterales no "floten"):
+         - Nivel 1: CEO Fundador (nodo principal morado).
+         - Nivel 2: Gerencia General (tarjeta degradada destacada).
+         - Nivel 3: 3 áreas (bento grid) que agrupan a sus miembros:
+           Operaciones · Administración · Asesoría Legal.
+         - Cada miembro lleva .qs-org-nodo → el JS existente conecta
+           el modal de detalle sin cambios (data-* del nodo).
+         - NOMBRES PROVISIONALES: "Ejemplo 1…7" — reemplazar con el
+           directorio real cuando esté disponible (data-img vacío
+           muestra la silueta del modal).
+         RESPONSIVE: 3 columnas (escritorio) → 2 columnas con
+           Asesoría a lo ancho (iPad) → 1 columna (móvil).
+         ================================================================ -->
+    <section class="qs-org-seccion bg-soft-pattern" id="qs-organigrama">
+        <div class="qs-org-contenedor">
+            
+            <header class="qs-org-cabecera">
+                <div class="section-title-group center reveal-up">
+                    <span class="section-eyebrow">Estructura Corporativa</span>
+                    <h2 class="section-title">NUESTRO EQUIPO</h2>
+                    <span class="section-title-line"></span>
+                </div>
+            </header>
+
+            <!-- ── NIVEL 1: CEO FUNDADOR (banda superior) ────────────── -->
+            <div class="qs-org-direccion reveal-up">
+                <!-- TODO: Reemplazar "Ejemplo 1" y data-img con el
+                     directorio real + foto cuando esté disponible -->
+                <div class="qs-org-nodo es-principal"
+                     data-name="Ejemplo 1"
+                     data-role="CEO FUNDADOR"
+                     data-img=""
+                     data-desc="Órgano máximo de gobierno y decisión estratégica de BRIDA S.R.L., encargado de definir la visión y el rumbo de la empresa.">
+                    <span class="qs-org-nodo-icono"><i class="fa-solid fa-landmark" aria-hidden="true"></i></span>
+                    <h3 class="qs-org-nodo-titulo">CEO FUNDADOR</h3>
+                    <p class="qs-org-nodo-nombre">Ejemplo 1</p>
+                </div>
+            </div>
+
+            <!-- Conector vertical: Dirección → Gerencia -->
+            <div class="qs-org-conector" aria-hidden="true"><span></span></div>
+
+            <!-- ── NIVEL 2: GERENCIA GENERAL (tarjeta destacada) ─────
+                 Lleva .qs-org-nodo para que el JS existente conecte
+                 el modal sin cambios                                   -->
+            <div class="qs-org-gerencia qs-org-nodo reveal-up"
+                 data-name="Ejemplo 2"
+                 data-role="GERENTE GENERAL"
+                 data-img=""
+                 data-desc="Lidera la ejecución operativa y estratégica de la empresa, asegurando el cumplimiento de los objetivos trazados por el Directorio y la satisfacción de nuestros clientes.">
+                <span class="qs-org-nodo-icono"><i class="fa-solid fa-user-tie" aria-hidden="true"></i></span>
+                <h3 class="qs-org-nodo-titulo">GERENTE GENERAL</h3>
+                <p class="qs-org-nodo-nombre">Ejemplo 2</p>
+            </div>
+
+            <!-- Conector distribuidor: Gerencia → 3 áreas.
+                 Rama en T de diagrama: riel horizontal (::before
+                 en el CSS) + 3 caídas verticales sobre grid espejo
+                 del bento (3 escritorio · 2 iPad · 1 móvil). -->
+            <div class="qs-org-conector qs-org-conector--multiple" aria-hidden="true">
+                <span></span><span></span><span></span>
+            </div>
+
+            <!-- ── NIVEL 3: ÁREAS (bento grid) ─────────────────────── -->
+            <div class="qs-org-areas">
+
+                <!-- Área: Operaciones -->
+                <div class="qs-org-area reveal-up">
+                    <div class="qs-org-area-cabecera">
+                        <i class="fa-solid fa-helmet-safety" aria-hidden="true"></i>
+                        <span>Operaciones</span>
+                    </div>
+                    <div class="qs-org-area-miembros">
+                        <!-- TODO: Reemplazar "Ejemplo 3" y data-img -->
+                        <div class="qs-org-nodo"
+                             data-name="Ejemplo 3"
+                             data-role="OPERACIONES"
+                             data-img=""
+                             data-desc="Supervisa y coordina todos los proyectos de campo, garantizando la excelencia técnica, seguridad y cumplimiento de plazos en las obras.">
+                            <h3 class="qs-org-nodo-titulo">OPERACIONES</h3>
+                            <p class="qs-org-nodo-nombre">Ejemplo 3</p>
+                        </div>
+                        <!-- TODO: Reemplazar "Ejemplo 4" y data-img -->
+                        <div class="qs-org-nodo"
+                             data-name="Ejemplo 4"
+                             data-role="PERSONAL TÉCNICO"
+                             data-img=""
+                             data-desc="Profesionales especializados en ingeniería civil, mecánica, eléctrica e instrumentación, ejecutando los proyectos con los más altos estándares.">
+                            <h3 class="qs-org-nodo-titulo">PERSONAL TÉCNICO</h3>
+                            <p class="qs-org-nodo-nombre">Ejemplo 4</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Área: Administración -->
+                <div class="qs-org-area reveal-up">
+                    <div class="qs-org-area-cabecera">
+                        <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+                        <span>Administración</span>
+                    </div>
+                    <div class="qs-org-area-miembros">
+                        <!-- TODO: Reemplazar "Ejemplo 5" y data-img -->
+                        <div class="qs-org-nodo"
+                             data-name="Ejemplo 5"
+                             data-role="ADMINISTRACIÓN"
+                             data-img=""
+                             data-desc="Gestiona los recursos financieros, logísticos y humanos de la empresa, asegurando un funcionamiento interno eficiente y transparente.">
+                            <h3 class="qs-org-nodo-titulo">ADMINISTRACIÓN</h3>
+                            <p class="qs-org-nodo-nombre">Ejemplo 5</p>
+                        </div>
+                        <!-- TODO: Reemplazar "Ejemplo 6" y data-img -->
+                        <div class="qs-org-nodo"
+                             data-name="Ejemplo 6"
+                             data-role="PERSONAL DE APOYO"
+                             data-img=""
+                             data-desc="Brinda soporte esencial en contabilidad, recursos humanos y logística, facilitando las operaciones diarias de la empresa.">
+                            <h3 class="qs-org-nodo-titulo">PERSONAL DE APOYO</h3>
+                            <p class="qs-org-nodo-nombre">Ejemplo 6</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Área: Asesoría Legal (línea de staff del organigrama) -->
+                <div class="qs-org-area reveal-up">
+                    <div class="qs-org-area-cabecera">
+                        <i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>
+                        <span>Asesoría Legal</span>
+                    </div>
+                    <div class="qs-org-area-miembros">
+                        <!-- TODO: Reemplazar "Ejemplo 7" y data-img -->
+                        <div class="qs-org-nodo"
+                             data-name="Ejemplo 7"
+                             data-role="ASESORÍA LEGAL"
+                             data-img=""
+                             data-desc="Provee asesoría jurídica y asegura el cumplimiento normativo de la empresa en contratos, regulaciones y operaciones comerciales.">
+                            <h3 class="qs-org-nodo-titulo">ASESORÍA LEGAL</h3>
+                            <p class="qs-org-nodo-nombre">Ejemplo 7</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODAL ORGANIGRAMA (Detalle del integrante) ==========
+         Se abre al tocar un nodo. Los datos llegan de los atributos
+         data-* de cada nodo (nombre, cargo, foto, descripción).
+         Sin foto (data-img vacío) el CSS muestra la silueta de
+         respaldo; con foto real se muestra automáticamente.
+         ⭐ La imagen NO lleva src en el markup: el CSS la oculta vía
+         :not([src]) y el JS la llena (o la vacía con removeAttribute)
+         al abrir cada nodo — sin peticiones fantasma de src vacío.
+         role="dialog" + aria-modal acompañan la gestión de foco del
+         JS (entra al botón cerrar al abrir; vuelve al nodo origen
+         al cerrar — accesibilidad teclado). -->
+    <div class="qs-modal-equipo-fondo" id="qs-modal-equipo" role="dialog" aria-modal="true" aria-label="Detalle de integrante del equipo">
+        <div class="qs-modal-equipo-tarjeta">
+            <button class="qs-modal-equipo-cerrar" id="qs-modal-cerrar-btn" aria-label="Cerrar detalle">&times;</button>
+            <div class="qs-modal-equipo-cuerpo">
+                <div class="qs-modal-equipo-visual">
+                    <img alt="" class="qs-modal-equipo-img" id="qs-modal-img">
+                </div>
+                <div class="qs-modal-equipo-info">
+                    <span class="qs-modal-equipo-rol" id="qs-modal-rol">Cargo</span>
+                    <h2 class="qs-modal-equipo-nombre" id="qs-modal-nombre">Nombre</h2>
+                    <p class="qs-modal-equipo-desc" id="qs-modal-desc">Descripción del puesto y responsabilidades.</p>
+                    <div class="qs-modal-equipo-contacto">
+                        <a href="mailto:bridabolivia@gmail.com" aria-label="Enviar correo"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SECCIÓN CONTACTO CTA (Global) ========== -->
+    <section id="contacto-cta" class="contacto-cta">
+        <div class="contacto-cta__contenedor">
+            <div class="contacto-cta__grid">
+                
+                <!-- Panel Izquierdo (Título + Textos) -->
+                <div class="contacto-cta__panel-izq reveal-up">
+                    
+                    <!-- Título Reutilizable (Alineado a la izquierda en desktop) -->
+                    <div class="section-title-group left">
+                        <span class="section-eyebrow">Contacto Directo</span>
+                        <h2 class="section-title">SOLICITE UNA ASESORÍA</h2>
+                        <span class="section-title-line"></span>
+                    </div>
+
+                    <p class="contacto-cta__descripcion">
+                        <strong>Nuestro equipo técnico y comercial está listo para atender su requerimiento:</strong> desde estudios y diseños hasta la ejecución, supervisión y puesta en marcha de su proyecto.
+                    </p>
+                </div>
+                
+                <!-- Panel Derecho (Tarjetas) -->
+                <div class="contacto-cta__panel-der">
+                    <!-- Tarjeta WhatsApp -->
+                    <a href="https://wa.me/59176644531?text=Hola%20BRIDA%20S.R.L.%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios" class="contacto-cta__tarjeta" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+                        <div class="contacto-cta__icono">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                        <div class="contacto-cta__contenido">
+                            <span class="contacto-cta__etiqueta">Respuesta Inmediata</span>
+                            <span class="contacto-cta__titulo">WhatsApp: 76644531</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right contacto-cta__flecha"></i>
+                    </a>
+                    
+                    <!-- Tarjeta Correo -->
+                    <a href="mailto:bridabolivia@gmail.com?subject=Solicitud%20de%20Informaci%C3%B3n%20-%20BRIDA%20S.R.L." class="contacto-cta__tarjeta" aria-label="Enviar correo electrónico">
+                        <div class="contacto-cta__icono">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="contacto-cta__contenido">
+                            <span class="contacto-cta__etiqueta">Propuestas y Cotizaciones</span>
+                            <span class="contacto-cta__titulo">Correo Electrónico</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right contacto-cta__flecha"></i>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER (Componente — inyectado por footer-menu.js) ==========
+         El footer completo vive en assets/js/components/footer-menu.js.
+         Edítalo UNA vez y se actualiza en todas las páginas.
+         Las rutas se adaptan solas (raíz / subpáginas /proyectos · /servicios).
+         El año del copyright es dinámico. -->
+    <div id="footer-placeholder"></div>
+    
+    <!-- ========== SCRIPTS ========== -->
+    <script type="module" src="assets/js/main.js"></script>
+
+</body>
+</html>

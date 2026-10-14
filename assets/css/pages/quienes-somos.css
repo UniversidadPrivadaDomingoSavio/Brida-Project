@@ -1,0 +1,1037 @@
+/* ════════════════════════════════════════════════════════════════
+   GUÍA DE ESTILOS — PÁGINA QUIÉNES SOMOS (BRIDA S.R.L.)
+   Archivo: assets/css/pages/quienes-somos.css
+   ════════════════════════════════════════════════════════════════
+
+   PREFIJO:  qs-  →  exclusivo de esta página (sin colisiones con
+             ini- del inicio, que tiene su propio timeline).
+
+   ESTRUCTURA DE LA PÁGINA:
+             Hero → Timeline de fases → Pilares (Visión/Misión/
+             Compromiso) → Organigrama (Bento de Áreas) → Modal de
+             integrante → CTA.
+
+   ⚠️ SISTEMA DE DISEÑO (variables.css — OBLIGATORIO):
+   - Ritmo vertical: --seccion-pad / --seccion-pad-destacada
+     (fluidos → NO se redefinen paddings de sección en media queries).
+   - Lateral: --pad-x (desktop) / --pad-x-compacto (≤1024px).
+   - Cabecera→contenido: --cabecera-gap.
+   - Espaciado interno: --sp-1…--sp-9. Tipografía: --fs-*.
+   - Cero números mágicos verticales fuera de la escala.
+
+   MAPA DEL ARCHIVO (cada bloque = una sección de la página):
+   ────────────────────────────────────────────────────────────────
+   01. SECCIÓN: NUESTRA TRAYECTORIA (timeline)
+       · Línea tricolor con scroll, foco/difuminado, SIN puntos.
+       · ⭐ IMÁGENES CON aspect-ratio (sin alturas fijas): el
+         contenedor escala con su ancho → la foto conserva su
+         encuadre natural y NUNCA se percibe "zoomiada".
+   02. SECCIÓN: NUESTROS PRINCIPIOS (VMO)
+       2a. Grid glassmorphism de escritorio (simetría garantizada,
+           hover de solo crecimiento, título tokenizado --fs-h3)
+       2b. CARRUSEL INFINITO ≤1024px: loop real con clon de la 1ª
+           diapositiva, profundidad de foco, indicadores morados
+           y ESCALA CONTEXTUAL tipográfica (autocontenida).
+   03. SECCIÓN: NUESTRO EQUIPO (organigrama bento)
+       · Rama en T: riel horizontal + caídas sobre grid espejo.
+       · TÁCTIL (768–1024 · ≤767): nodo COMPACTO EN FILA (grid
+         sobre los hijos existentes, ~−50% de altura) + líneas
+         al 0.5 vía --qs-org-linea-color + feedback de presión
+         (:active + .es-presionado del JS).
+   04. MODAL de integrante (fallback sin foto)
+       · IMAGEN anti-zoom (aspect-ratio 4/5 → 4/3 móvil) y
+         tipografía fluida (nombre rem+vw) — responsive
+         autocontenido en esta sección.
+   05. RESPONSIVE general de la página (1024 / 767 / landscape)
+       · Breakpoints de landscape alineados (767/768: sin hueco).
+   06. ACCESIBILIDAD — movimiento reducido
+       · ⭐ Regla dedicada de la línea-progreso: preserva su
+         centrado translateX(-50%) (un transform:none genérico
+         desplazaría el riel 2px a la derecha).
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  SECCIÓN 01 — NUESTRA TRAYECTORIA (TIMELINE)                 ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.qs-historia-seccion {
+    padding: var(--seccion-pad) var(--pad-x);
+    position: relative;
+    overflow: hidden;
+}
+
+.qs-historia-cabecera {
+    margin-bottom: var(--cabecera-gap);
+    position: relative; z-index: 2;
+}
+.qs-historia-contenedor { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+
+/* Línea vertical base (gris): el carril sobre el que corre el
+   progreso tricolor                                              */
+.qs-historia-linea-base {
+    position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+    width: 4px; height: 100%; background: var(--primary-border); z-index: 1; border-radius: 4px;
+}
+
+/* Línea de progreso tricolor: JS controla su altura (height %)
+   con animación suave vía requestAnimationFrame.
+   ⚠️ Su transform translateX(-50%) es ESTRUCTURAL (centrado del
+   riel) — la sección 06 lleva regla dedicada para no anularlo.   */
+.qs-historia-linea-progreso {
+    position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+    width: 4px; height: 0%;
+    background: linear-gradient(180deg, var(--stripe-red) 0%, var(--stripe-red) 33%, var(--stripe-yellow) 33%, var(--stripe-yellow) 66%, var(--stripe-green) 66%, var(--stripe-green) 100%);
+    z-index: 2; border-radius: 4px; will-change: height;
+    box-shadow: 0 0 12px rgba(211, 47, 47, 0.3);
+}
+
+/* Items del timeline: flex centrado, alternando dirección.
+   Ritmo entre items: --sp-7 (64px).                              */
+.qs-historia-item {
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: var(--sp-7);
+    position: relative; z-index: 3;
+    transition: opacity 0.5s var(--header-ease), filter 0.5s var(--header-ease), transform 0.8s var(--header-ease);
+}
+.qs-historia-item:last-child { margin-bottom: 0; }
+.qs-historia-item:nth-child(odd) { flex-direction: row; }          /* texto izquierda */
+.qs-historia-item:nth-child(even) { flex-direction: row-reverse; } /* texto derecha  */
+
+/* ESTADOS de foco/difuminado (asignados por quienes-somos.js)    */
+.qs-historia-item.esta-difuminado { opacity: 0.2; filter: grayscale(50%); }
+.qs-historia-item.esta-enfocado { opacity: 1; filter: none; }
+
+.qs-historia-contenido { width: 38%; padding: var(--sp-4) var(--sp-5); position: relative; }
+
+/* FASE (01–04): número grande con entrada animada.
+   Tipografía: --fs-display (mismo rango que el clamp original).  */
+.qs-historia-anio {
+    font-family: var(--font-heading); font-size: var(--fs-display);
+    font-weight: 700; color: #312683; line-height: 1;
+    margin-bottom: var(--sp-2); position: relative;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.8s var(--header-ease), transform 0.8s var(--header-ease);
+}
+.qs-historia-item.es-visible .qs-historia-anio { opacity: 1; transform: translateY(0); }
+
+/* Título del hito (entrada con retardo escalonado).
+   Tipografía: --fs-h3.                                           */
+.qs-historia-hito {
+    font-family: var(--font-heading); font-size: var(--fs-h3);
+    font-weight: 700; color: var(--text-body); text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: var(--sp-2); line-height: 1.3;
+    opacity: 0; transform: translateY(25px); transition: opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s;
+}
+.qs-historia-item.es-visible .qs-historia-hito { opacity: 1; transform: translateY(0); }
+
+/* Descripción del hito (tercera capa de la cascada).
+   Tipografía: --fs-body.                                         */
+.qs-historia-descripcion {
+    font-family: var(--font-body); font-size: var(--fs-body);
+    line-height: 1.8; color: var(--text-muted);
+    opacity: 0; transform: translateY(25px); transition: opacity 0.7s ease 0.25s, transform 0.7s ease 0.25s;
+}
+.qs-historia-item.es-visible .qs-historia-descripcion { opacity: 1; transform: translateY(0); }
+
+/* Separador central: espaciador simétrico entre contenido y
+   visual (mantiene la línea al centro exacto del item).          */
+.qs-historia-separador {
+    width: var(--sp-9); min-width: var(--sp-9);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; position: relative;
+}
+
+/* ── IMAGEN DE FASE — PROPORCIÓN NATURAL (fix anti-zoom) ────────
+   ⭐ aspect-ratio sustituye a la altura fija: el contenedor
+   escala con su ancho (38% desktop · 45% tablet · 100% móvil) y
+   `object-fit: cover` solo recorta lo mínimo. Antes, las alturas
+   fijas (300/250/200px) obligaban a cover a ampliar mucho la
+   imagen en pantallas angostas → sensación de zoom excesivo.
+   · 16/10 ≈ ratio de fotografía documental → desktop/tablet.
+   · Sin soporte de aspect-ratio (navegadores muy viejos): el
+     contenedor envuelve la imagen con su proporción natural
+     (fallback elegante, no colapsa).
+   · object-position: center (neutro) — el sesgo `center 20%`
+     contribuía al encuadre forzado.                              */
+.qs-historia-visual { width: 38%; position: relative; }
+.qs-historia-imagen-contenedor {
+    position: relative;
+    aspect-ratio: 16 / 10;   /* ← reemplaza a la altura fija       */
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(49, 38, 131, 0.08); background: var(--bg-main);
+    border: 1px solid var(--primary-border); border-radius: 12px;
+    transform: scale(0.9) translateY(30px); opacity: 0;
+    transition: transform 0.9s var(--header-ease), opacity 0.9s var(--header-ease), box-shadow 0.4s ease, border-color 0.3s ease;
+}
+.qs-historia-item.es-visible .qs-historia-imagen-contenedor { transform: scale(1) translateY(0); opacity: 1; }
+.qs-historia-item.esta-enfocado .qs-historia-imagen-contenedor { box-shadow: 0 20px 40px rgba(49, 38, 131, 0.15); border-color: rgba(49, 38, 131, 0.25); }
+
+.qs-historia-imagen {
+    width: 100%; height: 100%; object-fit: cover; object-position: center;
+    transition: transform 0.6s var(--header-ease), filter 0.6s var(--header-ease);
+    filter: grayscale(30%) brightness(0.95); /* efecto "foto de archivo" por defecto */
+}
+
+/* Hover escritorio: la foto "cobra vida" (color + zoom suave)    */
+@media (hover: hover) and (pointer: fine) {
+    .qs-historia-item:hover .qs-historia-imagen { transform: scale(1.05); filter: grayscale(0%) brightness(1); }
+}
+/* Táctil: zoom suave cuando el item cruza el centro (zoom-activo
+   lo asigna quienes-somos.js)                                     */
+@media (hover: none) and (pointer: coarse) {
+    .qs-historia-item.zoom-activo .qs-historia-imagen { transform: scale(1.03); filter: grayscale(0%) brightness(1); }
+    .qs-historia-item.zoom-activo .qs-historia-imagen-contenedor { box-shadow: 0 20px 40px rgba(49, 38, 131, 0.15); border-color: rgba(49, 38, 131, 0.25); }
+}
+
+.qs-historia-imagen-superposicion { position: absolute; bottom: 0; left: 0; width: 100%; height: 45%; background: linear-gradient(transparent, rgba(49, 38, 131, 0.12)); pointer-events: none; }
+
+/* Marco desplazado: aparece cuando el item es visible y se
+   intensifica cuando está enfocado                                */
+.qs-historia-marco {
+    position: absolute; width: 100%; height: 100%; top: 14px; left: 14px;
+    border: 2px solid var(--primary); opacity: 0; transform: translate(10px, 10px);
+    pointer-events: none; transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s; border-radius: 12px;
+}
+.qs-historia-item.es-visible .qs-historia-marco { opacity: 0.15; transform: translate(0, 0); }
+.qs-historia-item.esta-enfocado .qs-historia-marco { opacity: 0.3; }
+
+/* Entrada lateral de los items (antes de ser visibles):
+   impares desde la izquierda, pares desde la derecha              */
+.qs-historia-item:not(.es-visible) { opacity: 0; }
+.qs-historia-item:nth-child(odd):not(.es-visible) { transform: translateX(calc(-1 * var(--sp-7))); }
+.qs-historia-item:nth-child(even):not(.es-visible) { transform: translateX(var(--sp-7)); }
+.qs-historia-item.es-visible { opacity: 1; transform: translateX(0); }
+
+/* ── FIN SECCIÓN 01 — TRAYECTORIA ─────────────────────────────── */
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  SECCIÓN 02 — NUESTROS PRINCIPIOS (VMO)                      ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* ── 2a. BASE — ESCRITORIO (grid 3 columnas, simetría) ──────────
+   Ritmo: --seccion-pad-destacada (sección oscura de impacto).    */
+.qs-principios-seccion {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: var(--seccion-pad-destacada) var(--pad-x);
+
+    /* Fondo oscuro personalizado con rejilla y brillos azulados    */
+    background-color: #0a0a12;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(92, 107, 192, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(92, 107, 192, 0.1) 0%, transparent 20%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+
+/* Forzar estilos de título claros sobre fondo oscuro             */
+.qs-principios-seccion .section-eyebrow { color: rgba(255, 255, 255, 0.8); }
+.qs-principios-seccion .section-title { color: #ffffff; }
+.qs-principios-seccion .section-title-line {
+    background: linear-gradient(to right, var(--stripe-red) 33.33%, var(--stripe-yellow) 33.33%, var(--stripe-yellow) 66.66%, var(--stripe-green) 66.66%) !important;
+    transform-origin: center;
+}
+
+.qs-principios-contenedor {
+    max-width: 1300px;
+    margin: var(--cabecera-gap) auto 0;
+    position: relative;
+    z-index: 10;
+    width: 100%;
+}
+
+/* SIMETRÍA: stretch garantiza alturas iguales en las 3 columnas  */
+.qs-principios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-5);
+    align-items: stretch;
+}
+
+.qs-principios-tarjeta {
+    position: relative; width: 100%;
+    /* SIMETRÍA: flex para que el contenido llene y centre
+       verticalmente dentro de la tarjeta estirada                */
+    display: flex;
+    /* Efecto cristal (glassmorphism) para fondo oscuro            */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--sp-6) var(--sp-5);
+    border-radius: 16px;
+    overflow: hidden; cursor: default; z-index: 1;
+
+    /* Animación inicial (ocultas y desplazadas hacia abajo)       */
+    opacity: 0; transform: translateY(60px);
+    transition: opacity 0.8s var(--header-ease), transform 0.8s var(--header-ease), box-shadow 0.5s ease, border-color 0.5s ease;
+}
+
+/* ESTADO: visible (cascada asignada por quienes-somos.js)        */
+.qs-principios-tarjeta.es-visible { opacity: 1; transform: translateY(0); }
+
+/* Contenido interno: columna centrada verticalmente (simetría)   */
+.qs-principios-contenido {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Título de tarjeta (Visión/Misión/Compromiso)
+   ⭐ MIGRADO A TOKEN (auditoría tipográfica): --fs-h3 existe en
+   variables.css con el rol exacto "títulos de tarjeta" — el clamp
+   propio (1.3rem/1.5vw/1.6rem) estaba mal calibrado: el 1.5vw no
+   superaba el mínimo hasta ~1387px → el 95% de los dispositivos
+   veían el mismo tamaño fijo. Fluidez real del token:
+   16.8px (≤1344px) → 21.6px (≥1728px).
+   En el carrusel ≤1024px gana escala contextual (ver 2b).        */
+.qs-principios-titulo {
+    font-family: var(--font-heading);
+    font-size: var(--fs-h3);
+    font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    color: #ffffff; margin-bottom: var(--sp-3); display: inline-block;
+}
+
+/* Texto: --fs-body (en carrusel ≤1024px sube medio punto, ver 2b)*/
+.qs-principios-texto {
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    line-height: 1.85; color: rgba(255, 255, 255, 0.7);
+}
+
+/* Efectos Hover (solo escritorio)
+   ⭐ SOLO CRECIMIENTO (decisión de diseño): se retiró la línea
+   superior animada — el ::before fue eliminado del componente.
+   El hover ahora es un leve AGRANDAMIENTO + elevación:
+   entrada ÁGIL (0.35s, definida en el estado hover) y salida
+   SUAVE (0.8s, heredada de la transición base de la tarjeta).    */
+@media (hover: hover) and (pointer: fine) {
+    .qs-principios-tarjeta:hover {
+        transform: translateY(-6px) scale(1.02);
+        transition-duration: 0.35s; /* el hover responde al instante */
+        box-shadow: 0 20px 44px rgba(49, 38, 131, 0.2);
+        border-color: rgba(255, 255, 255, 0.3);
+        z-index: 5;
+    }
+}
+
+
+/* ── 2b. CARRUSEL VMO INFINITO (≤1024px) — CONTRATO CON EL JS ───
+   QUÉ ES:  en móvil/tablet la sección pasa de grid 3 columnas a
+            carrusel de 1 diapositiva con LOOP REALMENTE INFINITO.
+   ⭐ LOOP SIN COSTURA (técnica del CLON):
+   - El JS clona la 1ª diapositiva y la AGREGA al final del track:
+       PISTA FÍSICA → [1] [2] [3] [clon-1]
+   - Al avanzar desde la 3ª: el track anima hacia la IZQUIERDA
+     hasta el clon (el ojo ve desplazamiento continuo, nunca un
+     regreso) y AL TERMINAR la transición hace un salto SIN
+     animación a la 1ª real — visualmente idéntica al píxel.
+   - Retroceso desde la 1ª (swipe a la derecha): salto silencioso
+     AL clon y animación una posición a la derecha hasta la 3ª.
+   - ⭐ CANDADO SUAVE del JS (enVuelta + encolado): los gestos que
+     llegan DURANTE una vuelta NO se descartan — se ENCOLAN (el
+     último manda) y se ejecutan automáticamente al liberarse el
+     candado → ningún deslizamiento queda sin respuesta.
+   ARQUITECTURA (3 piezas + clon):
+   - .qs-principios-contenedor = VENTANA (overflow:hidden).
+   - .qs-principios-grid = PISTA: display:flex; el JS desplaza con
+     translateX(-posición * 100%). ⚠️ SIN gap: rompería el cálculo.
+   - .qs-principios-tarjeta = DIAPOSITIVA: flex: 0 0 100%.
+   - .es-clon = copia decorativa de la 1ª: display:none fuera del
+     modo carrusel (defensa: si algún día quedara huérfana en el
+     grid de escritorio, no abriría una 2ª fila).
+   ⭐ PROFUNDIDAD DE FOCO (el efecto pedido):
+   - La diapositiva en espera queda "atrás y pequeña" (scale .92 ·
+     opacity .4) y la ACTIVA (.es-activa, marcada por el JS) se
+     EXPANDE a escala y opacidad plenas → la saliente se aleja y
+     la entrante crece desde atrás. Pista y diapositivas comparten
+     curva y duración (0.8s · cubic-bezier(0.22, 1, 0.36, 1)).
+   - Indicadores: el activo crece a píldora MORADA (--primary) con
+     halo suave (el tricolor queda reservado a títulos/franjas).
+   RESPONSABILIDAD DEL JS (initPrincipios):
+   1. matchMedia('(max-width: 1024px)') decide el modo.
+   2. Clona la 1ª diapositiva al montar el carrusel (la elimina al
+      desmontar) y gestiona las vueltas con transitionend + respaldo
+      por tiempo, candado suave y encolado de gestos.
+   3. Auto-avance ~5s en loop infinito + pausas inteligentes.
+   4. Sincroniza .es-activo (puntos) y .es-activa (diapositiva).
+   5. Agrega .es-visible a las 3 tarjetas al entrar la sección en
+      viewport (los slides 2/3 son invisibles para el IO).
+   ⚠️ ESTE CSS SOLO DEFINE LA ESTRUCTURA VISUAL — el movimiento lo
+      controla el JS. Sin JS en ≤1024px se ve la tarjeta 1.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Defensa en escritorio: el clon NUNCA participa del grid
+   (si quedara huérfano no abriría una segunda fila)              */
+.qs-principios-tarjeta.es-clon { display: none; }
+
+/* Indicadores: ocultos en escritorio (el grid 3 columnas manda)  */
+.qs-principios-controles { display: none; }
+
+/* Punto indicador: botón redondo pequeño sobre fondo oscuro      */
+.qs-principios-punto {
+    width: 9px; height: 9px;
+    padding: 0; border: none; border-radius: 50px;
+    background: rgba(255, 255, 255, 0.25);
+    cursor: pointer; flex-shrink: 0;
+    transition: width 0.4s var(--header-ease), background-color 0.4s ease, box-shadow 0.4s ease;
+}
+.qs-principios-punto:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.6);
+    outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+    .qs-principios-punto:hover { background: rgba(255, 255, 255, 0.55); }
+}
+
+/* ESTADO activo: píldora morada institucional con halo suave     */
+.qs-principios-punto.es-activo {
+    width: 28px;
+    background: var(--primary);
+    box-shadow: 0 0 10px rgba(49, 38, 131, 0.45);
+}
+
+/* ── ESCALA CONTEXTUAL DEL CARRUSEL (≤1024px, autocontenida) ────
+   La diapositiva pasa de "tarjeta a ⅓ de ancho" (grid) a
+   "protagonista de pantalla completa" → su tipografía gana
+   presencia proporcional al nuevo rol:
+   · Título: fórmula fluida correcta (rem base + vw, crece desde
+     el primer píxel): ~21.3px en 375px → 23.2px (≥560px).
+   · Texto: +medio punto para lectura a ancho completo.
+   ⚠️ RESPONSIVE AUTOCONTENIDO (patrón bento de la sección 03):
+   estas reglas viven SOLO aquí — no duplicarlas en la sección 05
+   (media query igual + mismos valores: un duplicado no rompe,
+   pero difumina la fuente de verdad de la sección).              */
+@media (max-width: 1024px) {
+    .qs-principios-titulo { font-size: clamp(1.25rem, 1.1rem + 1vw, 1.45rem); }
+    .qs-principios-texto  { font-size: 0.95rem; }
+}
+
+/* ── FIN SECCIÓN 02 — PRINCIPIOS ──────────────────────────────── */
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  SECCIÓN 03 — NUESTRO EQUIPO (ORGANIGRAMA BENTO)             ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.qs-org-seccion {
+    padding: var(--seccion-pad) var(--pad-x);
+    position: relative; overflow: hidden;
+}
+
+.qs-org-contenedor { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+.qs-org-cabecera { margin-bottom: var(--cabecera-gap); }
+
+/* ── NIVEL 1: DIRECCIÓN ──────────────────────────────────────────
+   Banda superior centrada; el nodo principal gana icono y mayor
+   presencia (es la cúspide de la jerarquía).                      */
+.qs-org-direccion { display: flex; justify-content: center; }
+
+/* ── NODO BASE (clicable → modal) ──────────────────────────────── */
+.qs-org-nodo {
+    background: var(--bg-main);
+    padding: var(--sp-2) var(--sp-3);
+    border-radius: 12px;
+    border: 1px solid var(--primary-border); box-shadow: 0 4px 12px rgba(49, 38, 131, 0.05);
+    text-align: center; cursor: pointer; position: relative; z-index: 2;
+    transition: all 0.3s var(--header-ease); min-width: 180px;
+}
+.qs-org-nodo:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(49, 38, 131, 0.1);
+    border-color: var(--primary);
+}
+/* Título del nodo: token fluido del sistema.
+   En táctil compacto gana escala contextual (ver responsive).    */
+.qs-org-nodo-titulo {
+    font-family: var(--font-heading); font-size: clamp(0.9rem, 1vw, 1.1rem);
+    font-weight: 700; color: var(--primary); text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 4px;
+}
+/* Nombre del integrante ("Ejemplo N" hasta el directorio real).
+   Tipografía: --fs-small.                                        */
+.qs-org-nodo-nombre {
+    font-family: var(--font-body); font-size: var(--fs-small);
+    color: var(--text-muted); font-weight: 500;
+}
+/* Icono de los nodos protagonistas (Dirección y Gerencia)        */
+.qs-org-nodo-icono {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--primary-soft); color: var(--primary);
+    font-size: 1rem; margin-bottom: var(--sp-1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ESTADO: nodo principal (cúspide, morado) — el Directorio       */
+.qs-org-nodo.es-principal {
+    background: var(--primary); border-color: var(--primary); color: white;
+    padding: var(--sp-3) var(--sp-6);
+}
+.qs-org-nodo.es-principal .qs-org-nodo-titulo { color: white; font-size: clamp(1rem, 1.2vw, 1.3rem); }
+.qs-org-nodo.es-principal .qs-org-nodo-nombre { color: rgba(255, 255, 255, 0.8); }
+.qs-org-nodo.es-principal .qs-org-nodo-icono { background: rgba(255, 255, 255, 0.15); color: #fff; }
+.qs-org-nodo.es-principal:hover { background: #4a3fa8; }
+
+/* ── CONECTORES VERTICALES ─────────────────────────────────────── */
+.qs-org-conector { display: flex; justify-content: center; }
+.qs-org-conector span {
+    width: 2px; height: 36px;
+    background-color: var(--qs-org-linea-color, rgba(49, 38, 131, 0.35));
+}
+
+/* ── NIVEL 2: GERENCIA GENERAL ─────────────────────────────────── */
+.qs-org-gerencia {
+    background: linear-gradient(135deg, var(--primary), #4a3fa8);
+    border-color: var(--primary);
+    max-width: 420px; margin: 0 auto;
+    padding: var(--sp-3) var(--sp-4);
+}
+.qs-org-gerencia .qs-org-nodo-titulo { color: #fff; font-size: clamp(1rem, 1.15vw, 1.2rem); }
+.qs-org-gerencia .qs-org-nodo-nombre { color: rgba(255, 255, 255, 0.8); }
+.qs-org-gerencia .qs-org-nodo-icono { background: rgba(255, 255, 255, 0.15); color: #fff; }
+.qs-org-gerencia:hover {
+    background: linear-gradient(135deg, #3b2d94, #4a3fa8);
+    border-color: #3b2d94;
+    box-shadow: 0 16px 34px rgba(49, 38, 131, 0.28);
+}
+
+/* ── NIVEL 3: BENTO DE ÁREAS ───────────────────────────────────── */
+.qs-org-areas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-2);
+    max-width: 1080px; margin: 0 auto;
+}
+
+.qs-org-area {
+    background: var(--bg-main);
+    border: 1px solid var(--primary-border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(49, 38, 131, 0.04);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.qs-org-area:hover {
+    box-shadow: 0 14px 30px rgba(49, 38, 131, 0.1);
+    border-color: rgba(49, 38, 131, 0.3);
+}
+
+/* Cabecera del área: icono + nombre (firma visual del bento).
+   Tipografía: --fs-micro.                                        */
+.qs-org-area-cabecera {
+    background: var(--primary-soft);
+    border-bottom: 2px solid var(--primary);
+    padding: var(--sp-1) var(--sp-2);
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-heading);
+    font-size: var(--fs-micro); font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase; letter-spacing: 0.8px;
+}
+.qs-org-area-cabecera i { font-size: 0.85rem; }
+
+/* Miembros: columna apilada dentro del área                       */
+.qs-org-area-miembros {
+    padding: var(--sp-2);
+    display: flex; flex-direction: column; gap: var(--sp-1);
+}
+/* Los nodos dentro de las áreas se adaptan al contenedor          */
+.qs-org-area .qs-org-nodo {
+    min-width: 0; width: 100%;
+    padding: var(--sp-2);
+}
+
+/* ── DISTRIBUIDOR GERENCIA → ÁREAS (RAMA EN T) ───────────────────
+   CAÍDAS (spans): grid ESPEJO del bento (mismas columnas, gap y
+   max-width) → caen exactamente al centro de su columna.
+   RIEL (::before): une el pie de Gerencia con los centros de la
+   1ª y 3ª columna — el calc (ancho − 2·gap)/6 reproduce el centro
+   real de la columna 1 de un grid de 3 pistas con gap y usa la
+   MISMA variable de gap del bento (si el gap cambia, se recalcula
+   solo). Sin números mágicos.                                     */
+.qs-org-conector--multiple {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-2);
+    max-width: 1080px;
+    margin: 0 auto;
+    justify-items: center;
+}
+.qs-org-conector--multiple span {
+    height: 30px;
+    border-radius: 0 0 2px 2px; /* punta redondeada al entrar al área */
+}
+.qs-org-conector--multiple::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc((100% - 2 * var(--sp-2)) / 6);
+    right: calc((100% - 2 * var(--sp-2)) / 6);
+    height: 2px;
+    background-color: var(--qs-org-linea-color, rgba(49, 38, 131, 0.35));
+    border-radius: 2px;
+}
+
+/* ── RESPONSIVE DEL BENTO (autocontenido) ────────────────────────
+   ESCALA TIPOGRÁFICA CONTEXTUAL DEL NODO COMPACTO (documentada):
+   · Títulos (mayúscula + bold Space Grotesk): toleran ir más
+     apretados → tablet 0.85rem (13.6px) · móvil 0.82rem (13.1px).
+   · Nombres (texto meta): PISO DE LEGIBILIDAD 12px → tablet
+     0.78rem (12.5px) · móvil 0.75rem (12px exacto).
+   · Protagonistas (CEO/Gerencia): un escalón arriba en ambos.   */
+
+/* ── IPAD (768–1024px): 2 COLUMNAS + NODO COMPACTO EN FILA ──────
+   ⭐ ADAPTACIÓN TÁCTIL (sin hover ni puntero):
+   · NODO EN FILA (grid 2 columnas sobre los hijos existentes —
+     el HTML no cambia): icono a la izquierda (row span 2) y
+     título+nombre apilados a la derecha → el nodo baja de ~110px
+     a ~56px → las líneas del árbol ganan proporción 1:1.5 y la
+     estructura se DISTINGUE sin que nada pase por encima.
+   · NITIDEZ DE LÍNEAS: la variable de scope --qs-org-linea-color
+     sube de opacidad 0.35 → 0.5 en TODOS los conectores de la
+     sección (una sola declaración, los spans la heredan).        */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .qs-org-seccion {
+        padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto);
+        --qs-org-linea-color: rgba(49, 38, 131, 0.5); /* líneas nítidas en táctil */
+    }
+
+    /* NODO COMPACTO EN FILA: grid reorganiza los 3 hijos que ya
+       existen (icono · título · nombre) sin tocar el markup      */
+    .qs-org-nodo {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: 12px;
+        align-items: center;
+        text-align: left;
+        padding: 10px 14px;
+        min-width: 0;
+    }
+    .qs-org-nodo-icono {
+        grid-row: 1 / span 2;      /* el icono abarca las 2 filas  */
+        width: 32px; height: 32px; border-radius: 10px;
+        margin-bottom: 0; font-size: 0.85rem;
+    }
+    .qs-org-nodo-titulo { grid-column: 2; margin-bottom: 2px; font-size: 0.85rem; } /* 13.6px */
+    .qs-org-nodo-nombre { grid-column: 2; font-size: 0.78rem; }                      /* 12.5px */
+
+    /* Protagonistas compactados pero con su identidad intacta.
+       ⭐ La línea de Gerencia repone el piso de la cascada base
+       (.qs-org-gerencia .qs-org-nodo-titulo, especificidad 0,2,0,
+       vence a la contextual del nodo): sin ella la Gerencia
+       quedaba en 16px superando al CEO — jerarquía invertida.   */
+    .qs-org-nodo.es-principal { padding: 12px 16px; }
+    .qs-org-nodo.es-principal .qs-org-nodo-titulo { font-size: 0.95rem; }
+    .qs-org-gerencia { padding: 12px 16px; }
+    .qs-org-gerencia .qs-org-nodo-titulo { font-size: 0.9rem; } /* CEO > Gerencia */
+
+    /* El bento pasa a 2 columnas; Asesoría Legal (3ª área) ocupa
+       la fila completa — patrón bento auténtico                  */
+    .qs-org-areas { grid-template-columns: repeat(2, 1fr); gap: var(--sp-2); }
+    .qs-org-area:last-child { grid-column: 1 / -1; }
+    .qs-org-area:last-child .qs-org-area-miembros { align-items: center; }
+    .qs-org-area:last-child .qs-org-nodo { max-width: 420px; }
+    .qs-org-area-miembros { gap: var(--sp-1); }
+
+    /* Distribuidor ESPEJO: 2 caídas + riel recalculado
+       (centro de la 1ª de 2 columnas con gap = (ancho − gap)/4)  */
+    .qs-org-conector--multiple { grid-template-columns: repeat(2, 1fr); }
+    .qs-org-conector--multiple span:nth-child(3) { display: none; }
+    .qs-org-conector--multiple::before {
+        left: calc((100% - var(--sp-2)) / 4);
+        right: calc((100% - var(--sp-2)) / 4);
+    }
+    .qs-org-conector--multiple span { height: 26px; }
+}
+
+/* ── MÓVIL (≤767px): COLUMNA ÚNICA + NODO COMPACTO EN FILA ──────
+   Misma reorganización grid que en iPad → el árbol respira:
+   nodo ~52px · conector 36px · caídas 26px → cada línea une
+   piezas visibles y la jerarquía se lee de un vistazo.            */
+@media screen and (max-width: 767px) {
+    .qs-org-seccion {
+        padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto);
+        --qs-org-linea-color: rgba(49, 38, 131, 0.5); /* líneas nítidas en táctil */
+    }
+
+    /* NODO COMPACTO EN FILA (mismo grid que iPad)                 */
+    .qs-org-nodo {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: 11px;
+        align-items: center;
+        text-align: left;
+        padding: 9px 12px;
+        min-width: 0;
+    }
+    .qs-org-nodo-icono {
+        grid-row: 1 / span 2;
+        width: 30px; height: 30px; border-radius: 9px;
+        margin-bottom: 0; font-size: 0.8rem;
+    }
+    .qs-org-nodo-titulo { grid-column: 2; margin-bottom: 2px; font-size: 0.82rem; } /* 13.1px */
+    .qs-org-nodo-nombre { grid-column: 2; font-size: 0.75rem; }                     /* 12px: piso */
+
+    /* Protagonistas compactados, identidad intacta
+       (⭐ piso de cascada: ver nota del bloque iPad)              */
+    .qs-org-nodo.es-principal { padding: 11px 14px; }
+    .qs-org-nodo.es-principal .qs-org-nodo-titulo { font-size: 0.9rem; }
+    .qs-org-gerencia { padding: 11px 14px; }
+    .qs-org-gerencia .qs-org-nodo-titulo { font-size: 0.88rem; } /* CEO > Gerencia */
+
+    /* Anchos de los protagonistas (el conector de 36px ahora es
+       proporcional al nodo compacto)                             */
+    .qs-org-gerencia { width: 100%; max-width: 340px; margin: 0 auto; }
+    .qs-org-direccion .qs-org-nodo { width: 100%; max-width: 340px; }
+
+    /* Conector simple: solo la caída central, SIN riel            */
+    .qs-org-conector--multiple { display: flex; justify-content: center; max-width: none; }
+    .qs-org-conector--multiple::before { display: none; }
+    .qs-org-conector--multiple span:nth-child(2),
+    .qs-org-conector--multiple span:nth-child(3) { display: none; }
+    .qs-org-conector--multiple span { height: 26px; }
+
+    .qs-org-areas { grid-template-columns: 1fr; gap: var(--sp-2); }
+    .qs-org-area-miembros { padding: var(--sp-2); gap: var(--sp-1); }
+}
+
+/* ── LANDSCAPE MÓVIL (≤767px girado) ───────────────────────────── */
+@media screen and (max-width: 767px) and (orientation: landscape) {
+    .qs-org-conector span,
+    .qs-org-conector--multiple span { height: var(--sp-3); }
+}
+
+/* ── TÁCTIL: feedback de presión ROBUSTO ─────────────────────────
+   ⭐ Doble mecanismo: :active nativo + .es-presionado gestionada
+   por JS (touchstart/touchend — ver conectarPresion en el JS).
+   iOS Safari NO garantiza :active en divs con role="button" → la
+   clase JS replica el efecto y garantiza el feedback al 100%.
+   El hover se neutraliza (no existe el puntero) y la PRESIÓN
+   entrega: hundido + borde morado + FONDO suave (con nodos
+   compactos, el resalte de fondo hace visible el toque al
+   instante — sin añadir mecanismos nuevos).                       */
+@media (hover: none) and (pointer: coarse) {
+    .qs-org-nodo:hover {
+        transform: none;
+        box-shadow: 0 4px 12px rgba(49, 38, 131, 0.05);
+        border-color: var(--primary-border);
+    }
+    .qs-org-area:hover {
+        box-shadow: 0 4px 12px rgba(49, 38, 131, 0.04);
+        border-color: var(--primary-border);
+    }
+    /* Feedback de presión al tocar un nodo                        */
+    .qs-org-nodo.es-presionado,
+    .qs-org-nodo:active {
+        transform: scale(0.98);
+        border-color: var(--primary);
+        background: var(--primary-soft);
+        box-shadow: 0 2px 8px rgba(49, 38, 131, 0.12);
+    }
+    /* El CEO morado hunde sin perder su identidad                 */
+    .qs-org-nodo.es-principal.es-presionado,
+    .qs-org-nodo.es-principal:active {
+        background: #4a3fa8;
+        transform: scale(0.98);
+    }
+    /* La Gerencia degradada también conserva su gradiente         */
+    .qs-org-gerencia.es-presionado,
+    .qs-org-gerencia:active {
+        background: linear-gradient(135deg, #3b2d94, #4a3fa8);
+    }
+    /* El área contenedora confirma el toque                       */
+    .qs-org-area:active { border-color: rgba(49, 38, 131, 0.3); }
+}
+
+/* ── FIN SECCIÓN 03 — ORGANIGRAMA ─────────────────────────────── */
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  SECCIÓN 04 — MODAL DE INTEGRANTE                            ║
+   ╚══════════════════════════════════════════════════════════════╝
+   ⭐ MEJORAS DE ESTA VERSIÓN:
+   · IMAGEN anti-zoom (mismo patrón del timeline): aspect-ratio
+     sustituye a las alturas fijas (400/450/300px) → la foto
+     escala con el ancho de su columna y el cover recorta lo
+     mínimo. 4/5 = retrato natural de persona (desktop/tablet);
+     4/3 a ancho completo en móvil.
+   · TIPOGRAFÍA tokenizada/fluida: nombre con fórmula rem+vw
+     (un solo clamp cubre los 3 responsive — se eliminaron el
+     1.8rem fijo y el override móvil de 1.5rem); silueta fluida.
+   · TÁCTIL: icono de contacto de 44px en móvil (área táctil
+     estándar del sitio).
+   · RESPONSIVE AUTOCONTENIDO (patrón bento): las reglas de los
+     breakpoints viven aquí — la Sección 05 ya no las duplica.  */
+
+.qs-modal-equipo-fondo {
+    position: fixed; inset: 0; background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    z-index: 99999; opacity: 0; visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s;
+    display: flex; justify-content: center; align-items: center; padding: var(--sp-2);
+}
+.qs-modal-equipo-fondo.esta-abierto { opacity: 1; visibility: visible; }
+
+.qs-modal-equipo-tarjeta {
+    background: var(--bg-main); width: 100%; max-width: 800px;
+    border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5); position: relative;
+    transform: scale(0.9) translateY(30px);
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.qs-modal-equipo-fondo.esta-abierto .qs-modal-equipo-tarjeta { transform: scale(1) translateY(0); }
+
+.qs-modal-equipo-cuerpo { display: grid; grid-template-columns: 1fr 1.5fr; height: 100%; }
+
+/* Visual: PROPORCIÓN NATURAL — aspect-ratio sustituye a la
+   altura fija de 400px. El grid estira la columna visual hasta
+   la altura de la info cuando el contenido es más largo → el
+   cover recorta lo mínimo y la foto NUNCA se ve "zoomiada".
+   4/5 = retrato natural de persona: la columna desktop ≈320px
+   de ancho → ≈400px de alto (mismas proporciones que la versión
+   anterior, pero ahora fluidas en todo el rango).                */
+.qs-modal-equipo-visual {
+    position: relative; background-color: var(--bg-soft);
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    aspect-ratio: 4 / 5;
+}
+
+/* SILUETA de respaldo: icono de usuario sobre gradiente suave.
+   TAMAÑO FLUIDO: en móvil no domina el visual pequeño.
+   Queda DETRÁS de la imagen → con foto real nunca se ve.         */
+.qs-modal-equipo-visual::before {
+    content: '\f007'; /* glifo fa-user de Font Awesome 6 */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: clamp(3.5rem, 12vw, 5rem);
+    color: var(--primary);
+    opacity: 0.18;
+    position: absolute;
+}
+
+/* La imagen se oculta cuando no tiene src (data-img vacío) y,
+   cuando existe, cubre toda la columna tapando la silueta.
+   object-position: center 20% — prioriza el rostro (tercio
+   superior) en retratos de persona.                              */
+.qs-modal-equipo-img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; filter: grayscale(30%); position: relative; }
+.qs-modal-equipo-img[src=""],
+.qs-modal-equipo-img:not([src]) { display: none; }
+
+.qs-modal-equipo-info { padding: var(--sp-5); display: flex; flex-direction: column; justify-content: center; }
+.qs-modal-equipo-rol {
+    font-family: var(--font-heading); font-size: var(--fs-small);
+    font-weight: 700; color: var(--primary); text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: var(--sp-1);
+}
+/* Nombre: FÓRMULA FLUIDA rem+vw (patrón de la escala contextual
+   del carrusel): ~23px en móvil 375px → 28.8px (1.8rem, el valor
+   original de escritorio) desde ≈870px. Un solo clamp cubre los
+   3 responsive — sustituye al 1.8rem fijo + override móvil.      */
+.qs-modal-equipo-nombre {
+    font-family: var(--font-heading);
+    font-size: clamp(1.45rem, 1.2rem + 1.1vw, 1.8rem);
+    font-weight: 700; color: var(--text-body); line-height: 1.1;
+    margin-bottom: var(--sp-2);
+}
+.qs-modal-equipo-desc {
+    font-size: var(--fs-body); line-height: 1.7;
+    color: var(--text-muted); margin-bottom: var(--sp-3);
+}
+.qs-modal-equipo-contacto { display: flex; gap: var(--sp-2); }
+.qs-modal-equipo-contacto a { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--primary-border); display: flex; align-items: center; justify-content: center; color: var(--primary); text-decoration: none; transition: all 0.3s ease; }
+.qs-modal-equipo-contacto a:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+.qs-modal-equipo-cerrar {
+    position: absolute; top: 15px; right: 15px;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--bg-soft); border: 1px solid var(--primary-border);
+    display: flex; justify-content: center; align-items: center;
+    font-size: 1.2rem; color: var(--text-body); cursor: pointer; z-index: 200;
+    transition: all 0.3s ease;
+}
+.qs-modal-equipo-cerrar:hover { background: var(--stripe-red); color: #fff; border-color: var(--stripe-red); transform: rotate(90deg); }
+
+/* ── RESPONSIVE AUTOCONTENIDO DEL MODAL ───────────────────────── */
+
+/* TABLET Y BELOW (≤1024px): tarjeta más contenida. Sin altura
+   fija: el aspect-ratio 4/5 escala con el ancho de columna
+   (≈250px ancho → ≈312px alto: retrato natural — la vieja altura
+   fija de 450px forzaba un recorte extremo de 1:1.75).           */
+@media (max-width: 1024px) {
+    .qs-modal-equipo-tarjeta { max-width: 650px; }
+}
+
+/* MÓVIL (≤767px): apilado vertical.                              */
+@media (max-width: 767px) {
+    .qs-modal-equipo-tarjeta { max-width: 350px; }
+    .qs-modal-equipo-cuerpo { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    /* Foto a ancho completo en 4/3 (paisaje natural — mismo
+       criterio que las imágenes del timeline en móvil): sin el
+       recorte brutal de la vieja fila fija de 300px              */
+    .qs-modal-equipo-visual { aspect-ratio: 4 / 3; }
+    .qs-modal-equipo-info { padding: var(--sp-3); }
+    /* 44px: estándar de área táctil (mismo criterio que las
+       redes del menú móvil — el contacto es el tap principal)    */
+    .qs-modal-equipo-contacto a { width: 44px; height: 44px; }
+    .qs-modal-equipo-cerrar { position: fixed; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.9); z-index: 100000; }
+}
+
+/* ── FIN SECCIÓN 04 — MODAL ───────────────────────────────────── */
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  SECCIÓN 05 — RESPONSIVE GENERAL DE LA PÁGINA                ║
+   ║  (timeline + carrusel; el bento y el modal son               ║
+   ║   autocontenidos en sus secciones 03 y 04)                   ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* TABLET Y BELOW (≤1024px): lateral compacto + timeline + CARRUSEL */
+@media (max-width: 1024px) {
+    .qs-historia-seccion { padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto); }
+    .qs-historia-contenido { width: 42%; padding: var(--sp-2) var(--sp-2) var(--sp-2) 0; }
+    .qs-historia-item:nth-child(even) .qs-historia-contenido { padding: var(--sp-2) 0 var(--sp-2) var(--sp-2); }
+    .qs-historia-separador { width: var(--sp-7); min-width: var(--sp-7); }
+    .qs-historia-visual { width: 45%; }
+    /* ⚠️ SIN altura fija aquí: el aspect-ratio 16/10 de la base
+       escala la imagen con su ancho → sin zoom percibido         */
+
+    .qs-principios-seccion { padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto); }
+
+    /* ── CARRUSEL VMO: ventana + pista + diapositivas ─────────── */
+    .qs-principios-contenedor { max-width: 680px; overflow: hidden; }
+    .qs-principios-grid {
+        display: flex;
+        gap: 0; /* sin gap: el JS avanza de a -100% exactos */
+        transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
+    }
+    .qs-principios-tarjeta {
+        flex: 0 0 100%;
+        transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                    box-shadow 0.5s ease, border-color 0.5s ease;
+    }
+    .qs-principios-tarjeta.es-clon { display: flex; }
+
+    .qs-principios-tarjeta.es-visible { transform: scale(0.92); opacity: 0.4; }
+    .qs-principios-tarjeta.es-visible.es-activa { transform: scale(1); opacity: 1; }
+
+    .qs-principios-controles {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--sp-2);
+        margin-top: var(--sp-4);
+    }
+}
+
+/* MÓVIL (≤767px): timeline a riel izquierdo + carrusel a ancho
+   completo. (Las reglas del modal viven en la Sección 04.)        */
+@media (max-width: 767px) {
+    .qs-historia-seccion { padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto); }
+    .qs-historia-linea-base, .qs-historia-linea-progreso { left: 16px; }
+    .qs-historia-item,
+    .qs-historia-item:nth-child(odd),
+    .qs-historia-item:nth-child(even) {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: var(--sp-6);
+        margin-bottom: var(--sp-6);
+    }
+    .qs-historia-separador { display: none; }
+    .qs-historia-contenido { width: 100%; padding: 0; margin-bottom: var(--sp-2); }
+    .qs-historia-visual { width: 100%; }
+    .qs-historia-imagen-contenedor { aspect-ratio: 4 / 3; }
+    .qs-historia-marco { display: none; }
+    .qs-historia-item:not(.es-visible),
+    .qs-historia-item:nth-child(odd):not(.es-visible),
+    .qs-historia-item:nth-child(even):not(.es-visible) { transform: translateY(var(--sp-6)); }
+    .qs-historia-item.esta-difuminado { opacity: 0.3; filter: grayscale(35%); }
+
+    .qs-principios-seccion { padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto); }
+    .qs-principios-contenedor { max-width: 100%; }
+    .qs-principios-tarjeta { padding: var(--sp-5) var(--sp-3); }
+}
+
+/* LANDSCAPE MÓVIL (≤767px girado)                                 */
+@media (max-width: 767px) and (orientation: landscape) {
+    .qs-historia-item { margin-bottom: var(--sp-5); }
+    .qs-historia-imagen-contenedor { aspect-ratio: 16 / 9; }
+}
+
+/* LANDSCAPE TABLET (768–1199px)                                   */
+@media (min-width: 768px) and (max-width: 1199px) and (orientation: landscape) {
+    .qs-historia-visual { width: 40%; }
+    .qs-historia-contenido { width: 45%; }
+}
+
+/* ── FIN SECCIÓN 05 — RESPONSIVE ──────────────────────────────── */
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  SECCIÓN 06 — ACCESIBILIDAD (MOVIMIENTO REDUCIDO)            ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+@media (prefers-reduced-motion: reduce) {
+    .qs-historia-item, .qs-historia-hito, .qs-historia-descripcion,
+    .qs-historia-imagen-contenedor, .qs-historia-anio,
+    .qs-historia-marco {
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+    }
+    .qs-historia-item.esta-difuminado { opacity: 1 !important; filter: none !important; }
+
+    .qs-principios-tarjeta { transition: none !important; opacity: 1 !important; transform: none !important; }
+
+    /* ⭐ REGLA DEDICADA de la línea de progreso (fuera de la lista
+       genérica): su transform translateX(-50%) es ESTRUCTURAL —
+       centra el riel de 4px sobre left:50%. Un transform:none
+       genérico lo desplazaría 2px a la derecha en este modo.
+       El height lo controla el JS (100% en reduced-motion).      */
+    .qs-historia-linea-progreso {
+        transition: none !important;
+        transform: translateX(-50%) !important;
+        opacity: 1 !important;
+        filter: none !important;
+    }
+
+    /* Modal: sin animación de entrada en movimiento reducido     */
+    .qs-modal-equipo-fondo, .qs-modal-equipo-tarjeta {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+/* CARRUSEL con movimiento reducido: las 3 tarjetas se APILAN en
+   columna (lista) y el clon desaparece. Consulta combinada
+   (reduce + ≤1024px) para NO tocar el grid de escritorio.
+   El JS tampoco monta el carrusel en este modo.                   */
+@media (prefers-reduced-motion: reduce) and (max-width: 1024px) {
+    .qs-principios-contenedor { max-width: 600px; overflow: visible; }
+    .qs-principios-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--sp-4);
+        transform: none !important;
+        transition: none !important;
+    }
+    .qs-principios-tarjeta { flex: 0 0 auto; }
+    .qs-principios-tarjeta.es-clon { display: none; }
+    .qs-principios-controles { display: none; }
+}
+
+/* ── FIN SECCIÓN 06 — ACCESIBILIDAD ───────────────────────────── */

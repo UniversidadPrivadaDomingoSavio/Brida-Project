@@ -1,0 +1,285 @@
+<!-- servicios/ingenieria-consultoria.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ingeniería & Consultoría — BRIDA S.R.L. Diseño de obras civiles, mecánicas y eléctricas, estudios de factibilidad, consultoría técnica, avalúos y asesoramiento especializado en Bolivia.">
+    <title>Ingeniería & Consultoría | BRIDA S.R.L. - Ingeniería de Proyectos y Oil & Gas</title>
+
+    <!-- Fuentes e Iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicon (ruta de subpágina: ../ — suprime /favicon.ico) -->
+    <link rel="icon" type="image/png" href="../assets/img/icons/logo-brida.png">
+
+    <!-- Estilos Principales -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+
+</head>
+<body id="page-servicio-detalle">
+
+    <!-- ========== HEADER (Componente — inyectado por header-menu.js) ==========
+         El menú completo vive en assets/js/components/header-menu.js.
+         Detecta la subcarpeta /servicios/ y antepone ../ a sus rutas.
+         El estado is-active se detecta automáticamente según la URL. -->
+    <div id="header-placeholder"></div>
+
+    <!-- ========== HERO INTERNO ========== -->
+    <section class="hero-interno">
+        <!-- TODO: Confirmar portada de la línea (imagen local del repo;
+             la versión anterior cargaba Unsplash, externa y no controlada). -->
+        <div class="hero-interno__fondo" style="background-image: url('../assets/img/proyectos/Inicio/Portada 4.jpeg');"></div>
+        <div class="hero-interno__superposicion"></div>
+
+        <div class="hero-interno__contenido hero-animar">
+            <div class="section-title-group">
+                <span class="section-eyebrow">Línea de Servicio</span>
+                <h1 class="section-title">INGENIERÍA & CONSULTORÍA</h1>
+                <span class="section-title-line"></span>
+            </div>
+
+            <p class="hero-interno__descripcion">
+                Soluciones objetivas desde la fase de preinversión hasta la ejecución, garantizando trazabilidad y óptimos resultados bajo normas ISO.
+            </p>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         CONTENIDO NARRATIVO DEL SERVICIO
+         ================================================================
+         ESTRUCTURA (referente aprobado, en lenguaje BRIDA):
+           Breadcrumb → Intro (marco de corchetes + imagen con marco
+           desplazado) → Descripción extendida → Galería →
+           Sub-servicios en grid de fases → CTA final.
+         ⚠️ RUTAS: esta página vive en /servicios/ → TODOS los assets
+         locales llevan el prefijo ../ .
+         TODO IMÁGENES: los src apuntan a imágenes existentes del
+         repositorio como PLACEHOLDERS de prueba. Reemplazar por
+         fotos reales de la línea en assets/servicios/ cuando estén
+         disponibles (misma estructura de rutas ../assets/servicios/).
+         ================================================================ -->
+    <section class="srv-seccion">
+        <div class="srv-contenedor">
+
+            <!-- ── BREADCRUMB (ruta de navegación) ────────────────────
+                 La página actual va en <span> (no es link).           -->
+            <nav class="srv-miga reveal-up" aria-label="Ruta de navegación">
+                <a href="../index.html" class="srv-miga__link"><i class="fa-solid fa-house"></i> Inicio</a>
+                <span class="srv-miga__sep">/</span>
+                <a href="../servicios.html" class="srv-miga__link">Servicios</a>
+                <span class="srv-miga__sep">/</span>
+                <span class="srv-miga__actual">Ingeniería &amp; Consultoría</span>
+            </nav>
+
+            <!-- ── INTRO: marco de corchetes + imagen con marco ─────── -->
+            <div class="srv-intro__grid">
+                <div class="srv-intro__texto reveal-up">
+                    <div class="srv-intro__titulo-marco">
+                        <span class="srv-intro__kicker">Categoría A</span>
+                        <h2 class="srv-intro__titulo">Ingeniería &amp; Consultoría</h2>
+                    </div>
+                    <span class="srv-intro__linea"></span>
+                    <p class="srv-intro__desc">
+                        Gestión integral de proyectos de ingeniería: planificamos, organizamos y
+                        dirigimos los recursos (humanos, materiales y financieros) para lograr
+                        objetivos específicos dentro de un plazo y presupuesto determinados.
+                    </p>
+                </div>
+
+                <div class="srv-intro__visual reveal-up">
+                    <div class="srv-intro__imagen-contenedor">
+                        <!-- TODO: Reemplazar por foto representativa de la línea
+                             (assets/servicios/ingenieria-consultoria/intro.jpg) -->
+                        <img src="../assets/img/proyectos/Inicio/nosotros_1.png" alt="Equipo BRIDA en trabajos de ingeniería" class="srv-intro__imagen" loading="lazy" decoding="async">
+                    </div>
+                    <div class="srv-intro__marco" aria-hidden="true"></div>
+                </div>
+            </div>
+
+            <!-- ── DESCRIPCIÓN EXTENDIDA (columna de lectura) ───────── -->
+            <div class="srv-descripcion reveal-up">
+                <div class="srv-descripcion__columna">
+                    <p>
+                        Servicio completo que abarca desde la etapa de <strong>diseño en todas sus
+                        especialidades</strong>, con proyecto totalmente documentado, hasta la gestión
+                        de la construcción de obra donde montamos el plan de ejecución, incorporando
+                        a todo nuestro personal técnico —superintendentes, residentes y especialistas—
+                        para la dirección del proyecto y su cierre final.
+                    </p>
+                    <p>
+                        Asumimos el <strong>liderazgo y representación del cliente</strong>, coordinando
+                        a los distintos equipos de trabajo y aplicando experiencia y conocimiento en los
+                        procesos de diseño, pre-construcción, construcción y puesta en funcionamiento,
+                        logrando los estándares de calidad que el proyecto requiera.
+                    </p>
+                    <p>
+                        Gestionamos contratos, plazos, costos, calidad, compra, provisión y
+                        almacenaje de materiales.
+                    </p>
+                    <p>
+                        Optimización constante en todas las tareas a realizar durante el diseño y
+                        construcción para lograr agregar más valor al proyecto.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ── GALERÍA DEL SERVICIO (carrusel con snap + flechas desktop)
+             ⚠️ FUERA de .srv-contenedor a propósito: el sangrado
+             full-bleed es parte del diseño (máscara en extremos).
+             TODO: Reemplazar por fotos reales de trabajos de la línea
+             (assets/servicios/ingenieria-consultoria/galeria-N.jpg).  -->
+        <div class="srv-galeria__zona reveal-up">
+            <button type="button" class="srv-galeria__flecha srv-galeria__flecha--prev" data-galeria-prev aria-label="Foto anterior">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <div class="srv-galeria" id="srv-galeria">
+                <figure class="srv-galeria__item">
+                    <img src="../assets/img/proyectos/Inicio/Portada 1.jpeg" alt="Trabajo de ingeniería BRIDA — 1" loading="lazy" decoding="async">
+                </figure>
+                <figure class="srv-galeria__item">
+                    <img src="../assets/img/proyectos/Inicio/nosotros_3.jpg" alt="Trabajo de ingeniería BRIDA — 2" loading="lazy" decoding="async">
+                </figure>
+                <figure class="srv-galeria__item">
+                    <img src="../assets/img/proyectos/Inicio/nosotros_4.jpg" alt="Trabajo de ingeniería BRIDA — 3" loading="lazy" decoding="async">
+                </figure>
+                <figure class="srv-galeria__item">
+                    <img src="../assets/img/proyectos/Inicio/Portada 2.jpeg" alt="Trabajo de ingeniería BRIDA — 4" loading="lazy" decoding="async">
+                </figure>
+                <figure class="srv-galeria__item">
+                    <img src="../assets/img/proyectos/Inicio/Portada 5.jpeg" alt="Trabajo de ingeniería BRIDA — 5" loading="lazy" decoding="async">
+                </figure>
+            </div>
+            <button type="button" class="srv-galeria__flecha srv-galeria__flecha--next" data-galeria-next aria-label="Foto siguiente">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SUB-SERVICIOS EN GRID DE FASES
+         ================================================================
+         Los 5 sub-servicios de la línea, como items de panel claro:
+         chevron morado → título → checks verdes → link al pie.
+         Los IDs se conservan (anclas futuras desde el menú hub).
+         La animación de entrada la da .reveal-up (observer global). -->
+    <section class="srv-seccion">
+        <div class="srv-contenedor">
+            <div class="srv-fases">
+                <div class="srv-fases__grid">
+
+                    <!-- Fase 01 -->
+                    <article class="srv-fases__item reveal-up" id="diseno-ingenieria">
+                        <div class="srv-fases__item-cabecera">
+                            <i class="fa-solid fa-angles-right" aria-hidden="true"></i>
+                            <h3 class="srv-fases__item-titulo">Diseño e Ingeniería de Obras Civiles, Mecánicas y Eléctricas</h3>
+                        </div>
+                        <ul class="srv-fases__item-lista">
+                            <li><i class="fa-solid fa-circle-check"></i> Planos constructivos y de fabricación</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Cálculos estructurales y eléctricos</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Especificaciones técnicas</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Optimización de recursos y tiempos</li>
+                        </ul>
+                        <a href="../contacto.html" class="srv-fases__item-link">Solicitar asesoría <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+
+                    <!-- Fase 02 -->
+                    <article class="srv-fases__item reveal-up" id="estudios-ingenieria">
+                        <div class="srv-fases__item-cabecera">
+                            <i class="fa-solid fa-angles-right" aria-hidden="true"></i>
+                            <h3 class="srv-fases__item-titulo">Estudios de Ingeniería, Diseño, Rediseño y Evaluación de Proyectos</h3>
+                        </div>
+                        <ul class="srv-fases__item-lista">
+                            <li><i class="fa-solid fa-circle-check"></i> Estudios de factibilidad técnica</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Evaluación de riesgos operativos</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Rediseño de plantas existentes</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Análisis costo-beneficio</li>
+                        </ul>
+                        <a href="../contacto.html" class="srv-fases__item-link">Solicitar asesoría <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+
+                    <!-- Fase 03 -->
+                    <article class="srv-fases__item reveal-up" id="consultoria-tecnica">
+                        <div class="srv-fases__item-cabecera">
+                            <i class="fa-solid fa-angles-right" aria-hidden="true"></i>
+                            <h3 class="srv-fases__item-titulo">Consultoría, Acompañamiento, Asesoría Técnica e Inspección</h3>
+                        </div>
+                        <ul class="srv-fases__item-lista">
+                            <li><i class="fa-solid fa-circle-check"></i> Fiscalización de obras</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Inspección técnica de campo</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Auditorías de cumplimiento</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Soporte en sitio 24/7</li>
+                        </ul>
+                        <a href="../contacto.html" class="srv-fases__item-link">Solicitar asesoría <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+
+                    <!-- Fase 04 -->
+                    <article class="srv-fases__item reveal-up" id="avaluos-peritajes">
+                        <div class="srv-fases__item-cabecera">
+                            <i class="fa-solid fa-angles-right" aria-hidden="true"></i>
+                            <h3 class="srv-fases__item-titulo">Avalúos y Peritajes de Proyectos</h3>
+                        </div>
+                        <ul class="srv-fases__item-lista">
+                            <li><i class="fa-solid fa-circle-check"></i> Valoración de activos industriales</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Peritajes por siniestros</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Dictámenes técnicos legales</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Inventarios de infraestructura</li>
+                        </ul>
+                        <a href="../contacto.html" class="srv-fases__item-link">Solicitar asesoría <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+
+                    <!-- Fase 05 -->
+                    <article class="srv-fases__item reveal-up" id="asesoramiento-profesional">
+                        <div class="srv-fases__item-cabecera">
+                            <i class="fa-solid fa-angles-right" aria-hidden="true"></i>
+                            <h3 class="srv-fases__item-titulo">Asesoramiento Técnico y Profesional Especializado</h3>
+                        </div>
+                        <ul class="srv-fases__item-lista">
+                            <li><i class="fa-solid fa-circle-check"></i> Resolución de cuellos de botella</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Análisis de fallas estructurales</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Consultoría en normativas</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Estrategia de ejecución</li>
+                        </ul>
+                        <a href="../contacto.html" class="srv-fases__item-link">Solicitar asesoría <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA FINAL (banner con imagen de fondo) ==========
+         El botón lleva el mensaje prellenado de WhatsApp (patrón
+         del sitio). TODO: foto de fondo de la línea.              -->
+    <section class="srv-cta-final">
+        <div class="srv-cta-final__fondo" style="background-image: url('../assets/img/proyectos/Inicio/Enfoque_fondo_Escritorio.jpg');"></div>
+        <div class="srv-cta-final__superposicion"></div>
+
+        <div class="srv-cta-final__contenido reveal-up">
+            <span class="section-eyebrow">Para más información</span>
+            <h2 class="srv-cta-final__titulo">CONTÁCTENOS</h2>
+            <p class="srv-cta-final__desc">
+                Obtenga la asesoría que su proyecto necesita contactando a uno de
+                nuestros consultores expertos.
+            </p>
+            <a href="https://wa.me/59176644531?text=Hola%20BRIDA%20S.R.L.%2C%20quisiera%20asesor%C3%ADa%20sobre%20Ingenier%C3%ADa%20%26%20Consultor%C3%ADa" target="_blank" rel="noopener noreferrer" class="srv-cta-final__boton">
+                Solicitar Asesoría <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER (Componente — inyectado por footer-menu.js) ==========
+         Detecta /servicios/ y antepone ../ a sus rutas automáticamente. -->
+    <div id="footer-placeholder"></div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script type="module" src="../assets/js/main.js"></script>
+
+</body>
+</html>

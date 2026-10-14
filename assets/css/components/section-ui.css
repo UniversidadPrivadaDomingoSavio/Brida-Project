@@ -1,0 +1,461 @@
+/* assets/css/components/section-ui.css */
+/* ════════════════════════════════════════════════════════════════
+   COMPONENTES GLOBALES DE SECCIÓN — BRIDA S.R.L.
+   Archivo: assets/css/components/section-ui.css
+   ════════════════════════════════════════════════════════════════
+   Componentes compartidos por varias páginas. Consumen los tokens
+   de variables.css (espaciado, tipografía) — NO define valores
+   mágicos verticales fuera del sistema.
+
+   MAPA DEL ARCHIVO:
+   01. Fondo de sección reutilizable (.bg-soft-pattern)
+   02. Sistema de títulos de sección (eyebrow, title, línea tricolor)
+   03. Hero interno de páginas internas
+       3a. Estructura y fondo (parallax, degradado)
+       3b. Contenido y animación de entrada
+       3c. Descripciones (sistema unificado: base + variantes color)
+       3d. Responsive del hero (tablet / móvil / landscape)
+   04. Contacto CTA (glassmorphism oscuro, cierre de página)
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ════════════════════════════════════════════════════════════════
+   01. FONDO DE SECCIÓN REUTILIZABLE
+   QUÉ HACE: fondo gris suave + textura de puntos BRIDA. Alterna
+            visualmente secciones contiguas sin tocar espaciados.
+   ════════════════════════════════════════════════════════════════ */
+.bg-soft-pattern {
+    background-color: var(--bg-soft);
+    background-image: radial-gradient(rgba(49, 38, 131, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   02. SISTEMA DE TÍTULOS DE SECCIÓN
+   QUÉ ES:  grupo reutilizable eyebrow → título → línea tricolor,
+            con alineación left/center/right y animación de línea.
+   TIPOGRAFÍA: --fs-eyebrow y --fs-display vienen de variables.css.
+   ALINEACIÓN: modificadores .left/.center/.right (margen + origen
+            de la animación de línea). En ≤1024px todo se fuerza
+            al centro (consistencia táctil).
+   ════════════════════════════════════════════════════════════════ */
+
+.section-title-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: fit-content; /* La caja mide exactamente lo que mide el texto */
+}
+
+/* Alineación en escritorio                                        */
+.section-title-group.left  { margin: 0 auto 0 0; align-items: flex-start; text-align: left; }
+.section-title-group.center { margin: 0 auto; align-items: center; text-align: center; }
+.section-title-group.right { margin: 0 0 0 auto; align-items: flex-end; text-align: right; }
+
+/* Antetítulo (identificador de la sección)                        */
+.section-eyebrow {
+    display: block;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    font-size: var(--fs-eyebrow);
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 2px;
+}
+
+/* Título H2 de sección                                            */
+.section-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-display);
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    position: relative;
+    margin-bottom: 0;
+}
+
+/* Línea tricolor animada (se dibuja con .is-active)               */
+.section-title-line {
+    display: block;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    margin-top: var(--sp-3); /* 24px — antes 20px (fuera de escala) */
+    background: linear-gradient(to right, var(--stripe-red) 33.33%, var(--stripe-yellow) 33.33%, var(--stripe-yellow) 66.66%, var(--stripe-green) 66.66%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.section-title-group.left   .section-title-line { transform-origin: left; }
+.section-title-group.center .section-title-line { transform-origin: center; }
+.section-title-group.right  .section-title-line { transform-origin: right; }
+
+/* ESTADO activo: la línea se expande                              */
+.is-active .section-title-line { transform: scaleX(1); }
+
+/* Animación de revelado genérica (la activa el observer global)   */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.is-active {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* ── RESPONSIVE: forzar centro en tablet y móvil ───────────────── */
+@media (max-width: 1024px) {
+    .section-title-group.left,
+    .section-title-group.right {
+        margin: 0 auto;
+        align-items: center;
+        text-align: center;
+    }
+    /* La línea debe nacer del centro en pantallas táctiles        */
+    .section-title-group.left .section-title-line,
+    .section-title-group.right .section-title-line {
+        transform-origin: center;
+    }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   03. HERO INTERNO DE PÁGINAS INTERNAS
+   Se utiliza en: Quiénes Somos, Servicios, Proyectos, Contacto.
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── 3a. ESTRUCTURA Y FONDO ────────────────────────────────────── */
+.hero-interno {
+    position: relative;
+    width: 100%;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: var(--header-h); /* Aire para el header fijo */
+    background-color: var(--bg-main);
+}
+
+/* Fondo con parallax (fijo en escritorio) y leve overscan         */
+.hero-interno__fondo {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 20%; /* Prioriza elementos altos */
+    background-attachment: fixed;
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+/* Degradado morado → oscuro (legibilidad del texto)               */
+.hero-interno__superposicion {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, rgba(49, 38, 131, 0.92) 0%, rgba(15, 23, 42, 0.85) 50%, rgba(0, 0, 0, 0.75) 100%);
+    z-index: 2;
+}
+
+/* ── 3b. CONTENIDO Y ANIMACIÓN DE ENTRADA ────────────────────────
+   ESCRITORIO: anclado izquierda (top 55%, left 8%).
+   La animación usa .esta-activo (asignada por el JS de página al
+   cargar) — NO usa .reveal-up para no chocar transformaciones.    */
+.hero-interno__contenido {
+    position: absolute;
+    top: 55%;
+    left: 8%;
+    transform: translateY(-55%);
+    width: 55%;
+    max-width: 700px;
+    z-index: 3;
+    color: white;
+}
+
+.hero-interno__contenido.hero-animar {
+    opacity: 0;
+    transform: translateY(calc(-55% + 40px)); /* Nace 40px abajo de su centro */
+    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.hero-interno__contenido.hero-animar.esta-activo {
+    opacity: 1;
+    transform: translateY(-55%); /* Aterriza en su centro real */
+}
+
+/* Colores de títulos sobre fondo oscuro
+   JERARQUÍA: el H1 del hero es MAYOR que los H2 de sección
+   (--fs-h1-hero > --fs-display) — antes compartían tamaño y la
+   jerarquía se aplanaba.                                          */
+.hero-interno .section-eyebrow { color: rgba(255, 255, 255, 0.9); }
+.hero-interno .section-title { color: #ffffff; font-size: var(--fs-h1-hero); }
+
+.hero-interno .section-title-group {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start; /* Izquierda en escritorio */
+    width: fit-content;
+}
+
+/* Línea blanca animada (pisa la tricolor global en el hero)       */
+.hero-interno .section-title-line {
+    display: block;
+    width: 100%;
+    height: 4px;
+    background: #ffffff;
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.4s; /* Entra tras el texto */
+}
+.hero-interno__contenido.esta-activo .section-title-line {
+    transform: scaleX(1);
+}
+
+/* ── 3c. DESCRIPCIONES DEL HERO (sistema unificado) ──────────────
+   ANTES: 3 reglas duplicando font-family, line-height, max-width y
+   margin-top + un override de fuente en cada media query.
+   AHORA: propiedades compartidas en la BASE; las variantes SOLO
+   cambian el color. Un solo clamp fluido (mismo min 0.95rem en las
+   3) → el override de fuente en ≤767px dejó de ser necesario.
+   Tokens: --fs-body gobierna el tamaño.                           */
+.hero-interno__descripcion,
+.hero-interno__descripcion_blanco,
+.hero-interno__descripcion_negro {
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    line-height: 1.8;
+    max-width: 700px;
+    margin-top: var(--sp-3); /* 24px — antes 20px (fuera de escala) */
+}
+
+/* Variante base y blanca: sobre el degradado oscuro               */
+.hero-interno__descripcion,
+.hero-interno__descripcion_blanco {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Variante negra: para fondos claros                              */
+.hero-interno__descripcion_negro {
+    color: rgba(0, 0, 0, 0.85);
+}
+
+/* ── 3d. RESPONSIVE DEL HERO ───────────────────────────────────── */
+
+/* TABLET Y MÓVIL: centrado total, parallax desactivado            */
+@media (max-width: 1199px) {
+    .hero-interno { min-height: 50vh; }
+    .hero-interno__fondo {
+        background-attachment: scroll;
+        background-position: center center;
+    }
+    .hero-interno__contenido {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 60px 6% 40px;
+        text-align: center;
+    }
+    /* Ajuste de animación para móvil/tablet                       */
+    .hero-interno__contenido.hero-animar { transform: translateY(40px); }
+    .hero-interno__contenido.hero-animar.esta-activo { transform: translateY(0); }
+
+    .hero-interno .section-title-group { align-items: center; text-align: center; }
+    .hero-interno .section-title-line { transform-origin: center; }
+
+    /* Las 3 variantes de descripción se centran                   */
+    .hero-interno__descripcion,
+    .hero-interno__descripcion_blanco,
+    .hero-interno__descripcion_negro {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* IPAD LANDSCAPE: más altura y ancho de contenido                 */
+@media (min-width: 768px) and (max-width: 1199px) and (orientation: landscape) {
+    .hero-interno { min-height: 80vh; }
+    .hero-interno__contenido { padding: 80px 10%; max-width: 900px; }
+    .hero-interno__fondo { background-position: center 20%; }
+}
+
+/* MÓVIL vertical                                                  */
+@media (max-width: 767px) {
+    .hero-interno { min-height: auto; padding-top: var(--header-h-scrolled); }
+    .hero-interno__fondo { background-position: center center; }
+    .hero-interno__contenido { padding: 50px 5% 40px; }
+    /* Línea más compacta en pantallas angostas                    */
+    .hero-interno__descripcion,
+    .hero-interno__descripcion_blanco,
+    .hero-interno__descripcion_negro { line-height: 1.7; }
+}
+
+/* MÓVIL landscape                                                 */
+@media (max-width: 767px) and (orientation: landscape) {
+    .hero-interno { min-height: 100vh; }
+    .hero-interno__contenido { padding: 40px 8%; max-width: 700px; }
+    .hero-interno .section-title { font-size: 1.8rem; }
+    .hero-interno__fondo { background-position: center 15%; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   04. CONTACTO CTA (Glassmorphism Oscuro)
+   QUÉ ES:  banda de cierre con tarjetas de contacto directo.
+   Se utiliza en: Inicio, Quiénes Somos, Servicios, Proyectos.
+   RITMO: usa --seccion-pad-destacada (sección oscura de impacto,
+          mismo ritmo que Pilares/Valores — antes 50px aislados).
+   ════════════════════════════════════════════════════════════════ */
+.contacto-cta {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: var(--seccion-pad-destacada) var(--pad-x);
+    background-color: #0a0a12;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(49, 38, 131, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(49, 38, 131, 0.15) 0%, transparent 20%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+
+.contacto-cta__contenedor {
+    position: relative; z-index: 2; width: 100%; max-width: 1300px; margin: 0 auto;
+}
+
+/* Adaptación del título para fondo oscuro                         */
+.contacto-cta .section-eyebrow { color: rgba(255, 255, 255, 0.8); }
+.contacto-cta .section-title { color: #ffffff; }
+.contacto-cta .section-title-group.left {
+    align-items: flex-start;
+    text-align: left;
+}
+.contacto-cta .section-title-group.left .section-title-line {
+    transform-origin: left;
+}
+
+.contacto-cta__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-8); /* 80px */
+    align-items: center;
+}
+
+/* Panel Izquierdo: título + descripción                           */
+.contacto-cta__panel-izq {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3); /* 24px */
+}
+
+.contacto-cta__descripcion {
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    line-height: 1.8;
+    color: var(--bg-soft);
+}
+.contacto-cta__descripcion strong { color: #ffffff; font-weight: 600; }
+
+/* Panel Derecho: tarjetas de contacto                             */
+.contacto-cta__panel-der { display: flex; flex-direction: column; gap: var(--sp-2); }
+
+/* Tarjetas Glassmorphism                                          */
+.contacto-cta__tarjeta {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 28px 32px;
+    display: flex; align-items: center; gap: var(--sp-3);
+    border-radius: 16px;
+    position: relative; overflow: hidden; cursor: pointer;
+    text-decoration: none; color: inherit;
+    transition: all 0.4s var(--header-ease);
+}
+
+/* Barra lateral de acento: se despliega al hover                  */
+.contacto-cta__tarjeta::before {
+    content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%;
+    background: var(--primary); transform: scaleY(0); transform-origin: top;
+    transition: transform 0.4s ease; border-radius: 0 4px 4px 0;
+}
+
+.contacto-cta__tarjeta:hover {
+    background: rgba(49, 38, 131, 0.25);
+    border-color: rgba(49, 38, 131, 0.8);
+    transform: translateX(8px);
+}
+.contacto-cta__tarjeta:hover::before { transform: scaleY(1); }
+
+.contacto-cta__icono {
+    width: 64px; height: 64px; background: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 14px; flex-shrink: 0; transition: background 0.3s ease;
+}
+.contacto-cta__icono i { font-size: 1.6rem; color: #fff; transition: transform 0.3s ease; }
+.contacto-cta__tarjeta:hover .contacto-cta__icono { background: #4a3fa8; }
+.contacto-cta__tarjeta:hover .contacto-cta__icono i { transform: scale(1.1); }
+
+.contacto-cta__contenido { flex: 1; }
+.contacto-cta__etiqueta {
+    display: block; font-size: var(--fs-micro); font-weight: 600;
+    color: rgba(255, 255, 255, 0.5); text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: 6px;
+}
+.contacto-cta__titulo {
+    font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700;
+    color: #fff; text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+.contacto-cta__flecha {
+    font-size: 1.2rem; color: rgba(255, 255, 255, 0.3);
+    opacity: 0; transform: translateX(-15px);
+    transition: all 0.3s ease; flex-shrink: 0;
+}
+.contacto-cta__tarjeta:hover .contacto-cta__flecha { opacity: 1; transform: translateX(0); color: #fff; }
+
+/* ── Responsive Contacto ───────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .contacto-cta__grid { gap: 50px; }
+}
+@media (max-width: 768px) {
+    .contacto-cta { padding: var(--seccion-pad) var(--pad-x-compacto); }
+    .contacto-cta__grid { grid-template-columns: 1fr; gap: var(--sp-5); }
+
+    /* Centrar título en móviles                                   */
+    .contacto-cta .section-title-group.left {
+        align-items: center;
+        text-align: center;
+    }
+    .contacto-cta .section-title-group.left .section-title-line {
+        transform-origin: center;
+    }
+
+    .contacto-cta__descripcion { text-align: center; }
+    .contacto-cta__tarjeta { padding: 20px; gap: var(--sp-2); }
+    .contacto-cta__icono { width: 54px; height: 54px; }
+    .contacto-cta__icono i { font-size: 1.3rem; }
+    .contacto-cta__titulo { font-size: 1rem; }
+}
+
+/* ── Desactivar hover en táctil real ───────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+    .contacto-cta__tarjeta:hover { transform: none; background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); }
+    .contacto-cta__tarjeta:hover::before { transform: scaleY(0); }
+    .contacto-cta__tarjeta:hover .contacto-cta__flecha { opacity: 0; transform: translateX(-15px); }
+    /* Feedback de presión táctil                                  */
+    .contacto-cta__tarjeta:active { background: rgba(49, 38, 131, 0.25); border-color: rgba(49, 38, 131, 0.8); transform: translateX(4px); }
+    .contacto-cta__tarjeta:active::before { transform: scaleY(1); }
+    .contacto-cta__tarjeta:active .contacto-cta__flecha { opacity: 1; transform: translateX(0); color: #fff; }
+}

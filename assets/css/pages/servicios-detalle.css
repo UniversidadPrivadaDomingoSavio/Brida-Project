@@ -1,0 +1,539 @@
+/* ════════════════════════════════════════════════════════════════
+   GUÍA DE ESTILOS — SERVICIO DETALLE (BRIDA S.R.L.)
+   Archivo: assets/css/pages/servicios-detalle.css
+   ════════════════════════════════════════════════════════════════
+
+   PREFIJO:  srv-  →  exclusivo de las páginas /servicios/*.html
+             (5 sub-servicios comparten esta plantilla).
+
+   ESTRUCTURA DE LA PÁGINA (referente narrativo — NO tarjetas):
+             Hero → Breadcrumb → Intro (corchetes + imagen) →
+             Descripción extendida → Galería → Sub-servicios
+             (grid de fases) → CTA final → Footer.
+
+   ⚠️ SISTEMA DE DISEÑO (variables.css — OBLIGATORIO):
+   - Ritmo vertical: --seccion-pad / --seccion-pad-destacada
+     (fluidos → NO se redefinen en media queries).
+   - Lateral: --pad-x (desktop) / --pad-x-compacto (≤1024px).
+   - Espaciado de layout: --sp-1…--sp-9. Tipografía: --fs-*
+     (⭐ AUDITORÍA: cero texto bajo el piso de 12px — meta en
+     --fs-small/--fs-micro, cuerpo en --fs-body, títulos en
+     --fs-h3/--fs-display; cero tipografías hardcodeadas).
+   - Imágenes con aspect-ratio (anti-zoom, patrón timeline/modal).
+   - Galería: scroll horizontal con snap — AQUÍ SÍ es válido
+     (a diferencia de los filtros de Proyectos: no hay JS de
+     auto-centrado que el snap pueda interferir).
+
+   MAPA DEL ARCHIVO:
+   01. Reglas base de sección + contenedor + breadcrumb
+   02. Intro del servicio (corchetes BRIDA + imagen con marco)
+   03. Descripción extendida (columna de lectura)
+   04. Galería del servicio (carrusel snap + flechas desktop)
+   05. Sub-servicios en grid de fases (chevrons + checks)
+   06. CTA final (banner con imagen de fondo)
+   07. Responsive (1024 / 767 / 480)
+   08. Comportamiento táctil (hover none + pointer coarse)
+   09. Accesibilidad — movimiento reducido
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ════════════════════════════════════════════════════════════════
+   01. REGLAS BASE DE SECCIÓN + BREADCRUMB
+   ⭐ REGLAS OBLIGATORIAS (lección de contacto.css): el ritmo
+   --seccion-pad es lo que iguala esta página con sus hermanas.
+   NUNCA eliminarlas en reemplazos de este bloque.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Sección clara estándar (misma textura de puntos que Proyectos) */
+.srv-seccion {
+    padding: var(--seccion-pad) var(--pad-x);
+    background-color: var(--bg-soft);
+    position: relative;
+    overflow: hidden;
+    background-image: radial-gradient(rgba(49, 38, 131, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+/* Contenedor de lectura: 1100px (página de contenido denso,
+   más estrecho que los 1200/1300 de las páginas-índice)         */
+.srv-contenedor {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── BREADCRUMB (ruta de navegación bajo el hero) ────────────────
+   QUÉ ES:  Inicio / Servicios / [Categoría actual] — patrón del
+            referente. La página actual va en <span> (no es link).
+   ⭐ var(--fs-small): es meta de navegación (13.6px — legible). */
+.srv-miga {
+    display: flex; align-items: center; flex-wrap: wrap;
+    gap: 8px; margin-bottom: var(--sp-5);
+    font-family: var(--font-heading); font-size: var(--fs-small); /* ⭐ token */
+}
+.srv-miga__link {
+    color: var(--text-muted); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color 0.3s ease;
+}
+.srv-miga__link i { font-size: 0.7rem; } /* icono decorativo */
+.srv-miga__link:hover { color: var(--primary); }
+.srv-miga__sep { color: var(--primary-border); } /* separador "/" */
+.srv-miga__actual {
+    color: var(--primary); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   02. INTRO DEL SERVICIO — corchetes BRIDA + imagen con marco
+   QUÉ ES:  grid 2 columnas: izquierda = título decorativo (marco
+            de esquinas moradas — versión BRIDA del referente
+            amarillo) + descripción corta; derecha = imagen
+            representativa con el MARCO DESPLAZADO (firma visual
+            del timeline de Quiénes Somos).
+   ⭐ La imagen usa aspect-ratio 16/10 (anti-zoom, patrón del
+            timeline): escala con su ancho, cover recorta lo mínimo.
+   ──────────────────────────────────────────────────────────────── */
+
+.srv-intro__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr; /* texto | imagen (imagen protagonista) */
+    gap: var(--sp-7);
+    align-items: center;
+}
+
+/* Columna de texto */
+.srv-intro__texto { display: flex; flex-direction: column; align-items: flex-start; }
+
+/* Marco de esquinas: corchete sup-izq (::before) + inf-der
+   (::after) — las 2 esquinas opuestas bastan (simetría dinámica,
+   más moderna que las 4). Morado institucional.                */
+.srv-intro__titulo-marco {
+    position: relative;
+    display: inline-block;
+    padding: var(--sp-4) var(--sp-5);
+    margin-bottom: var(--sp-4);
+}
+.srv-intro__titulo-marco::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 34px; height: 34px;
+    border-top: 3px solid var(--primary);
+    border-left: 3px solid var(--primary);
+}
+.srv-intro__titulo-marco::after {
+    content: ''; position: absolute; bottom: 0; right: 0;
+    width: 34px; height: 34px;
+    border-bottom: 3px solid var(--primary);
+    border-right: 3px solid var(--primary);
+}
+
+/* Kicker interno (mini-eyebrow sobre el título del marco)       */
+.srv-intro__kicker {
+    display: block;
+    font-family: var(--font-heading); font-size: var(--fs-micro); /* ⭐ 12px */
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: var(--sp-1);
+}
+
+/* Título del servicio dentro del marco: token display
+   (jerarquía: el H1 del hero es mayor — --fs-h1-hero)          */
+.srv-intro__titulo {
+    font-family: var(--font-heading); font-size: var(--fs-display); /* ⭐ token */
+    font-weight: 700; color: var(--primary);
+    line-height: 1.15; text-transform: uppercase; letter-spacing: -0.5px;
+    margin: 0;
+}
+
+/* Línea tricolor bajo el marco (firma BRIDA — reemplaza la
+   línea amarilla del referente)                                */
+.srv-intro__linea {
+    display: block; width: 96px; height: 4px; border-radius: 2px;
+    margin: var(--sp-3) 0 0;
+    background: linear-gradient(to right,
+        var(--stripe-red) 33.33%, var(--stripe-yellow) 33.33%,
+        var(--stripe-yellow) 66.66%, var(--stripe-green) 66.66%);
+}
+
+/* Descripción corta: token body                                 */
+.srv-intro__desc {
+    font-family: var(--font-body); font-size: var(--fs-body);
+    line-height: 1.8; color: var(--text-muted); margin: var(--sp-3) 0 0;
+}
+
+/* ── Imagen con MARCO DESPLAZADO (firma del timeline) ─────────── */
+.srv-intro__visual { position: relative; }
+.srv-intro__imagen-contenedor {
+    position: relative;
+    aspect-ratio: 16 / 10; /* ⭐ anti-zoom: escala con su ancho     */
+    overflow: hidden;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(49, 38, 131, 0.1);
+    background: var(--bg-main);
+    border: 1px solid var(--primary-border);
+}
+.srv-intro__imagen {
+    width: 100%; height: 100%; object-fit: cover; object-position: center;
+    transition: transform 0.6s var(--header-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+    .srv-intro__imagen-contenedor:hover .srv-intro__imagen { transform: scale(1.04); }
+}
+/* Marco desplazado decorativo (idéntico lenguaje al timeline:
+   aparece siempre con opacidad baja)                           */
+.srv-intro__marco {
+    position: absolute; inset: 0;
+    top: 14px; left: 14px;
+    border: 2px solid var(--primary); border-radius: 14px;
+    opacity: 0.18; pointer-events: none;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   03. DESCRIPCIÓN EXTENDIDA — columna de lectura
+   QUÉ ES:  los párrafos largos del servicio, a ancho óptimo de
+            lectura (720px — estándar editorial) centrados.
+   ⭐ Los <p> van en --fs-body; párrafos separados por --sp-3.
+   ──────────────────────────────────────────────────────────────── */
+.srv-descripcion { margin-top: var(--sp-7); }
+.srv-descripcion__columna { max-width: 720px; margin: 0 auto; }
+.srv-descripcion__columna p {
+    font-family: var(--font-body); font-size: var(--fs-body);
+    line-height: 1.85; color: var(--text-muted);
+    margin: 0 0 var(--sp-3);
+}
+.srv-descripcion__columna p:last-child { margin-bottom: 0; }
+/* Resaltes dentro de los párrafos (términos clave)              */
+.srv-descripcion__columna strong { color: var(--text-body); font-weight: 600; }
+
+
+/* ════════════════════════════════════════════════════════════════
+   04. GALERÍA DEL SERVICIO — carrusel horizontal con snap
+   QUÉ ES:  fotos de trabajos de la línea. AQUÍ SÍ se usa
+            scroll-snap (a diferencia de los filtros de Proyectos:
+            no hay JS de auto-centrado que pueda interferir).
+   PATRÓN:  sangrado a los bordes + fade extremos (idéntico al
+            carrusel de filtros de proyectos.css — código probado).
+   FLECHAS: botones que JS desplaza por item (solo desktop —
+            el scroll táctil nativo manda en móvil). El JS vive
+            en initServicioDetalle (se entrega con el HTML).
+   ──────────────────────────────────────────────────────────────── */
+.srv-galeria__zona { position: relative; margin-top: var(--sp-7); }
+
+.srv-galeria {
+    display: flex; gap: var(--sp-2);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    /* Sangrado a los bordes de la sección (full-bleed controlado) */
+    margin-left: calc(-1 * var(--pad-x));
+    margin-right: calc(-1 * var(--pad-x));
+    padding-left: var(--pad-x);
+    padding-right: var(--pad-x);
+    padding-bottom: 8px; /* aire para la sombra sin clip */
+    scrollbar-width: none; -ms-overflow-style: none;
+    /* Fade en extremos: pista visual de deslizamiento            */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+}
+.srv-galeria::-webkit-scrollbar { display: none; }
+
+/* Item: aspect-ratio (anti-zoom) + snap                         */
+.srv-galeria__item {
+    flex: 0 0 clamp(280px, 32vw, 440px);
+    scroll-snap-align: start;
+    aspect-ratio: 4 / 3;
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--primary-border);
+    box-shadow: 0 8px 24px rgba(49, 38, 131, 0.08);
+    background: var(--bg-main);
+}
+.srv-galeria__item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s var(--header-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+    .srv-galeria__item:hover img { transform: scale(1.05); }
+}
+
+/* FLECHAS: solo escritorio (táctil usa el gesto nativo)         */
+.srv-galeria__flecha {
+    display: none; /* base + móvil: el gesto manda */
+}
+@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+    .srv-galeria__flecha {
+        display: flex; align-items: center; justify-content: center;
+        position: absolute; top: 50%; transform: translateY(-50%);
+        width: 44px; height: 44px; border-radius: 50%;
+        background: var(--primary); color: #fff;
+        border: 2px solid var(--bg-soft);
+        box-shadow: 0 6px 18px rgba(49, 38, 131, 0.3);
+        font-size: 0.8rem; cursor: pointer; z-index: 3;
+        transition: background-color 0.3s ease, transform 0.3s var(--header-ease);
+    }
+    .srv-galeria__flecha--prev { left: -6px; }
+    .srv-galeria__flecha--next { right: -6px; }
+    .srv-galeria__flecha:hover { background: var(--primary-hover); transform: translateY(-50%) scale(1.08); }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   05. SUB-SERVICIOS EN GRID DE FASES
+   QUÉ ES:  los 5 sub-servicios (antes "bloques") en grid 2×N:
+            chevron morado (versión BRIDA de los ">>" amarillos del
+            referente) + título (--fs-h3) + lista de checks verdes
+            (patrón existente: --stripe-green).
+   QUÉ HACE: cada item es un panel claro (no tarjeta pesada):
+            fondo blanco, borde suave, sin cabecera/pie — el
+            contenido manda.
+   ⭐ ALTURA NATURAL: sin alturas fijas — el grid estira los items
+            (align-items: stretch) y el contenido fluye.
+   ──────────────────────────────────────────────────────────────── */
+.srv-fases { margin-top: var(--sp-8); }
+.srv-fases__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-4);
+    align-items: stretch; /* filas iguales — simetría garantizada */
+}
+
+/* Item: panel claro minimalista                                 */
+.srv-fases__item {
+    background: var(--bg-main);
+    border: 1px solid var(--primary-border);
+    border-radius: 16px;
+    padding: var(--sp-5);
+    display: flex; flex-direction: column;
+    transition: transform 0.4s var(--header-ease), box-shadow 0.4s var(--header-ease),
+                border-color 0.3s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+    .srv-fases__item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 18px 40px rgba(49, 38, 131, 0.1);
+        border-color: rgba(49, 38, 131, 0.3);
+    }
+}
+
+/* Cabecera del item: chevron + título en línea                  */
+.srv-fases__item-cabecera {
+    display: flex; align-items: flex-start; gap: 12px;
+    margin-bottom: var(--sp-3);
+}
+/* Chevron ">>" morado (la versión BRIDA del referente)          */
+.srv-fases__item-cabecera > i {
+    color: var(--primary); font-size: 1rem; margin-top: 4px; flex-shrink: 0;
+    transition: transform 0.3s var(--header-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+    .srv-fases__item:hover .srv-fases__item-cabecera > i { transform: translateX(4px); }
+}
+.srv-fases__item-titulo {
+    font-family: var(--font-heading); font-size: var(--fs-h3); /* ⭐ token */
+    font-weight: 700; color: var(--primary); line-height: 1.3; margin: 0;
+}
+
+/* Lista de checks (patrón existente — checks verdes)            */
+.srv-fases__item-lista { list-style: none; padding: 0; margin: 0; }
+.srv-fases__item-lista li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-family: var(--font-body); font-size: var(--fs-body); /* ⭐ token */
+    color: var(--text-body); margin-bottom: 10px; font-weight: 500;
+    line-height: 1.5;
+}
+.srv-fases__item-lista li:last-child { margin-bottom: 0; }
+.srv-fases__item-lista li i {
+    color: var(--stripe-green); font-size: 1rem; margin-top: 3px; flex-shrink: 0;
+} /* icono decorativo */
+
+/* CTA por item: enlace discreto al final (opcional en markup)   */
+.srv-fases__item-link {
+    display: inline-flex; align-items: center; gap: 7px;
+    margin-top: auto; padding-top: var(--sp-3); /* empuja al pie */
+    font-family: var(--font-heading); font-size: var(--fs-small); /* ⭐ token */
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--primary); text-decoration: none;
+    transition: gap 0.3s var(--header-ease);
+}
+.srv-fases__item-link i { font-size: 0.7rem; transition: transform 0.3s var(--header-ease); } /* icono */
+@media (hover: hover) and (pointer: fine) {
+    .srv-fases__item-link:hover { gap: 10px; }
+    .srv-fases__item-link:hover i { transform: translateX(3px); }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   06. CTA FINAL — banner con imagen de fondo
+   QUÉ ES:  el cierre del referente ("PARA MÁS INFORMACIÓN /
+            CONTÁCTENOS") en lenguaje BRIDA: fondo con imagen de
+            obra + degradado morado profundo (mismo lenguaje del
+            hero y contacto-cta) + título display + botón píldora.
+   La imagen va inline via <div class="srv-cta-final__fondo"
+   style="background-image: url('...')"> (patrón hero-interno).
+   ──────────────────────────────────────────────────────────────── */
+.srv-cta-final {
+    position: relative;
+    width: 100%;
+    padding: var(--seccion-pad-destacada) var(--pad-x); /* ritmo de sección oscura de impacto */
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+}
+/* Fondo con imagen + overscan (patrón hero-interno)              */
+.srv-cta-final__fondo {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transform: scale(1.05);
+    z-index: 1;
+}
+/* Degradado morado profundo: legibilidad total del texto        */
+.srv-cta-final__superposicion {
+    position: absolute; inset: 0;
+    background: linear-gradient(120deg, rgba(49, 38, 131, 0.94) 0%, rgba(26, 26, 36, 0.88) 55%, rgba(15, 23, 42, 0.82) 100%);
+    z-index: 2;
+}
+.srv-cta-final__contenido {
+    position: relative; z-index: 3;
+    max-width: 760px; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+}
+.srv-cta-final .section-eyebrow { color: rgba(255, 255, 255, 0.8); }
+.srv-cta-final__titulo {
+    font-family: var(--font-heading); font-size: var(--fs-display); /* ⭐ token (H2 de impacto) */
+    font-weight: 700; color: #ffffff;
+    text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.1;
+    margin: 0;
+}
+.srv-cta-final__desc {
+    font-family: var(--font-body); font-size: var(--fs-body); /* ⭐ token */
+    line-height: 1.8; color: rgba(255, 255, 255, 0.8);
+    max-width: 560px; margin: var(--sp-3) 0 0;
+}
+.srv-cta-final__boton {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: var(--sp-5); padding: 15px 38px;
+    border-radius: 50px;
+    background: #ffffff; color: var(--primary);
+    font-family: var(--font-heading); font-size: var(--fs-small); /* ⭐ token */
+    font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    transition: transform 0.4s var(--header-ease), box-shadow 0.4s ease;
+}
+.srv-cta-final__boton i { transition: transform 0.3s var(--header-ease); }
+@media (hover: hover) and (pointer: fine) {
+    .srv-cta-final__boton:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+    }
+    .srv-cta-final__boton:hover i { transform: translateX(4px); }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   07. RESPONSIVE (1024 / 767 / 480)
+   NOTAS: paddings VERTICALES de sección NO se redefinen (tokens
+   fluidos). Solo lateral + reflows de grid.
+   ──────────────────────────────────────────────────────────────── */
+
+/* ── ≤1024px (tablet): intro apilada + fases en columna ───────── */
+@media (max-width: 1024px) {
+    .srv-seccion { padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto); }
+
+    /* Intro: texto primero, imagen después (jerarquía narrativa) */
+    .srv-intro__grid { grid-template-columns: 1fr; gap: var(--sp-5); }
+    .srv-intro__texto { align-items: center; text-align: center; }
+    .srv-intro__linea { margin-left: auto; margin-right: auto; }
+    /* La imagen centrada con ancho contenido                     */
+    .srv-intro__visual { max-width: 560px; margin: 0 auto; width: 100%; }
+
+    /* Fases: 1 columna (los items tienen listas de 4 checks —
+       a 2 columnas en tablet quedarían apretados)                */
+    .srv-fases__grid { grid-template-columns: 1fr; max-width: 720px; margin-left: auto; margin-right: auto; }
+}
+
+/* ── ≤767px (móvil): compacidad + galería más chica ───────────── */
+@media (max-width: 767px) {
+    /* Galería: items más angostos (260px base) + fade menor      */
+    .srv-galeria__item { flex-basis: 78%; } /* asoma la siguiente: pista de scroll */
+
+    /* Fases: padding compacto                                    */
+    .srv-fases__item { padding: var(--sp-4); }
+    .srv-fases__item-lista li { margin-bottom: 8px; }
+
+    /* CTA: botón a ancho completo (patrón de bloques táctiles)   */
+    .srv-cta-final__boton { width: 100%; justify-content: center; }
+    .srv-cta-final__fondo { background-attachment: scroll; } /* parallax off en táctil */
+}
+
+/* ── ≤480px (smartphone): ajustes finos ────────────────────────── */
+@media (max-width: 480px) {
+    /* Corchetes del marco: proporcionales a la pantalla           */
+    .srv-intro__titulo-marco { padding: var(--sp-3) var(--sp-4); }
+    .srv-intro__titulo-marco::before,
+    .srv-intro__titulo-marco::after { width: 26px; height: 26px; }
+
+    /* Galería: casi pantalla completa con asomo sutil            */
+    .srv-galeria__item { flex-basis: 86%; }
+
+    /* CTA: desc con respiro vertical                              */
+    .srv-cta-final__desc { line-height: 1.7; }
+}
+
+/* LANDSCAPE móvil: el parallax vuelve (hay altura de sobra)      */
+@media (max-width: 767px) and (orientation: landscape) {
+    .srv-cta-final__fondo { background-attachment: fixed; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   08. COMPORTAMIENTO TÁCTIL (hover none + pointer coarse)
+   QUÉ HACE: neutraliza hovers y entrega presión (:active) —
+   patrón global del sitio. Cubre: breadcrumb, galería, fases
+   (item + link), CTA.
+   ════════════════════════════════════════════════════════════════ */
+@media (hover: none) and (pointer: coarse) {
+    /* Intro: hover de imagen neutralizado                         */
+    .srv-intro__imagen-contenedor:hover .srv-intro__imagen { transform: none; }
+
+    /* Fases: hover de flotación neutralizado; presión con
+       hundido + borde morado (patrón organigrama)                 */
+    .srv-fases__item:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: var(--primary-border);
+    }
+    .srv-fases__item:active { transform: scale(0.98); border-color: var(--primary); }
+    .srv-fases__item-link:active { color: var(--primary-hover); }
+
+    /* CTA: hover neutralizado; presión hunde el botón             */
+    .srv-cta-final__boton:hover { transform: none; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); }
+    .srv-cta-final__boton:hover i { transform: none; }
+    .srv-cta-final__boton:active { transform: scale(0.97); }
+    .srv-cta-final__boton:active i { transform: translateX(4px); }
+
+    /* Breadcrumb: el color de presión basta                       */
+    .srv-miga__link:active { color: var(--primary); }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   09. ACCESIBILIDAD — MOVIMIENTO REDUCIDO
+   QUÉ HACE: anula transiciones/animaciones de toda la página.
+   ⭐ PARALLAX del CTA: el fondo fijo (background-attachment:
+   fixed) es movimiento perceptible al scrollear → se apaga en
+   este modo (va a scroll normal).
+   ──────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .srv-intro__imagen, .srv-galeria__item img,
+    .srv-fases__item, .srv-fases__item-cabecera > i, .srv-fases__item-link,
+    .srv-fases__item-link i, .srv-cta-final__boton, .srv-cta-final__boton i,
+    .srv-miga__link {
+        transition: none !important;
+    }
+    /* Parallax off (también cubre el landscape fijo de arriba)    */
+    .srv-cta-final__fondo {
+        background-attachment: scroll !important;
+        transform: none !important;
+    }
+}

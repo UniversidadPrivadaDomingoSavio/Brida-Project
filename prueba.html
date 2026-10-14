@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista Previa - Contacto BRIDA</title>
+    
+    <!-- Fuentes e Iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ================================================================
+           1. BASE Y VARIABLES (Tu arquitectura)
+           ================================================================ */
+        :root {
+            --primary: #312683;
+            --primary-soft: rgba(49, 38, 131, 0.08);
+            --primary-border: rgba(49, 38, 131, 0.15);
+            --bg-main: #FFFFFF;
+            --bg-soft: #F6F5F9; 
+            --bg-hover: #F3F4F8;
+            --text-body: #1F2937;
+            --text-muted: #6B7280;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --stripe-red: #D32F2F;
+            --stripe-yellow: #FBC02D;
+            --stripe-green: #388E3C;
+            --header-ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --header-h: 80px;
+            --header-h-scrolled: 70px;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); color: var(--text-body); background-color: var(--bg-main); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* ================================================================
+           2. COMPONENTES GLOBALES UI (Tu section-ui.css)
+           ================================================================ */
+        .bg-soft-pattern {
+            background-color: var(--bg-soft);
+            background-image: radial-gradient(rgba(49, 38, 131, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .section-title-group { display: flex; flex-direction: column; align-items: center; text-align: center; width: fit-content; margin: 0 auto; }
+        .section-title-group.left { margin: 0 auto 0 0; align-items: flex-start; text-align: left; }
+        .section-eyebrow { display: block; font-family: var(--font-heading); text-transform: uppercase; font-size: clamp(0.75rem, 0.8vw, 0.85rem); font-weight: 700; color: var(--primary); letter-spacing: 2px; }
+        .section-title { font-family: var(--font-heading); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700; color: var(--primary); line-height: 1.1; text-transform: uppercase; letter-spacing: -0.5px; position: relative; margin-bottom: 0; }
+        .section-title-line { display: block; width: 100%; height: 4px; border-radius: 2px; margin-top: 20px; background: linear-gradient(to right, var(--stripe-red) 33.33%, var(--stripe-yellow) 33.33%, var(--stripe-yellow) 66.66%, var(--stripe-green) 66.66%); transform: scaleX(0); transform-origin: left; transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .is-active { opacity: 1 !important; transform: translateY(0) !important; }
+        .is-active .section-title-line { transform: scaleX(1); }
+
+        @media (max-width: 1024px) {
+            .section-title-group.left, .section-title-group.right { margin: 0 auto; align-items: center; text-align: center; }
+            .section-title-group.left .section-title-line, .section-title-group.right .section-title-line { transform-origin: center; }
+        }
+
+        /* ================================================================
+           3. HERO INTERNO (Tu componente global)
+           ================================================================ */
+        .hero-interno { position: relative; width: 100%; min-height: 60vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding-top: var(--header-h); background-color: var(--bg-main); }
+        .hero-interno__fondo { position: absolute; inset: 0; background-size: cover; background-position: center 20%; background-attachment: fixed; transform: scale(1.05); z-index: 1; }
+        .hero-interno__superposicion { position: absolute; inset: 0; background: linear-gradient(100deg, rgba(49, 38, 131, 0.92) 0%, rgba(15, 23, 42, 0.85) 50%, rgba(0,0,0,0.75) 100%); z-index: 2; }
+        .hero-interno__contenido { position: absolute; top: 55%; left: 8%; transform: translateY(-55%); width: 55%; max-width: 700px; z-index: 3; color: white; }
+        .hero-interno__contenido.hero-animar { opacity: 0; transform: translateY(calc(-55% + 40px)); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .hero-interno__contenido.hero-animar.esta-activo { opacity: 1; transform: translateY(-55%); }
+        .hero-interno .section-eyebrow { color: rgba(255, 255, 255, 0.9); }
+        .hero-interno .section-title { color: #ffffff; }
+        .hero-interno .section-title-group { display: inline-flex; flex-direction: column; align-items: flex-start; width: fit-content; }
+        .hero-interno .section-title-line { background: #ffffff; transform-origin: left; }
+        .hero-interno__contenido.esta-activo .section-title-line { transform: scaleX(1); }
+        .hero-interno__descripcion { font-family: var(--font-body); font-size: clamp(1rem, 1.1vw, 1.15rem); line-height: 1.8; color: rgba(255, 255, 255, 0.85); max-width: 700px; margin-top: 20px; }
+        @media (max-width: 1199px) { .hero-interno { min-height: 50vh; } .hero-interno__fondo { background-attachment: scroll; background-position: center center; } .hero-interno__contenido { position: relative; top: auto; left: auto; transform: none; width: 100%; max-width: 800px; margin: 0 auto; padding: 60px 6% 40px; text-align: center; } .hero-interno__contenido.hero-animar { transform: translateY(40px); } .hero-interno__contenido.hero-animar.esta-activo { transform: translateY(0); } .hero-interno .section-title-group { align-items: center; text-align: center; } .hero-interno .section-title-line { transform-origin: center; } .hero-interno__descripcion { margin-left: auto; margin-right: auto; } }
+        @media (max-width: 767px) { .hero-interno { min-height: auto; padding-top: var(--header-h-scrolled); } .hero-interno__contenido { padding: 50px 5% 40px; } }
+
+        /* ================================================================
+           4. PÁGINA CONTACTO - ESTILO BRIDA PREMIUM
+           ================================================================ */
+        .ctt-seccion {
+            padding: 100px 5% 120px 5%;
+            position: relative; overflow: hidden;
+        }
+        .ctt-contenedor { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+        .ctt-cabecera { margin-bottom: 60px; text-align: center; }
+
+        .ctt-subtitulo {
+            font-family: var(--font-body); font-size: clamp(0.9rem, 0.9vw, 1rem);
+            line-height: 1.8; color: var(--text-muted);
+            max-width: 600px; margin: 20px auto 0;
+        }
+
+        /* --- Grid de Tarjetas --- */
+        .ctt-grid {
+            display: grid; grid-template-columns: 1fr; gap: 24px;
+        }
+        @media (min-width: 768px) { .ctt-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .ctt-grid { grid-template-columns: repeat(4, 1fr); } }
+
+        /* --- Tarjeta Individual --- */
+        .ctt-tarjeta {
+            background: var(--bg-main); padding: 2.5rem 1.5rem; border-radius: 16px;
+            border: 1px solid var(--primary-border);
+            box-shadow: 0 10px 30px rgba(49, 38, 131, 0.05);
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            position: relative; overflow: hidden;
+            transition: transform 0.4s var(--header-ease), box-shadow 0.4s var(--header-ease), border-color 0.3s ease;
+        }
+
+        /* Efecto Hover Suavizado */
+        .ctt-tarjeta:hover {
+            transform: translateY(-6px); 
+            box-shadow: 0 16px 40px rgba(49, 38, 131, 0.08); 
+            border-color: var(--primary);
+        }
+
+        /* Icono Circular */
+        .ctt-icono {
+            width: 70px; height: 70px; background: var(--primary-soft); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.5rem; transition: background 0.3s ease;
+        }
+        .ctt-icono i { font-size: 1.4rem; color: var(--primary); transition: color 0.3s ease; }
+        .ctt-tarjeta:hover .ctt-icono { background: var(--primary); }
+        .ctt-tarjeta:hover .ctt-icono i { color: #ffffff; }
+
+        /* Textos (Tipografía BRIDA) */
+        .ctt-titulo {
+            font-family: var(--font-heading); 
+            font-size: clamp(1rem, 1vw, 1.1rem); 
+            font-weight: 700; color: var(--text-body); 
+            margin: 0 0 0.5rem 0; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .ctt-info {
+            font-family: var(--font-body); 
+            font-size: clamp(0.88rem, 0.9vw, 0.95rem); 
+            color: var(--text-muted); line-height: 1.7; margin: 0;
+        }
+        .ctt-info a { color: var(--text-muted); text-decoration: none; transition: color 0.3s ease; }
+        .ctt-info a:hover { color: var(--primary); }
+
+        /* Responsive Móvil */
+        @media (max-width: 767px) { 
+            .ctt-seccion { padding: 60px 4% 80px 4%; } 
+            .ctt-tarjeta { padding: 2rem 1.5rem; } 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HERO INTERNO ========== -->
+    <section class="hero-interno">
+        <div class="hero-interno__fondo" style="background-image: url('https://images.unsplash.com/photo-1581094288338-2314dddb7ece?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+        <div class="hero-interno__superposicion"></div>
+        
+        <div class="hero-interno__contenido hero-animar">
+            <div class="section-title-group">
+                <span class="section-eyebrow">Hablemos de tu Proyecto</span>
+                <h1 class="section-title">CONTACTO</h1>
+                <span class="section-title-line"></span>
+            </div>
+            <p class="hero-interno__descripcion">
+                ¿Tiene un proyecto en mente? Nuestro equipo de expertos está listo para brindarle la asesoría y soluciones de ingeniería que necesita. Conectemos.
+            </p>
+        </div>
+    </section>
+
+    <!-- ========== SECCIÓN CONTACTO ========== -->
+    <section id="ctt-contacto" class="ctt-seccion bg-soft-pattern">
+        <div class="ctt-contenedor">
+            
+            <header class="ctt-cabecera reveal-up">
+                <div class="section-title-group center">
+                    <span class="section-eyebrow">Comunicación Directa</span>
+                    <h2 class="section-title">CONECTEMOS</h2>
+                    <span class="section-title-line"></span>
+                </div>
+                <p class="ctt-subtitulo">
+                    Estamos listos para escuchar tus necesidades y ofrecer soluciones de ingeniería que transformen tus ideas en realidad.
+                </p>
+            </header>
+
+            <div class="ctt-grid">
+                <article class="ctt-tarjeta reveal-up">
+                    <div class="ctt-icono"><i class="fa-solid fa-phone"></i></div>
+                    <h3 class="ctt-titulo">Teléfono</h3>
+                    <p class="ctt-info"><a href="tel:+5914643953">+591 4-643953</a><br><a href="tel:+59176452180">+591 76452180</a></p>
+                </article>
+
+                <article class="ctt-tarjeta reveal-up">
+                    <div class="ctt-icono"><i class="fa-solid fa-envelope"></i></div>
+                    <h3 class="ctt-titulo">Email</h3>
+                    <p class="ctt-info"><a href="mailto:contacto@brida.com">contacto@brida.com</a><br><a href="mailto:proyectos@brida.com">proyectos@brida.com</a></p>
+                </article>
+
+                <article class="ctt-tarjeta reveal-up">
+                    <div class="ctt-icono"><i class="fa-solid fa-location-dot"></i></div>
+                    <h3 class="ctt-titulo">Dirección</h3>
+                    <p class="ctt-info">Calle Olaieta No. 216<br>Sucre, Bolivia</p>
+                </article>
+
+                <article class="ctt-tarjeta reveal-up">
+                    <div class="ctt-icono"><i class="fa-solid fa-clock"></i></div>
+                    <h3 class="ctt-titulo">Horario</h3>
+                    <p class="ctt-info">Lunes - Viernes: 8:00 - 18:00<br>Sábados: 8:00 - 12:00</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SCRIPTS (Simula main.js / footer.js / section-ui.js) ========== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Observador Global (Simula footer.js)
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { 
+                        entry.target.classList.add('is-active'); 
+                        revealObserver.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal-up').forEach(el => revealObserver.observe(el));
+
+            // 2. Observador Hero (Simula section-ui.js)
+            const heroContent = document.querySelector('.hero-animar');
+            if (heroContent) {
+                const heroObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) { 
+                            entry.target.classList.add('esta-activo'); 
+                            heroObserver.unobserve(entry.target); 
+                        }
+                    });
+                }, { threshold: 0.2 });
+                heroObserver.observe(heroContent);
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!-- index.html -->
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BRIDA S.R.L. - Ingeniería de Proyectos & Oil & Gas</title>
+
+    <!-- Fuentes e Iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Estilos Principales -->
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
+  <body id="page-inicio">
+    <!-- ========== HEADER (Componente — inyectado por header-menu.js) ==========
+         El menú completo vive en assets/js/components/header-menu.js.
+         Edítalo UNA vez y se actualiza en todas las páginas.
+         El estado is-active se detecta automáticamente según la URL. -->
+    <div id="header-placeholder"></div>
+
+    <!-- ========== HERO CARRUSEL ========== -->
+    <section class="ini-hero" id="ini-hero">
+      <div class="ini-hero__progress" id="ini-hero-progress"></div>
+
+      <!-- SLIDE 1 -->
+      <div class="ini-hero__slide es-activo">
+        <div
+          class="ini-hero__slide-bg"
+          style="
+            background-image: url(&quot;https://images.unsplash.com/photo-1581094288338-2314dddb7ece?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80&quot;);
+          "
+        ></div>
+        <div class="ini-hero__slide-overlay"></div>
+        <div class="ini-hero__content">
+          <h2>
+            Construcción de Obras <br />
+            Civiles y Arquitectónicas
+          </h2>
+          <p>
+            Servicios integrales de construcción de viviendas y proyectos
+            arquitectónicos con altos estándares de calidad y seguridad. Desde
+            diseño hasta puesta en marcha.
+          </p>
+          <a href="proyectos.html" class="ini-hero__btn"
+            >Ver Proyectos <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 -->
+      <div class="ini-hero__slide">
+        <div
+          class="ini-hero__slide-bg"
+          style="
+            background-image: url(&quot;https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80&quot;);
+          "
+        ></div>
+        <div class="ini-hero__slide-overlay"></div>
+        <div class="ini-hero__content">
+          <h2>
+            Tanques de Almacenamiento <br />
+            de Hidrocarburos
+          </h2>
+          <p>
+            Fabricación, instalación y mantenimiento de tanques de
+            almacenamiento. Infraestructura clave para la industria energética
+            con estándares certificados.
+          </p>
+          <a href="servicios/mecanica-metalurgia.html" class="ini-hero__btn"
+            >Más Información <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 -->
+      <div class="ini-hero__slide">
+        <div
+          class="ini-hero__slide-bg"
+          style="
+            background-image: url(&quot;https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80&quot;);
+          "
+        ></div>
+        <div class="ini-hero__slide-overlay"></div>
+        <div class="ini-hero__content">
+          <h2>
+            Estructuras Metálicas y <br />
+            Galpones Industriales
+          </h2>
+          <p>
+            Fabricación y montaje de galpones tipo parabólico, naves
+            industriales, tinglados y estructuras metálicas para todo tipo de
+            rubros.
+          </p>
+          <a href="servicios/mecanica-metalurgia.html" class="ini-hero__btn"
+            >Solicitar Cotización <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 -->
+      <div class="ini-hero__slide">
+        <div
+          class="ini-hero__slide-bg"
+          style="
+            background-image: url(&quot;https://images.unsplash.com/photo-1581092160607-ee22621dd758?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80&quot;);
+          "
+        ></div>
+        <div class="ini-hero__slide-overlay"></div>
+        <div class="ini-hero__content">
+          <h2>
+            Automatización de <br />
+            Procesos Industriales
+          </h2>
+          <p>
+            Soluciones tecnológicas avanzadas para automatización
+            electromecánica, electrónica, hidráulica y sanitaria. Mejoramos tu
+            eficiencia operativa.
+          </p>
+          <a
+            href="servicios/electricidad-automatizacion.html"
+            class="ini-hero__btn"
+            >Conocer Soluciones <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+
+      <!-- SLIDE 5 -->
+      <div class="ini-hero__slide">
+        <div
+          class="ini-hero__slide-bg"
+          style="
+            background-image: url(&quot;https://images.unsplash.com/photo-1587293852726-70cdb56c2866?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80&quot;);
+          "
+        ></div>
+        <div class="ini-hero__slide-overlay"></div>
+        <div class="ini-hero__content">
+          <h2>
+            Precomisionado y Puesta <br />
+            en Marcha de Plantas
+          </h2>
+          <p>
+            Especialistas en preparación y activación de plantas industriales.
+            Garantizamos operaciones sin fallos desde el primer día de
+            funcionamiento.
+          </p>
+          <a href="contacto.html" class="ini-hero__btn"
+            >Iniciar Proceso <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+
+      <div class="ini-hero__nav">
+        <button class="ini-hero__nav-btn" id="ini-hero-prev">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="ini-hero__nav-btn" id="ini-hero-next">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <div class="ini-hero__dots" id="ini-hero-dots"></div>
+    </section>
+
+    <!-- ========== SECCIÓN QUIENES SOMOS ========== -->
+    <section id="ini-nosotros" class="ini-nosotros bg-soft-pattern">
+      <div class="ini-nosotros__contenedor">
+        <div class="ini-nosotros__texto-col reveal-up">
+          <div class="section-title-group left">
+            <span class="section-eyebrow">Nuestra Historia</span>
+            <h2 class="section-title">QUIENES SOMOS</h2>
+            <span class="section-title-line"></span>
+          </div>
+
+          <p class="ini-nosotros__subtitulo">
+            BRIDA INGENIERÍA DE PROYECTOS – OIL & GAS ENERGÍA S.R.L.
+          </p>
+
+          <!-- Texto Escritorio -->
+          <div class="ini-nosotros__texto-escritorio">
+            <p class="ini-nosotros__descripcion">
+              Nos distinguimos por la
+              <strong class="ini-nosotros__resaltado"
+                >excelencia y confiabilidad</strong
+              >
+              de nuestras obras, donde el
+              <strong class="ini-nosotros__resaltado"
+                >cumplimiento de plazos</strong
+              >
+              y la <strong class="ini-nosotros__resaltado">calidad</strong> de
+              los compromisos asumidos son la base de nuestro éxito y constante
+              crecimiento.
+            </p>
+            <p class="ini-nosotros__descripcion">
+              Nuestra <strong class="ini-nosotros__resaltado">visión</strong> es
+              ser
+              <strong class="ini-nosotros__resaltado"
+                >líderes en ingeniería, provisión, construcción y
+                ejecución</strong
+              >
+              de proyectos de obras civiles, mecánicas, eléctricas y de
+              instrumentación industrial.
+            </p>
+            <p class="ini-nosotros__descripcion">
+              Implementamos un
+              <strong class="ini-nosotros__resaltado"
+                >Sistema Integrado de Gestión de Calidad, Seguridad y Salud
+                Ocupacional</strong
+              >, basado en normas ISO, garantizando trazabilidad y resultados
+              óptimos.
+            </p>
+
+            <div class="ini-nosotros__cta-escritorio">
+              <a href="quienes-somos.html" class="ini-nosotros__cta-btn">
+                Conoce Nuestra Historia <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Texto Móvil / iPad -->
+          <div class="ini-nosotros__texto-movil">
+            <ul class="ini-nosotros__lista-resaltados">
+              <li><strong>Excelencia y confiabilidad</strong> en cada obra.</li>
+              <li>
+                <strong>Cumplimiento de plazos</strong> y calidad garantizada.
+              </li>
+              <li>
+                Visión de <strong>Liderazgo en ingeniería</strong> y ejecución.
+              </li>
+              <li>
+                <strong>Sistema de Gestión ISO</strong> (Calidad y Seguridad).
+              </li>
+            </ul>
+
+            <div
+              class="ini-nosotros__detalles-movil"
+              id="ini-nosotros-detalles"
+            >
+              <p class="ini-nosotros__descripcion">
+                Nos distinguimos por la excelencia y confiabilidad de nuestras
+                obras, donde el cumplimiento de plazos y la calidad son la base
+                de nuestro éxito. Nuestra visión es ser líderes en ingeniería y
+                ejecución de proyectos. Implementamos un Sistema de Gestión ISO
+                que garantiza resultados óptimos.
+              </p>
+            </div>
+
+            <div class="ini-nosotros__acciones-movil">
+              <button class="ini-nosotros__leer-mas" id="ini-nosotros-leer-mas">
+                Leer más <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <a href="quienes-somos.html" class="ini-nosotros__cta-btn">
+                Conoce Más <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: IMÁGENES -->
+        <div class="ini-nosotros__imagenes-col">
+          <div
+            class="ini-nosotros__tarjeta ini-nosotros__tarjeta--principal reveal-up"
+          >
+            <img
+              src="assets/img/inicio/about-1.jpg"
+              alt="Reunión estratégica BRIDA"
+            />
+            <div class="ini-nosotros__insignia">
+              <span class="ini-nosotros__insignia-numero">9</span>
+              <span class="ini-nosotros__insignia-texto">AÑOS DE EXP.</span>
+            </div>
+          </div>
+          <div class="ini-nosotros__tarjeta reveal-up">
+            <img src="assets/img/inicio/about-2.jpg" alt="Detalle de planos" />
+          </div>
+          <div class="ini-nosotros__tarjeta reveal-up">
+            <img
+              src="assets/img/inicio/about-3.jpg"
+              alt="Supervisión en obra"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECCIÓN SERVICIOS ========== -->
+    <section id="ini-servicios" class="ini-servicios bg-soft-pattern">
+      <div
+        class="ini-servicios__destello ini-servicios__destello--1"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="ini-servicios__destello ini-servicios__destello--2"
+        aria-hidden="true"
+      ></div>
+
+      <div class="ini-servicios__contenedor">
+        <header class="section-header reveal-up">
+          <div class="section-title-group center">
+            <span class="section-eyebrow"
+              >Servicios profesionales a medida</span
+            >
+            <h2 class="section-title">NUESTROS SERVICIOS</h2>
+            <span class="section-title-line"></span>
+          </div>
+        </header>
+
+        <div class="ini-servicios__grid" role="list">
+          <!-- Servicio 1 -->
+          <article class="ini-servicios__tarjeta" role="listitem">
+            <div class="ini-servicios__icono">
+              <i class="fa-solid fa-compass-drafting"></i>
+            </div>
+            <h3 class="ini-servicios__titulo">Ingeniería & Consultoría</h3>
+            <p class="ini-servicios__descripcion">
+              Diseño e ingeniería de obras civiles, mecánicas y eléctricas.
+              Consultoría, asesoría técnica e inspección especializada en el
+              rubro petrolero e industrial.
+            </p>
+            <a
+              href="servicios/ingenieria-consultoria.html"
+              class="ini-servicios__enlace"
+              >Conocer más <i class="fa-solid fa-arrow-right"></i
+            ></a>
+          </article>
+
+          <!-- Servicio 2 -->
+          <article class="ini-servicios__tarjeta" role="listitem">
+            <div class="ini-servicios__icono">
+              <i class="fa-solid fa-hard-hat"></i>
+            </div>
+            <h3 class="ini-servicios__titulo">Obras Civiles & Construcción</h3>
+            <p class="ini-servicios__descripcion">
+              Construcción de obras civiles en general, proyectos
+              arquitectónicos, reparaciones y movimientos de tierras. Caminos y
+              planchadas para la industria.
+            </p>
+            <a href="#" class="ini-servicios__enlace"
+              >Conocer más <i class="fa-solid fa-arrow-right"></i
+            ></a>
+          </article>
+
+          <!-- Servicio 3 -->
+          <article class="ini-servicios__tarjeta" role="listitem">
+            <div class="ini-servicios__icono">
+              <i class="fa-solid fa-cogs"></i>
+            </div>
+            <h3 class="ini-servicios__titulo">Mecánica & Metalurgia</h3>
+            <p class="ini-servicios__descripcion">
+              Estructuras metálicas, galpones y naves industriales. Fabricación
+              y mantenimiento de tanques de hidrocarburos. Inspección y
+              soldadura certificada.
+            </p>
+            <a href="#" class="ini-servicios__enlace"
+              >Conocer más <i class="fa-solid fa-arrow-right"></i
+            ></a>
+          </article>
+
+          <!-- Servicio 4 -->
+          <article class="ini-servicios__tarjeta" role="listitem">
+            <div class="ini-servicios__icono">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <h3 class="ini-servicios__titulo">Electricidad & Automatización</h3>
+            <p class="ini-servicios__descripcion">
+              Obras eléctricas, instrumentación y automatización industrial.
+              Trabajos de baja, media y alta tensión. Montaje electromecánico de
+              subestaciones.
+            </p>
+            <a href="#" class="ini-servicios__enlace"
+              >Conocer más <i class="fa-solid fa-arrow-right"></i
+            ></a>
+          </article>
+
+          <!-- Servicio 5 -->
+          <article class="ini-servicios__tarjeta" role="listitem">
+            <div class="ini-servicios__icono">
+              <i class="fa-solid fa-fire-flame-simple"></i>
+            </div>
+            <h3 class="ini-servicios__titulo">Infraestructura Gas & Datos</h3>
+            <p class="ini-servicios__descripcion">
+              Mantenimiento y tendido de líneas de gas (baja y alta presión).
+              Instalación de redes y acometidas. Provisión y tendido de fibra
+              óptica.
+            </p>
+            <a href="#" class="ini-servicios__enlace"
+              >Conocer más <i class="fa-solid fa-arrow-right"></i
+            ></a>
+          </article>
+
+          <!-- Servicio 6 -->
+          <article class="ini-servicios__tarjeta" role="listitem">
+            <div class="ini-servicios__icono">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 class="ini-servicios__titulo">Seguridad & Servicios</h3>
+            <p class="ini-servicios__descripcion">
+              Tendido de redes contra incendio para plantas y edificios.
+              Provisión de personal calificado y técnico. Importación y
+              representación de maquinaria.
+            </p>
+            <a href="#" class="ini-servicios__enlace"
+              >Conocer más <i class="fa-solid fa-arrow-right"></i
+            ></a>
+          </article>
+
+          <!-- Botón Final -->
+          <div class="ini-servicios__cta-final">
+            <a href="servicios.html" class="btn-primary-pill"
+              >Ver todos los servicios <i class="fa-solid fa-arrow-right"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECCIÓN FRASES Y VALORES ========== -->
+    <section id="ini-valores" class="ini-valores">
+      <div class="ini-valores__superposicion"></div>
+
+      <!-- Botones de Navegación (Flechas) - Solo visibles en Escritorio -->
+      <button
+        class="ini-valores__btn-nav ini-valores__btn-nav--prev"
+        id="ini-valores-btn-prev"
+        aria-label="Frase anterior"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <button
+        class="ini-valores__btn-nav ini-valores__btn-nav--next"
+        id="ini-valores-btn-next"
+        aria-label="Siguiente frase"
+      >
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+      <div class="ini-valores__contenedor reveal-up">
+        <!-- Título Reutilizable -->
+        <div class="section-title-group center">
+          <span class="section-eyebrow">Filosofía de Trabajo</span>
+          <h2 class="section-title">NUESTROS VALORES</h2>
+          <span class="section-title-line"></span>
+        </div>
+
+        <!-- Carrusel de Frases -->
+        <div class="ini-valores__carrusel" id="ini-valores-carrusel">
+          <!-- Diapositiva 1 -->
+          <div class="ini-valores__diapositiva es-activo">
+            <p class="ini-valores__subtitulo">Compromiso y Cumplimiento</p>
+            <p class="ini-valores__texto">
+              "En BRIDA, la formalidad y la puntualidad son la base de cada
+              proyecto. Brindamos soluciones serias y oportunas para el sector
+              petrolero e industrial, cumpliendo con los plazos y presupuestos
+              establecidos desde el inicio."
+            </p>
+          </div>
+
+          <!-- Diapositiva 2 -->
+          <div class="ini-valores__diapositiva">
+            <p class="ini-valores__subtitulo">Calidad y Mejora Continua</p>
+            <p class="ini-valores__texto">
+              "Nuestro compromiso con la calidad nos impulsa a superar
+              estándares. Con un Sistema Integrado de Gestión basado en normas
+              ISO, garantizamos obras confiables, seguras y con trazabilidad
+              total en cada etapa."
+            </p>
+          </div>
+
+          <!-- Diapositiva 3 -->
+          <div class="ini-valores__diapositiva">
+            <p class="ini-valores__subtitulo">Liderazgo y Visión de Futuro</p>
+            <p class="ini-valores__texto">
+              "Líderes en ingeniería, construcción y automatización para Oil &
+              Gas, energía e industria. Afrontamos los retos más exigentes con
+              excelencia, innovación y respeto por el medio ambiente y la
+              seguridad."
+            </p>
+          </div>
+        </div>
+
+        <!-- Puntos de navegación generados por JS -->
+        <div class="ini-valores__puntos" id="ini-valores-puntos"></div>
+      </div>
+    </section>
+
+    <!-- ========== SECCIÓN PROYECTOS ========== -->
+
+    <section id="ini-proy" class="ini-proy">
+      <div class="ini-proy__contenedor">
+        <!-- Título Reutilizable -->
+        <div
+          class="section-title-group center reveal-up"
+          style="margin-bottom: 40px"
+        >
+          <span class="section-eyebrow">Portafolio de Obras</span>
+          <h2 class="section-title">ÚLTIMOS PROYECTOS</h2>
+          <span class="section-title-line"></span>
+        </div>
+
+        <!-- Filtros -->
+        <nav class="ini-proy__filtros" id="ini-proy-filtros">
+          <button class="ini-proy__filtro-btn es-activo" data-filter="all">
+            Todos
+          </button>
+          <button class="ini-proy__filtro-btn" data-filter="Construcción">
+            Construcción
+          </button>
+          <button class="ini-proy__filtro-btn" data-filter="Oil & Gas">
+            Oil & Gas
+          </button>
+          <button class="ini-proy__filtro-btn" data-filter="Ingeniería">
+            Ingeniería
+          </button>
+          <button class="ini-proy__filtro-btn" data-filter="Infraestructura">
+            Infraestructura
+          </button>
+        </nav>
+
+        <!-- Grid Proyectos -->
+        <div class="ini-proy__grid" id="ini-proy-grid"></div>
+
+        <!-- Paginación -->
+        <div class="ini-proy__paginacion" id="ini-proy-paginacion">
+          <button class="ini-proy__pagina-btn" id="ini-proy-prev-btn">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <span class="ini-proy__pagina-numeros" id="ini-proy-numeros"></span>
+          <button class="ini-proy__pagina-btn" id="ini-proy-next-btn">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Modal Proyectos (Fuera del flujo principal) -->
+    <div class="ini-proy-modal__fondo" id="ini-proy-modal">
+      <div class="ini-proy-modal__tarjeta">
+        <button class="ini-proy-modal__cerrar" id="ini-proy-modal-cerrar">
+          &times;
+        </button>
+        <div class="ini-proy-modal__cuerpo">
+          <div class="ini-proy-modal__visual">
+            <img
+              src=""
+              alt=""
+              class="ini-proy-modal__img"
+              id="ini-proy-modal-img"
+            />
+            <div class="ini-proy-modal__insignia" id="ini-proy-modal-insignia">
+              Categoría
+            </div>
+          </div>
+          <div class="ini-proy-modal__info">
+            <h2 class="ini-proy-modal__titulo" id="ini-proy-modal-titulo">
+              Título Proyecto
+            </h2>
+            <div class="ini-proy-modal__meta-grid">
+              <div class="ini-proy-modal__meta-item">
+                <span class="ini-proy-modal__meta-label">Cliente</span
+                ><span
+                  class="ini-proy-modal__meta-valor"
+                  id="ini-proy-modal-cliente"
+                  ><i class="fa-solid fa-building"></i> <span></span
+                ></span>
+              </div>
+              <div class="ini-proy-modal__meta-item">
+                <span class="ini-proy-modal__meta-label">Ubicación</span
+                ><span
+                  class="ini-proy-modal__meta-valor"
+                  id="ini-proy-modal-ubicacion"
+                  ><i class="fa-solid fa-location-dot"></i> <span></span
+                ></span>
+              </div>
+              <div class="ini-proy-modal__meta-item">
+                <span class="ini-proy-modal__meta-label">Año</span
+                ><span
+                  class="ini-proy-modal__meta-valor"
+                  id="ini-proy-modal-anio"
+                  ><i class="fa-solid fa-calendar"></i> <span></span
+                ></span>
+              </div>
+              <div class="ini-proy-modal__meta-item">
+                <span class="ini-proy-modal__meta-label">Estado</span
+                ><span
+                  class="ini-proy-modal__meta-valor"
+                  id="ini-proy-modal-estado"
+                  ><i class="fa-solid fa-circle-notch"></i> <span></span
+                ></span>
+              </div>
+            </div>
+            <p class="ini-proy-modal__desc" id="ini-proy-modal-desc">
+              Descripción del proyecto...
+            </p>
+            <a href="proyectos.html" class="ini-proy-modal__cta"
+              >Ver Detalles Completos <i class="fa-solid fa-arrow-right"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== SECCIÓN CONTACTO CTA (Global) ========== -->
+    <section id="contacto-cta" class="contacto-cta">
+      <div class="contacto-cta__contenedor">
+        <div class="contacto-cta__grid">
+          <!-- Panel Izquierdo (Título + Textos) -->
+          <div class="contacto-cta__panel-izq reveal-up">
+            <!-- Título Reutilizable (Alineado a la izquierda en desktop) -->
+            <div class="section-title-group left">
+              <span class="section-eyebrow">Contacto Directo</span>
+              <h2 class="section-title">SOLICITE UNA ASESORÍA</h2>
+              <span class="section-title-line"></span>
+            </div>
+
+            <p class="contacto-cta__descripcion">
+              <strong>Obtenga la asesoría que su proyecto necesita</strong>
+              contactando a uno de nuestros consultores expertos en
+              automatización y procesos industriales.
+            </p>
+          </div>
+
+          <!-- Panel Derecho (Tarjetas) -->
+          <div class="contacto-cta__panel-der">
+            <!-- Tarjeta WhatsApp -->
+            <a
+              href="https://wa.me/521234567890?text=Hola,%20me%20gustaría%20solicitar%20una%20asesoría"
+              class="contacto-cta__tarjeta"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Contactar por WhatsApp"
+            >
+              <div class="contacto-cta__icono">
+                <i class="fa-brands fa-whatsapp"></i>
+              </div>
+              <div class="contacto-cta__contenido">
+                <span class="contacto-cta__etiqueta">Respuesta Inmediata</span>
+                <span class="contacto-cta__titulo">WhatsApp</span>
+              </div>
+              <i class="fa-solid fa-arrow-right contacto-cta__flecha"></i>
+            </a>
+
+            <!-- Tarjeta Zoom -->
+            <a
+              href="#contacto"
+              class="contacto-cta__tarjeta"
+              aria-label="Agendar reunión por Zoom"
+            >
+              <div class="contacto-cta__icono">
+                <i class="fa-solid fa-video"></i>
+              </div>
+              <div class="contacto-cta__contenido">
+                <span class="contacto-cta__etiqueta">Agende su Cita</span>
+                <span class="contacto-cta__titulo">Reunión por Zoom</span>
+              </div>
+              <i class="fa-solid fa-arrow-right contacto-cta__flecha"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer-brida" id="main-footer">
+      <div class="footer-brida__container">
+        <div class="footer-brida__grid">
+          <!-- COLUMNA 1: MARCA -->
+          <div class="footer-brida__col footer-brida__col--brand reveal-up">
+            <div class="footer-brida__logo-box">
+              <img
+                src="assets/img/icons/logo-brida.png"
+                alt="BRIDA Logo"
+                class="footer-brida__logo-img"
+              />
+            </div>
+            <p class="footer-brida__desc">
+              Empresa de ingeniería con amplia experiencia en organización,
+              planificación y ejecución de proyectos industriales. Especialistas
+              en el sector de Oil & Gas.
+            </p>
+            <div class="footer-brida__socials">
+              <a
+                href="https://www.facebook.com/bridabolivia?locale=es_LA"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-brida__social-link"
+                aria-label="Facebook"
+                ><i class="fa-brands fa-facebook-f"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/brida_ingdeproyectossrl/?hl=es"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-brida__social-link"
+                aria-label="Instagram"
+                ><i class="fa-brands fa-instagram"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@bridabolivia"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-brida__social-link"
+                aria-label="TikTok"
+                ><i class="fa-brands fa-tiktok"></i
+              ></a>
+              <a
+                href="#"
+                class="footer-brida__social-link"
+                aria-label="LinkedIn"
+                ><i class="fa-brands fa-linkedin-in"></i
+              ></a>
+              <a
+                href="https://wa.me/59176644531"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-brida__social-link"
+                aria-label="WhatsApp"
+                ><i class="fa-brands fa-whatsapp"></i
+              ></a>
+            </div>
+          </div>
+          <!-- COLUMNA 2: INFORMACIÓN -->
+          <div class="footer-brida__col reveal-up">
+            <h3 class="footer-brida__title">Información</h3>
+            <ul class="footer-brida__list">
+              <li class="footer-brida__item">
+                <a href="quienes-somos.html" class="footer-brida__link"
+                  >Empresa</a
+                >
+              </li>
+              <li class="footer-brida__item">
+                <a href="servicios.html" class="footer-brida__link"
+                  >Servicios</a
+                >
+              </li>
+              <li class="footer-brida__item">
+                <a href="proyectos.html" class="footer-brida__link"
+                  >Proyectos</a
+                >
+              </li>
+              <li class="footer-brida__item">
+                <a href="contacto.html" class="footer-brida__link">Contacto</a>
+              </li>
+            </ul>
+          </div>
+          <!-- COLUMNA 3: DIRECCIÓN -->
+          <div class="footer-brida__col reveal-up">
+            <h3 class="footer-brida__title">Contacto</h3>
+            <ul class="footer-brida__list footer-brida__list--contact">
+              <li class="footer-brida__contact-item">
+                <i class="fa-solid fa-location-dot footer-brida__icon"></i>
+                <!-- 📍 Dirección sincronizada con la del mapa -->
+                <div class="footer-brida__text">
+                  <strong>Oficina Principal</strong>Galaxia 499<br />Santa Cruz,
+                  Bolivia
+                </div>
+              </li>
+              <li class="footer-brida__contact-item">
+                <i class="fa-solid fa-phone footer-brida__icon"></i>
+                <div class="footer-brida__text">
+                  <!-- 📞 Número actualizado con enlace WhatsApp -->
+                  <a
+                    href="https://wa.me/59176644531"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="footer-brida__text-link"
+                    >+591 76644531</a
+                  >
+                </div>
+              </li>
+              <li class="footer-brida__contact-item">
+                <i class="fa-solid fa-envelope footer-brida__icon"></i>
+                <!-- 📧 Correo actualizado -->
+                <div class="footer-brida__text">
+                  <a
+                    href="mailto:bridabolivia@gmail.com"
+                    class="footer-brida__text-link"
+                    >bridabolivia@gmail.com</a
+                  >
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- COLUMNA 4: HORARIO -->
+          <div class="footer-brida__col reveal-up">
+            <h3 class="footer-brida__title">Horario</h3>
+            <ul class="footer-brida__list footer-brida__list--schedule">
+              <li class="footer-brida__schedule-item">
+                <span class="footer-brida__day">Lunes - Viernes</span>
+                <span class="footer-brida__time">8:00 AM - 6:00 PM</span>
+              </li>
+              <li class="footer-brida__schedule-item">
+                <span class="footer-brida__day">Sábado</span>
+                <span class="footer-brida__time">8:00 AM - 12:00 PM</span>
+              </li>
+              <li
+                class="footer-brida__schedule-item footer-brida__schedule-item--closed"
+              >
+                <span class="footer-brida__day">Domingo</span>
+                <span class="footer-brida__time">Cerrado</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-brida__bottom reveal-up">
+          <!-- 📅 Año actualizado -->
+          <p class="footer-brida__copy">
+            &copy; 2025 <a href="index.html">BRIDA s.r.l.</a> Todos los derechos
+            reservados.
+          </p>
+          <div class="footer-brida__legal"></div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script type="module" src="assets/js/main.js"></script>
+  </body>
+</html>

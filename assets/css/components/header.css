@@ -1,0 +1,486 @@
+/* ════════════════════════════════════════════════════════════════
+   GUÍA DE ESTILOS — HEADER Y MENÚS (BRIDA S.R.L.)
+   Archivo: assets/css/header.css
+   ════════════════════════════════════════════════════════════════
+   ⚠️ DEPENDENCIA GLOBAL: --header-h, --header-h-scrolled y
+   --header-ease están DEFINIDAS en variables.css (las consumen
+   también section-ui.css y otros componentes). Este archivo solo
+   las SOBRESCRIBE dentro de sus media queries — nunca definirlas
+   de nuevo en el :root de aquí.
+
+   MAPA DEL ARCHIVO:
+   01. Variables exclusivas del header (logo, tipografías de menús)
+   02. Header base (transparente → scrolled → menu-open)
+   03. Logo
+   04. Enlaces de escritorio
+   05. Disparador "Servicios" (botón, no enlace)
+   06. Botón hamburguesa
+   07. MEGA MENÚ de tarjetas horizontales (escritorio)
+   08. Menú móvil / tablet (overlay + acordeón + redes expandidas)
+   09. Optimización táctil
+   10. Responsive engine (laptops / tablets / smartphones)
+   11. Accesibilidad — movimiento reducido
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ────────────────────────────────────────────────────────────────
+   01. VARIABLES EXCLUSIVAS DEL HEADER
+   Solo lo que NO vive en variables.css: tamaño del logo y las
+   escalas tipográficas de los tres niveles de menú (escritorio,
+   dropdown y móvil). Los tamaños fluyen vía clamp().
+   ──────────────────────────────────────────────────────────────── */
+:root {
+    --logo-h: 58px;
+    --nav-font-min: 12.5px; --nav-font-max: 14px; --nav-font-preferred: 0.75vw;
+    --dropdown-font-min: 12px; --dropdown-font-max: 13px; --dropdown-font-preferred: 0.7vw;
+    --mobile-nav-font-min: 18px; --mobile-nav-font-max: 20px; --mobile-nav-font-preferred: 4.5vw;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   02. HEADER BASE
+   QUÉ HACE: transparente sobre el hero; al hacer scroll (>50px,
+            clase .scrolled por header-menu.js) pasa a blanco con
+            blur y muestra la franja tricolor. Con el menú móvil
+            abierto (.menu-open) se fuerza blanco para legibilidad.
+   ──────────────────────────────────────────────────────────────── */
+#main-header {
+    position: fixed; top: 0; left: 0; width: 100%; height: var(--header-h);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 var(--pad-x-compacto); /* 4% — token lateral */
+    z-index: 1000;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: all 0.4s var(--header-ease);
+}
+
+/* Franja tricolor (identidad boliviana del logo) — visible al scroll */
+#main-header::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
+    background: linear-gradient(to right, var(--stripe-red) 33%, var(--stripe-yellow) 33%, var(--stripe-yellow) 66%, var(--stripe-green) 66%);
+    opacity: 0; transition: opacity 0.3s ease;
+}
+
+/* ESTADO: con scroll → fondo blanco                               */
+#main-header.scrolled {
+    background: rgba(250, 250, 254, 0.98);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom-color: var(--primary-border);
+    box-shadow: 0 4px 20px rgba(49, 38, 131, 0.06);
+    height: var(--header-h-scrolled);
+}
+#main-header.scrolled::after { opacity: 1; }
+
+/* ESTADO: menú móvil abierto → fondo blanco forzado               */
+#main-header.menu-open {
+    background: rgba(250, 250, 254, 0.98);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+#main-header.menu-open .icono-hamburguesa { color: var(--primary); }
+#main-header.menu-open .header-logo-imagen { filter: brightness(1) invert(0); }
+
+
+/* ────────────────────────────────────────────────────────────────
+   03. LOGO
+   ──────────────────────────────────────────────────────────────── */
+.header-logo-caja { display: flex; align-items: center; z-index: 1001; transition: transform 0.3s ease; }
+.header-logo-caja:hover { transform: translateY(-2px); }
+.header-logo-imagen {
+    height: var(--logo-h); width: auto; max-width: 200px;
+    object-fit: contain; transition: all 0.4s var(--header-ease);
+}
+#main-header.scrolled .header-logo-imagen { filter: brightness(1) invert(0); }
+
+
+/* ────────────────────────────────────────────────────────────────
+   04. ENLACES DE ESCRITORIO
+   ──────────────────────────────────────────────────────────────── */
+.menu-escritorio-contenedor { display: flex; align-items: center; }
+.menu-escritorio-lista { display: flex; gap: var(--sp-3); align-items: center; }
+.menu-escritorio-item { position: relative; }
+.menu-escritorio-item.tiene-submenu { position: static; }
+
+.menu-escritorio-enlace {
+    font-family: var(--font-heading);
+    font-size: clamp(var(--nav-font-min), var(--nav-font-preferred), var(--nav-font-max));
+    font-weight: 700; color: #ffffff; text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 8px 0;
+    position: relative; transition: color 0.3s ease;
+    text-decoration: none;
+}
+.menu-escritorio-enlace:hover, .menu-escritorio-enlace.is-active { color: var(--bg-soft); }
+.menu-escritorio-enlace::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px; background-color: #ffffff;
+    transition: width 0.3s ease;
+}
+.menu-escritorio-enlace:hover::after { width: 100%; }
+
+/* Puente invisible bajo el ítem con submenú: evita que el mega
+   menú se cierre al mover el cursor del enlace hacia el panel     */
+.tiene-submenu > .menu-escritorio-enlace::before {
+    content: ''; position: absolute; bottom: -10px; left: -10px; right: -10px;
+    height: 20px; z-index: 998;
+}
+
+/* Colores al hacer scroll                                         */
+#main-header.scrolled .menu-escritorio-enlace { color: var(--text-body); }
+#main-header.scrolled .menu-escritorio-enlace:hover,
+#main-header.scrolled .menu-escritorio-enlace.is-active { color: var(--primary); }
+#main-header.scrolled .menu-escritorio-enlace::after { background-color: var(--primary); }
+
+
+/* ────────────────────────────────────────────────────────────────
+   05. DISPARADOR "SERVICIOS" (botón, no enlace)
+   QUÉ ES:  botón que abre/cierra el mega menú; NUNCA navega.
+   QUÉ HACE: hereda el estilo visual de los enlaces (los <button>
+            no heredan tipografía por defecto → se re-declara) y
+            se le quita el subrayado animado (::after) para no
+            parecer navegación. El chevron rota al abrir el menú
+            (hover o teclado) como feedback de desplegable.
+   ──────────────────────────────────────────────────────────────── */
+.menu-escritorio-enlace.menu-escritorio-disparador {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px 0;
+    font-family: var(--font-heading);
+    font-size: clamp(var(--nav-font-min), var(--nav-font-preferred), var(--nav-font-max));
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+#main-header.scrolled .menu-escritorio-enlace.menu-escritorio-disparador { color: var(--text-body); }
+
+/* Sin subrayado animado: no es un enlace de navegación            */
+.menu-escritorio-enlace.menu-escritorio-disparador::after { display: none; }
+
+/* Chevron rotatorio (feedback de desplegable)                     */
+.menu-escritorio-disparador i { font-size: 9px; margin-left: 4px; transition: transform 0.3s ease; }
+.menu-escritorio-item:hover .menu-escritorio-disparador i,
+.menu-escritorio-item:focus-within .menu-escritorio-disparador i { transform: rotate(180deg); }
+
+
+/* ────────────────────────────────────────────────────────────────
+   06. BOTÓN HAMBURGUESA
+   ──────────────────────────────────────────────────────────────── */
+.boton-toggle-movil { display: none; background: transparent; border: none; cursor: pointer; z-index: 1002; }
+.icono-hamburguesa { font-size: 22px; color: #ffffff; transition: color 0.3s ease; }
+#main-header.scrolled .icono-hamburguesa { color: var(--primary); }
+
+
+/* ────────────────────────────────────────────────────────────────
+   07. MEGA MENÚ DE TARJETAS HORIZONTALES (solo escritorio)
+   QUÉ ES:  panel desplegable con las 6 líneas de servicio como
+            TARJETAS HORIZONTALES en grid 2×3.
+   ESTRUCTURA INTERNA (2 columnas por tarjeta):
+            Columna 1 → icono de la categoría (fijo, centrado).
+            Columna 2 → nombre + descripción breve.
+   APERTURA: por hover (.menu-escritorio-item:hover) y por teclado
+            (:focus-within — Tab al disparador la abre y se mantiene
+            mientras el foco recorre las tarjetas).
+   ──────────────────────────────────────────────────────────────── */
+.submenu-desplegable-caja {
+    position: absolute; left: 0; right: 0; margin: 0 auto;
+    width: 90vw; max-width: 1080px;
+    padding: var(--sp-3) var(--sp-4);
+    top: calc(100% + 5px);
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 12px var(--sp-2);
+    opacity: 0; visibility: hidden; transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 999;
+    background: var(--bg-soft);
+    border-top: 3px solid var(--primary);
+    border-bottom: 1px solid var(--primary-border);
+    box-shadow: 0 25px 60px rgba(49, 38, 131, 0.12);
+    border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+}
+/* Apertura por hover                                              */
+.menu-escritorio-item:hover > .submenu-desplegable-caja {
+    opacity: 1; visibility: visible; transform: translateY(0);
+}
+/* Apertura por teclado (Tab): se mantiene con el foco dentro      */
+.menu-escritorio-item:focus-within > .submenu-desplegable-caja {
+    opacity: 1; visibility: visible; transform: translateY(0);
+}
+
+/* Columna = envoltorio de cada tarjeta (el dimming opera aquí,
+   coordinado con header-menu.js que busca .submenu-columna)       */
+.submenu-columna { display: flex; transition: opacity 0.3s ease; }
+.submenu-desplegable-caja.has-dimming .submenu-columna { opacity: 0.4; }
+.submenu-desplegable-caja.has-dimming .submenu-columna.is-focused { opacity: 1; }
+
+/* ── TARJETA HORIZONTAL ──────────────────────────────────────────
+   QUÉ HACE: 2 columnas internas via flex: icono (columna fija a
+            la izquierda) + contenido (nombre + descripción, a la
+            derecha). Estado neutro limpio; al hover gana fondo
+            blanco, borde acentuado, elevación e icono morado.     */
+.mega-tarjeta {
+    display: flex; align-items: center; gap: 14px;
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: transparent;
+    text-decoration: none;
+    transition: transform 0.3s var(--header-ease), background-color 0.3s ease,
+                border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.mega-tarjeta:hover,
+.mega-tarjeta:focus-visible {
+    background: var(--bg-main);
+    border-color: var(--primary-border);
+    box-shadow: 0 10px 26px rgba(49, 38, 131, 0.09);
+    transform: translateY(-3px);
+}
+.mega-tarjeta:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+/* COLUMNA 1: icono de la categoría (tamaño fijo)                  */
+.mega-tarjeta-icono {
+    width: 46px; height: 46px; border-radius: 12px;
+    background: var(--primary-soft); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.05rem;
+    flex-shrink: 0; /* mantiene su columna en cualquier ancho */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.mega-tarjeta:hover .mega-tarjeta-icono {
+    background: var(--primary); color: #fff;
+}
+
+/* COLUMNA 2: contenido (nombre + descripción apilados)            */
+.mega-tarjeta-contenido {
+    display: flex; flex-direction: column; gap: var(--sp-1);
+    min-width: 0; /* permite que el texto trunque con elegancia */
+}
+.mega-tarjeta-nombre {
+    font-family: var(--font-heading);
+    font-size: 0.88rem; font-weight: 700;
+    color: var(--text-body);
+    line-height: 1.25;
+    transition: color 0.3s ease;
+}
+.mega-tarjeta:hover .mega-tarjeta-nombre { color: var(--primary); }
+.mega-tarjeta-descripcion {
+    font-family: var(--font-body);
+    font-size: clamp(var(--dropdown-font-min), var(--dropdown-font-preferred), var(--dropdown-font-max));
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   08. MENÚ MÓVIL / TABLET (overlay + acordeón + redes expandidas)
+   ──────────────────────────────────────────────────────────────── */
+.menu-movil-overlay {
+    position: fixed; inset: 0;
+    background-color: var(--bg-soft);
+    z-index: 1000;
+    display: flex; flex-direction: column;
+    opacity: 0; visibility: hidden; transform: translateY(-20px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.menu-movil-overlay.is-active { opacity: 1; visibility: visible; transform: translateY(0); }
+
+.boton-cerrar-movil {
+    position: absolute; top: 25px; right: 25px;
+    font-size: 28px; color: var(--primary);
+    background: transparent; border: none; cursor: pointer; z-index: 10;
+}
+
+.menu-movil-lista {
+    flex: 1;
+    margin: auto 0;
+    width: 100%;
+    padding: 80px 6% 20px;
+    text-align: center;
+    overflow-y: auto;
+}
+
+/* Ítems con entrada escalonada al abrir el overlay                */
+.menu-movil-item {
+    margin: 0; opacity: 0; transform: translateY(20px);
+    transition: all 0.4s ease;
+    border-bottom: 1px solid var(--primary-border);
+}
+.menu-movil-overlay.is-active .menu-movil-item { opacity: 1; transform: translateY(0); }
+.menu-movil-item:nth-child(1) { transition-delay: 0.1s; }
+.menu-movil-item:nth-child(2) { transition-delay: 0.15s; }
+.menu-movil-item:nth-child(3) { transition-delay: 0.2s; }
+.menu-movil-item:nth-child(4) { transition-delay: 0.25s; }
+.menu-movil-item:nth-child(5) { transition-delay: 0.3s; }
+
+.menu-movil-enlace {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 0;
+    font-family: var(--font-heading); font-weight: 700;
+    font-size: clamp(var(--mobile-nav-font-min), var(--mobile-nav-font-preferred), var(--mobile-nav-font-max));
+    color: var(--text-body); text-transform: uppercase; letter-spacing: 1px;
+    cursor: pointer; transition: color 0.3s ease;
+    text-decoration: none;
+}
+.menu-movil-item.is-active > .menu-movil-enlace { color: var(--primary); }
+
+/* Sublista desplegable (acordeón; altura animada por
+   header-menu.js)                                                 */
+.menu-movil-sublista {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s ease;
+    background-color: var(--bg-main);
+}
+.menu-movil-subenlace {
+    display: block;
+    padding: 12px 20px;
+    color: var(--text-muted);
+    font-family: var(--font-body); font-size: 0.9rem;
+    border-bottom: 1px solid var(--primary-border);
+    transition: color 0.3s ease, background-color 0.3s ease;
+    text-decoration: none;
+}
+.icono-flecha-dropdown-movil { transition: transform 0.3s ease; color: var(--primary); font-size: 14px; }
+.menu-movil-item.is-active .icono-flecha-dropdown-movil { transform: rotate(180deg); }
+
+/* ── REDES SOCIALES EXPANDIDAS ───────────────────────────────────
+   QUÉ ES:  bloque de contacto al pie del menú móvil.
+   ESTRUCTURA: fila de 5 iconos (WhatsApp, Facebook, Instagram,
+            LinkedIn, TikTok) + correo como enlace dedicado con
+            texto debajo (el email es largo: como texto dedicado
+            no satura la fila y es más fácil de tocar).
+   ──────────────────────────────────────────────────────────────── */
+.menu-movil-sociales {
+    flex-shrink: 0;
+    padding: var(--sp-3) 6% 36px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 14px;
+    background-color: var(--bg-soft);
+    border-top: 1px solid var(--primary-border);
+    z-index: 2;
+}
+
+/* Fila de iconos: 5 redes con separación equilibrada              */
+.menu-movil-sociales-iconos {
+    display: flex; justify-content: center; align-items: center;
+    gap: clamp(20px, 5vw, 32px);
+}
+.menu-movil-sociales-iconos a {
+    width: 44px; height: 44px;              /* área de toque ≥44px (accesibilidad táctil) */
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+    font-size: 20px;
+    background: var(--primary-soft);
+    border: 1px solid var(--primary-border);
+    transition: color 0.3s ease, background-color 0.3s ease,
+                border-color 0.3s ease, transform 0.3s var(--header-ease);
+}
+.menu-movil-sociales-iconos a:hover {
+    color: #fff;
+    background: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-3px);
+}
+
+/* Correo: enlace dedicado con texto completo                      */
+.menu-movil-correo {
+    display: inline-flex; align-items: center; gap: var(--sp-1);
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 50px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+.menu-movil-correo i { color: var(--primary); font-size: 0.85rem; transition: color 0.3s ease; }
+.menu-movil-correo:hover { color: var(--primary); background: var(--primary-soft); }
+.menu-movil-correo:hover i { color: var(--primary); }
+
+
+/* ────────────────────────────────────────────────────────────────
+   09. OPTIMIZACIÓN TÁCTIL
+   QUÉ HACE: evita que los efectos hover queden "pegados" al tocar
+            con el dedo en tablets/móviles.
+   ──────────────────────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+    .menu-escritorio-enlace::after { display: none; }
+    .menu-movil-enlace:hover { color: var(--text-body); }
+    .menu-movil-subenlace:hover { color: var(--text-muted); background-color: transparent; }
+    /* Iconos: el hover no queda pegado en táctil; el color base
+       es suficiente señal (el :active del navegador da feedback) */
+    .menu-movil-sociales-iconos a:hover {
+        color: var(--text-muted);
+        background: var(--primary-soft);
+        border-color: var(--primary-border);
+        transform: none;
+    }
+    .menu-movil-correo:hover { color: var(--text-muted); background: transparent; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   10. RESPONSIVE ENGINE
+   Los overrides de --header-h / --header-h-scrolled / --logo-h
+   son los OVERRIDES legítimos de este componente (la base vive
+   en variables.css).
+   ──────────────────────────────────────────────────────────────── */
+
+/* Laptops y monitores pequeños (1200–1366px):
+   panel compacto — mantiene 2 columnas de tarjetas horizontales   */
+@media (max-width: 1366px) and (min-width: 1200px) {
+    :root { --header-h: 75px; --header-h-scrolled: 65px; --logo-h: 50px; }
+    .menu-escritorio-lista { gap: 20px; }
+    .submenu-desplegable-caja { max-width: 940px; padding: 18px 20px; gap: 10px 14px; }
+    .mega-tarjeta { padding: 12px 14px; gap: 12px; }
+    .mega-tarjeta-icono { width: 40px; height: 40px; font-size: 0.9rem; }
+    .mega-tarjeta-nombre { font-size: 0.82rem; }
+    .mega-tarjeta-descripcion { font-size: 0.72rem; }
+}
+
+/* --- TABLETS Y MÓVILES (≤1199px): fuerza menú hamburguesa ---
+   Breakpoint elevado para atrapar iPads en horizontal
+   (1024–1194px): el menú táctil es mucho más amigable.            */
+@media (max-width: 1199px) {
+    .menu-escritorio-contenedor { display: none; }
+    .boton-toggle-movil { display: block; }
+    :root { --header-h: 65px; --header-h-scrolled: 60px; --logo-h: 45px; }
+}
+
+/* Ajuste de tipografía para tablets (iPad horizontal y vertical)  */
+@media (min-width: 768px) and (max-width: 1199px) {
+    :root { --mobile-nav-font-min: 22px; --mobile-nav-font-max: 26px; --mobile-nav-font-preferred: 3vw; }
+    .menu-movil-lista { padding: 80px 10% 20px; }
+    .menu-movil-enlace { padding: 24px 0; }
+    .menu-movil-subenlace { font-size: 1.1rem; padding: 16px 20px; }
+    /* Redes en tablet: iconos un poco más grandes                  */
+    .menu-movil-sociales-iconos a { width: 50px; height: 50px; font-size: 22px; }
+    .menu-movil-correo { font-size: 1rem; }
+}
+
+/* Smartphones                                                    */
+@media (max-width: 480px) {
+    :root { --header-h: 60px; --header-h-scrolled: 56px; --logo-h: 40px; }
+    #main-header { padding: 0 3%; }
+    .header-logo-imagen { max-width: 150px; }
+    .boton-cerrar-movil { top: 18px; right: 18px; }
+    .menu-movil-subenlace { font-size: 0.85rem; padding: 11px 16px; }
+    /* Redes en móvil pequeño: gap compacto para que los 5 iconos
+       respiren sin desbordar en pantallas angostas               */
+    .menu-movil-sociales-iconos { gap: 14px; }
+    .menu-movil-sociales-iconos a { width: 40px; height: 40px; font-size: 17px; }
+    .menu-movil-correo { font-size: 0.82rem; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   11. ACCESIBILIDAD — MOVIMIENTO REDUCIDO
+   ──────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+    .menu-movil-item { opacity: 1 !important; transform: none !important; }
+}

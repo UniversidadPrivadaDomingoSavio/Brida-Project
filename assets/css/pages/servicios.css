@@ -1,0 +1,538 @@
+/* ════════════════════════════════════════════════════════════════
+   GUÍA DE ESTILOS — PÁGINA SERVICIOS (BRIDA S.R.L.)
+   Archivo: assets/css/pages/servicios.css
+   ════════════════════════════════════════════════════════════════
+
+   PREFIJO:  srv-  →  todas las clases pertenecen EXCLUSIVAMENTE a
+             la página de servicios (servicios.html). Sin colisiones
+             con proy- (proyectos) ni ini- (inicio): los tres CSS
+             cargan globalmente, por eso los keyframes de flechas
+             usan nombres propios (srv-flecha-ciclo-*).
+
+   ESTRUCTURA DE LA PÁGINA:
+             Hero → ÍNDICE de categorías (chips navegables) →
+             7 secciones de contenido (Alcance + 6 categorías) →
+             CTA de contacto.
+
+   ÍNDICE DEL CATÁLOGO (srv-indice-*):
+             - Escritorio: chips envueltos centrados + STICKY bajo
+               el header (navegación permanente durante el catálogo).
+             - Móvil (≤767px): carrusel deslizable con el MISMO
+               patrón validado de proyectos: flechas pulsantes SOLO
+               en los extremos (candado inicial en el HTML:
+               tiene-deslizable tiene-derecha) + auto-centrado del
+               chip activo (servicios.js, candado _centrando).
+             - SIN scroll-snap a propósito: interfiere con el
+               auto-centrado (lección de proyectos).
+
+   ESCALA RESPONSIVE DE TARJETAS (srv-grid):
+             Escritorio (>1024px) → 3 columnas
+             iPad (768–1024px)    → 2 columnas (incluye portrait 768px)
+             Móvil (≤767px)       → 1 columna
+
+   REGLA DE TÁCTIL: las tarjetas se iluminan por SCROLL (clase
+             touch-activo cuando están en el 20% central de pantalla,
+             la gestiona servicios.js) — no dependen de hover.
+
+   MAPA DEL ARCHIVO:
+   01. Sección, contenedor y acentos de fondo
+   02. Cabeceras de sección + enlace a proyectos relacionados
+   03. Rejilla y tarjeta de servicio (cascada + luz de ratón)
+   04. Comportamiento táctil de tarjetas (hover:none)
+   05. Responsive de tarjetas (iPad 2 col / móvil 1 col / ≤480px)
+   06. ÍNDICE DEL CATÁLOGO: zona, chips, sticky, flechas y ciclos
+   07. Responsive del índice (móvil: carrusel ≤767px)
+   08. Accesibilidad — movimiento reducido
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ────────────────────────────────────────────────────────────────
+   01. SECCIÓN, CONTENEDOR Y ACENTOS DE FONDO
+   QUÉ ES:  cada bloque de contenido de la página usa .srv-seccion
+            (Alcance + las 6 categorías del catálogo).
+   QUÉ HACE: los acentos son halos radiales decorativos que enmarcan
+            cada sección (nunca capturan clics).
+   DÓNDE:   servicios.html → <section class="srv-seccion">
+   ──────────────────────────────────────────────────────────────── */
+.srv-seccion { 
+    padding-top: 40px; 
+    padding-bottom: 20px; 
+    padding-left: 5%; 
+    padding-right: 5%; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.srv-fondo-acentos {
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle, rgba(49, 38, 131, 0.05) 0%, transparent 70%);
+}
+.srv-fondo-acentos--1 { width: 600px; height: 600px; top: -15%; right: -10%; }
+.srv-fondo-acentos--2 { width: 500px; height: 500px; bottom: -20%; left: -10%; }
+
+/* QUÉ ES:  caja interior que centra el contenido a 1200px máx.  */
+.srv-contenedor { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+
+
+/* ────────────────────────────────────────────────────────────────
+   02. CABECERAS DE SECCIÓN + ENLACE A PROYECTOS
+   QUÉ ES:  el encabezado de cada categoría (número + título) y el
+            enlace "Ver proyectos relacionados" que conecta cada
+            línea de servicio con las obras que la respaldan.
+   QUÉ HACE: flex-column para apilar título y enlace centrados.
+   AIRE DE SALTO: cada sección lleva scroll-margin-top para que el
+            salto del índice (JS) aterrice con aire bajo el header
+            fijo (mismo criterio que proyectos.css: 100px).
+   DÓNDE:   servicios.html → <header class="srv-cabecera">
+   ──────────────────────────────────────────────────────────────── */
+.srv-cabecera {
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Aterrizaje de los saltos del índice (anclas con aire)          */
+.srv-alcance-ancla,
+#srv-alcance,
+#srv-cat-a,
+#srv-cat-b,
+#srv-cat-c,
+#srv-cat-d,
+#srv-cat-e,
+#srv-cat-f {
+    scroll-margin-top: 100px;
+}
+
+/* QUÉ ES:  enlace "Ver proyectos relacionados" de cada cabecera.
+   QUÉ HACE: texto pequeño en mayúsculas con flecha que se desplaza
+            al hover (patrón de línea animada, coherente con el
+            estilo BRIDA).                                         */
+.srv-cabecera-enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary);
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    position: relative;
+    padding: 4px 0;
+    transition: color 0.3s ease;
+}
+.srv-cabecera-enlace::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 24px; height: 2px;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+}
+.srv-cabecera-enlace:hover::after { width: 100%; }
+.srv-cabecera-enlace i { font-size: 10px; transition: transform 0.3s ease; }
+.srv-cabecera-enlace:hover i { transform: translateX(4px); }
+.srv-cabecera-enlace:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   03. REJILLA Y TARJETA DE SERVICIO
+   QUÉ ES:  .srv-grid es flex-wrap (centrado perfecto) y cada
+            .srv-tarjeta es un artículo del catálogo.
+   QUÉ HACE: la tarjeta nace invisible (opacity 0, translateY 40px)
+            y servicios.js la revela en cascada (es-visible) al
+            entrar en viewport. En escritorio, la luz del ratón
+            (variables --mouse-x/--mouse-y que alimenta el JS)
+            ilumina la tarjeta vía el ::after.
+   ──────────────────────────────────────────────────────────────── */
+.srv-grid {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: clamp(12px, 1.8vw, 20px);
+}
+
+/* Tarjeta: ESCRITORIO 3 columnas. Transición incluye OPACITY
+   para que la cascada aparezca con desvanecido, no de golpe.     */
+.srv-tarjeta { 
+    background: var(--bg-main);
+    border-radius: 16px;
+    padding: clamp(14px, 2.8vw, 20px) clamp(10px, 2.2vw, 22px);
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    border: 1px solid var(--primary-border);
+    box-shadow: 0 10px 30px rgba(49, 38, 131, 0.05);
+    transition: transform 0.5s var(--header-ease), box-shadow 0.5s var(--header-ease),
+                border-color 0.3s ease, opacity 0.6s ease;
+    opacity: 0; transform: translateY(40px);
+    width: calc(33.333% - 14px);
+}
+
+/* ESTADO: tarjeta revelada por la cascada (JS)                   */
+.srv-tarjeta.es-visible { opacity: 1; transform: translateY(0); }
+
+/* Línea superior de acento: se dibuja al hover (escritorio)      */
+.srv-tarjeta::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--primary);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s var(--header-ease);
+}
+/* Luz de ratón: gradiente radial que sigue el cursor (JS alimenta
+   --mouse-x/--mouse-y en porcentajes)                            */
+.srv-tarjeta::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                rgba(49, 38, 131, 0.04), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+/* --- Hover Escritorio --- */
+.srv-tarjeta:hover { transform: translateY(-8px); box-shadow: 0 24px 64px rgba(49, 38, 131, 0.1); border-color: rgba(49, 38, 131, 0.25); }
+.srv-tarjeta:hover::before { transform: scaleX(1); }
+.srv-tarjeta:hover::after { opacity: 1; }
+.srv-tarjeta:hover .srv-icono { transform: scale(1.05); }
+.srv-tarjeta:hover .srv-icono::before { opacity: 1; }
+.srv-tarjeta:hover .srv-icono i { color: #fff; transform: scale(1.1); }
+.srv-tarjeta:hover .srv-tarjeta-titulo { color: var(--primary); }
+.srv-tarjeta:focus-within { border-color: rgba(49, 38, 131, 0.25); }
+
+/* --- Iconos --- */
+.srv-icono {
+    width: clamp(48px, 4.2vw, 64px); height: clamp(48px, 4.2vw, 64px);
+    background: var(--primary-soft); border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px; position: relative;
+    transition: all 0.4s var(--header-ease);
+}
+.srv-icono::before {
+    content: ''; position: absolute; inset: 0;
+    border-radius: inherit; background: var(--primary);
+    opacity: 0; transition: opacity 0.3s ease;
+}
+.srv-icono i {
+    font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: var(--primary);
+    position: relative; z-index: 1;
+    transition: color 0.3s ease, transform 0.4s var(--header-ease);
+}
+
+/* --- Textos --- */
+.srv-tarjeta-titulo {
+    font-family: var(--font-heading);
+    font-size: clamp(1.1rem, 1.15vw, 1.3rem);
+    font-weight: 600; color: var(--text-body);
+    margin-bottom: 10px; line-height: 1.3;
+    transition: color 0.3s ease;
+}
+.srv-tarjeta-descripcion {
+    font-family: var(--font-body);
+    font-size: clamp(0.88rem, 0.9vw, 0.95rem);
+    color: var(--text-muted); line-height: 1.7;
+    flex-grow: 1; margin-bottom: 24px;
+}
+
+/* --- CTA "Conocer más" de cada tarjeta --- */
+.srv-tarjeta-enlace {
+    display: inline-block; background: transparent;
+    color: var(--primary); font-weight: 700;
+    font-family: var(--font-heading); font-size: 0.85rem;
+    text-transform: uppercase; letter-spacing: 1px;
+    border: none; padding: 5px 0; margin-top: auto;
+    text-decoration: none; cursor: pointer; position: relative;
+    transition: color 0.3s ease; width: fit-content;
+}
+.srv-tarjeta-enlace::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 30px; height: 2px; background-color: var(--primary);
+    transition: width 0.3s ease;
+}
+.srv-tarjeta-enlace:hover::after { width: 100%; }
+.srv-tarjeta-enlace:focus-visible {
+    outline: 3px solid var(--primary); outline-offset: 3px; border-radius: 4px;
+}
+.srv-tarjeta-enlace i { font-size: 11px; margin-left: 8px; transition: transform 0.3s ease; }
+.srv-tarjeta-enlace:hover i { transform: translateX(4px); }
+
+
+/* ────────────────────────────────────────────────────────────────
+   04. COMPORTAMIENTO TÁCTIL DE TARJETAS (hover:none + coarse)
+   QUÉ HACE: anula las transformaciones de hover (no hay cursor) y
+            habilita el estado touch-activo que servicios.js aplica
+            cuando la tarjeta cruza el 20% central de la pantalla
+            (iluminación por scroll, equivalente táctil del hover).
+   ──────────────────────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+    .srv-tarjeta:hover { transform: none; box-shadow: 0 10px 30px rgba(49, 38, 131, 0.05); border-color: var(--primary-border); }
+    .srv-tarjeta:hover::before { transform: scaleX(0); }
+    .srv-tarjeta:hover .srv-icono { transform: scale(1); }
+    .srv-tarjeta:hover .srv-icono::before { opacity: 0; }
+    .srv-tarjeta:hover .srv-icono i { color: var(--primary); transform: scale(1); }
+    .srv-tarjeta:hover .srv-tarjeta-titulo { color: var(--text-body); }
+    .srv-tarjeta:active { border-color: var(--primary); }
+
+    /* ESTADO: tarjeta iluminada por scroll (JS)                    */
+    .srv-tarjeta.touch-activo { transform: translateY(-8px); box-shadow: 0 24px 64px rgba(49, 38, 131, 0.1); border-color: rgba(49, 38, 131, 0.25); }
+    .srv-tarjeta.touch-activo::before { transform: scaleX(1); }
+    .srv-tarjeta.touch-activo .srv-icono { transform: scale(1.05); }
+    .srv-tarjeta.touch-activo .srv-icono::before { opacity: 1; }
+    .srv-tarjeta.touch-activo .srv-icono i { color: #fff; transform: scale(1.1); }
+    .srv-tarjeta.touch-activo .srv-tarjeta-titulo { color: var(--primary); }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   05. RESPONSIVE DE TARJETAS — ESCALA OFICIAL 3 / 2 / 1
+   QUÉ HACE: iPad portrait (768px exactos) incluido en el
+            breakpoint de 2 columnas (misma corrección de proyectos).
+   ──────────────────────────────────────────────────────────────── */
+
+/* --- IPAD / TABLET (768px–1024px): 2 COLUMNAS --- */
+@media screen and (max-width: 1024px) {
+    .srv-tarjeta { width: calc(50% - 10px); }
+}
+
+/* --- MÓVIL (≤767px): 1 COLUMNA --- */
+@media screen and (max-width: 767px) { 
+    .srv-seccion { padding-top: 40px; padding-bottom: 20px; padding-left: 4%; padding-right: 4%; } 
+    .srv-tarjeta { width: 100%; max-width: 400px; padding: 24px; } 
+    .srv-tarjeta-enlace {
+        padding: 14px 28px;
+        border: 1px solid var(--primary-border);
+        border-radius: 50px;
+        background: var(--primary-soft);
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        font-size: 0.8rem; width: auto; text-align: center; display: block;
+    } 
+    .srv-tarjeta-enlace::after { display: none; } 
+    .srv-tarjeta-enlace:active { background: rgba(49, 38, 131, 0.15); border-color: var(--primary); } 
+}
+
+/* --- MÓVIL PEQUEÑO (≤480px) --- */
+@media screen and (max-width: 480px) {
+    .srv-tarjeta { max-width: 100%; padding: 20px 18px; }
+    .srv-tarjeta-titulo { font-size: 1.05rem; }
+    .srv-tarjeta-descripcion { font-size: 0.88rem; }
+    .srv-tarjeta-enlace { padding: 12px 20px; font-size: 0.75rem; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   06. ÍNDICE DEL CATÁLOGO (srv-indice-*)
+   QUÉ ES:  la barra de chips bajo el hero que salta a cada sección
+            del catálogo (Alcance + 6 categorías).
+   QUÉ HACE:
+   - ESCRITORIO: chips envueltos y centrados + STICKY: al hacer
+     scroll, la barra se fija bajo el header (navegación permanente
+     durante todo el catálogo) con fondo sólido y sombra.
+     ⚠️ AJUSTE ÚNICO: si tu header fijo mide distinto de 76px,
+        cambia SOLO el valor de --srv-indice-top abajo.
+   - MÓVIL (≤767px): carrusel deslizable (misma receta validada de
+     proyectos: sangrado a bordes, fade en extremos, scrollbar
+     oculto, SIN snap) con flechas pulsantes en extremos y
+     auto-centrado del chip activo (todo vía servicios.js).
+   ESTADOS (gestionados por servicios.js, candado inicial en HTML):
+   - tiene-deslizable → hay overflow → mecanismo de flechas activo.
+   - tiene-derecha    → fila al INICIO  → flecha derecha en ciclo.
+   - tiene-izquierda  → fila al FINAL   → flecha izquierda en ciclo.
+   - .es-activo en un chip → sección visible (scroll-spy del JS).
+   EN DESKTOP: flechas display:none; el JS limpia el candado si no
+   hay overflow (mismo contrato que proyectos).
+   ──────────────────────────────────────────────────────────────── */
+
+/* ⚠️ AJUSTE ÚNICO: altura de tu header fijo (para el sticky)     */
+.srv-indice-zona {
+    --srv-indice-top: 76px;
+    scroll-margin-top: 100px;
+}
+
+.srv-indice-flecha { display: none; } /* OCULTAS por defecto y en escritorio */
+
+/* --- ESCRITORIO: barra sticky bajo el header --- */
+@media screen and (min-width: 768px) {
+    .srv-indice-zona {
+        position: sticky;
+        top: var(--srv-indice-top);
+        z-index: 50; /* bajo el header principal, sobre el contenido */
+        display: flex;
+        justify-content: center;
+        padding: 12px 5%;
+        margin-bottom: 8px;
+        background: var(--bg-main);
+        border-bottom: 1px solid var(--primary-border);
+        box-shadow: 0 6px 18px rgba(49, 38, 131, 0.06);
+    }
+}
+
+/* --- Chip del índice (idéntico en espíritu a proy-filtros-boton) */
+.srv-indice-boton {
+    font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700;
+    text-transform: uppercase; color: var(--text-muted);
+    background: var(--primary-soft); border: 1px solid var(--primary-border);
+    padding: 10px 24px; border-radius: 50px; cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s var(--header-ease);
+}
+.srv-indice-boton:hover { color: var(--primary); border-color: var(--primary); }
+
+/* ESTADO: sección actualmente visible (scroll-spy del JS)        */
+.srv-indice-boton.es-activo {
+    background: var(--primary); color: #fff; border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(49, 38, 131, 0.2);
+}
+.srv-indice-boton:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+/* --- FLECHAS: base común + activación SOLO en móvil ≤767px.
+       UNA sola definición del bloque base (sin duplicados).
+       SALIDA SUAVE incluida: al retirar JS la clase de extremo,
+       la flecha se desvanece en vez de cortarse.                 */
+@media screen and (max-width: 767px) {
+
+    .srv-indice-zona { position: relative; } /* ancla las flechas */
+
+    .srv-indice-zona.tiene-deslizable .srv-indice-flecha {
+        position: absolute;
+        top: 50%;
+        width: 34px; height: 34px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: #fff;
+        border: 2px solid var(--bg-main);
+        box-shadow: 0 4px 14px rgba(49, 38, 131, 0.35);
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        pointer-events: none; /* nunca roban el toque de un chip */
+        z-index: 2;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    /* FLECHA DERECHA: fila al INICIO → hay más hacia la derecha  */
+    .srv-indice-zona.tiene-deslizable.tiene-derecha .srv-indice-flecha--derecha {
+        right: 0;
+        display: flex;
+        visibility: visible;
+        animation: srv-flecha-ciclo-derecha 7s ease-in-out infinite;
+    }
+
+    /* FLECHA IZQUIERDA: fila al FINAL → hay más hacia la izquierda */
+    .srv-indice-zona.tiene-deslizable.tiene-izquierda .srv-indice-flecha--izquierda {
+        left: 0;
+        display: flex;
+        visibility: visible;
+        animation: srv-flecha-ciclo-izquierda 7s ease-in-out infinite;
+    }
+}
+
+/* CICLO FLECHA DERECHA (7s infinito):
+   0–8% aparece · 8–40% pulsa 2 veces · 40–50% se retira ·
+   50–100% pausa invisible y repite                              */
+@keyframes srv-flecha-ciclo-derecha {
+    0%   { opacity: 0; transform: translateY(-50%) translateX(0); }
+    8%   { opacity: 1; transform: translateY(-50%) translateX(0); }
+    14%  {           transform: translateY(-50%) translateX(7px); }
+    22%  {           transform: translateY(-50%) translateX(0); }
+    30%  {           transform: translateY(-50%) translateX(7px); }
+    40%  { opacity: 1; transform: translateY(-50%) translateX(0); }
+    50%  { opacity: 0; transform: translateY(-50%) translateX(0); }
+    100% { opacity: 0; }
+}
+
+/* CICLO FLECHA IZQUIERDA (espejo del derecho)                    */
+@keyframes srv-flecha-ciclo-izquierda {
+    0%   { opacity: 0; transform: translateY(-50%) translateX(0); }
+    8%   { opacity: 1; transform: translateY(-50%) translateX(0); }
+    14%  {           transform: translateY(-50%) translateX(-7px); }
+    22%  {           transform: translateY(-50%) translateX(0); }
+    30%  {           transform: translateY(-50%) translateX(-7px); }
+    40%  { opacity: 1; transform: translateY(-50%) translateX(0); }
+    50%  { opacity: 0; transform: translateY(-50%) translateX(0); }
+    100% { opacity: 0; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   07. RESPONSIVE DEL ÍNDICE — MÓVIL (≤767px): CARRUSEL
+   QUÉ HACE: la fila de chips se convierte en carrusel horizontal:
+            sangrado a los bordes de la sección (-4%) para aprovechar
+            el ancho, fade en extremos como pista visual, scrollbar
+            oculto, inercia táctil de iOS.
+   ⚠️ SIN SCROLL-SNAP a propósito: el snap re-encajaba el chip en
+            cada frame del auto-centrado y lo anulaba (misma lección
+            aplicada en proyectos.css).
+   ──────────────────────────────────────────────────────────────── */
+@media screen and (max-width: 767px) {
+    .srv-indice-zona {
+        position: relative;
+        padding: 4px 4% 6px;
+        margin: 0 -4% 24px;      /* sangrado a los bordes */
+        background: transparent;  /* sin barra flotante en móvil */
+        border-bottom: none;
+        box-shadow: none;
+    }
+
+    .srv-indice {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-left: -4%; margin-right: -4%;
+        padding-left: 4%; padding-right: 4%;
+        padding-bottom: 6px;
+        /* Ocultar scrollbar + fade en bordes (pista de scroll) */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+    }
+    .srv-indice::-webkit-scrollbar { display: none; }
+
+    /* Chip dentro del carrusel: no se encoge.
+       (Sin snap: el auto-centrado del JS lo posiciona.)          */
+    .srv-indice-boton { flex-shrink: 0; padding: 12px 20px; font-size: 0.75rem; }
+
+    /* Enlace "Ver proyectos relacionados" centrado en móvil      */
+    .srv-cabecera-enlace { font-size: 0.72rem; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   08. ACCESIBILIDAD — MOVIMIENTO REDUCIDO
+   QUÉ HACE: elimina transiciones/animaciones; las tarjetas quedan
+            VISIBLES de inmediato (sin cascada) y las flechas del
+            índice quedan ESTÁTICAS pero VISIBLES cuando la posición
+            del scroll determine que corresponden (el selector de
+            estados gana a la base opacity:0 por orden y peso).
+   ──────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .srv-tarjeta, .srv-tarjeta::before, .srv-tarjeta::after,
+    .srv-icono, .srv-icono::before, .srv-icono i,
+    .srv-tarjeta-enlace, .srv-tarjeta-enlace::after,
+    .srv-cabecera-enlace, .srv-cabecera-enlace::after,
+    .srv-indice-boton, .srv-indice-flecha {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+    .srv-tarjeta { opacity: 1; transform: none; } /* sin cascada */
+
+    /* Flechas: sin ciclo, estáticas y visibles si corresponden   */
+    .srv-indice-zona.tiene-deslizable.tiene-derecha .srv-indice-flecha--derecha,
+    .srv-indice-zona.tiene-deslizable.tiene-izquierda .srv-indice-flecha--izquierda {
+        animation: none;
+        opacity: 1;
+        visibility: visible;
+    }
+}

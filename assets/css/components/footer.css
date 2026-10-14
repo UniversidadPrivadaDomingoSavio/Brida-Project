@@ -1,0 +1,210 @@
+/* ════════════════════════════════════════════════════════════════
+   COMPONENTE — FOOTER GLOBAL (BRIDA S.R.L.)
+   Archivo: assets/css/components/footer.css
+   ════════════════════════════════════════════════════════════════
+   El MARKUP vive en assets/js/components/footer-menu.js (fuente
+   única inyectada en #footer-placeholder) — este archivo solo lo
+   viste. Clases .footer-brida__* compartidas por todo el sitio.
+
+   ⚠️ SISTEMA DE DISEÑO (variables.css):
+   - Paddings verticales de layout y gaps de grid → tokens --sp-*.
+   - Lateral: var(--pad-x) (5% — token del sistema, antes "5%" suelto).
+   - ⚠️ EXCEPCIÓN DOCUMENTADA (precedente contacto.css): los
+     margins/paddings FINOS de items de lista (8–14px) son ritmo de
+     CONTROL y quedan en px con comentario — tokenizarlos forzaría
+     valores inexistentes en la escala de 8px.
+
+   MAPA DEL ARCHIVO:
+   01. Base (franja tricolor preparada, container, grid)
+   02. Columna marca (logo, desc, redes)
+   03. Columnas generales (títulos con acento)
+   04. Links y contacto
+   05. Horario (PREPARADO — el markup actual no lo usa aún)
+   06. Copyright / legal
+   07. Responsive (≤1024 · ≤767 · ≤480 · landscape móvil)
+   08. Táctil (hover neutralizado + presión :active)
+   09. Accesibilidad — movimiento reducido
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── 01. BASE ────────────────────────────────────────────────────
+   margin-top:auto: preparado para sticky-footer (footer abajo con
+   contenido corto) — requiere el setup flex en body del reset;
+   sin él es inofensivo.                                          */
+.footer-brida {
+    position: relative; width: 100%; background: var(--bg-main);
+    font-family: var(--font-body); overflow: hidden; border-top: 1px solid var(--primary-border); margin-top: auto;
+}
+
+/* Franja tricolor superior (PREPARADA — el markup del componente
+   aún no la incluye; lista para activarse editando solo el JS)  */
+.footer-brida__stripes { position: relative; width: 100%; height: 5px; display: flex; }
+.footer-brida__stripe { flex: 1; }
+.footer-brida__stripe--red { background: var(--stripe-red); }
+.footer-brida__stripe--yellow { background: var(--stripe-yellow); }
+.footer-brida__stripe--green { background: var(--stripe-green); }
+
+/* Container: paddings migrados a tokens (antes 70/5%/50 → 64/48;
+   el lateral usa el token --pad-x, mismo valor 5%)               */
+.footer-brida__container { max-width: 1200px; margin: 0 auto; padding: var(--sp-7) var(--pad-x) var(--sp-6); }
+.footer-brida__col { text-align: left; }
+/* Grid: gap 60px → var(--sp-7) (64px, token más cercano)         */
+.footer-brida__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: var(--sp-7); }
+
+/* ── 02. COLUMNA MARCA ─────────────────────────────────────────── */
+.footer-brida__col--brand { display: flex; flex-direction: column; align-items: flex-start; }
+.footer-brida__logo-box { margin-bottom: var(--sp-3); } /* 24px — antes 28px */
+.footer-brida__logo-img { max-width: 200px; height: auto; object-fit: contain; }
+/* Logo con mini-franja (PREPARADO — sin uso en el markup actual) */
+.footer-brida__logo-stripes { display: flex; height: 3px; width: 100%; max-width: 200px; margin-top: var(--sp-2); }
+.footer-brida__stripe-sm { flex: 1; }
+.footer-brida__stripe-sm--red { background: var(--stripe-red); }
+.footer-brida__stripe-sm--yellow { background: var(--stripe-yellow); }
+.footer-brida__stripe-sm--green { background: var(--stripe-green); }
+/* Desc: margin-top 12px = ritmo fino de control (excepción doc.) */
+.footer-brida__desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.8; margin-bottom: var(--sp-3); margin-top: 12px; max-width: 320px; }
+/* Línea fiscal (NIT · Registro): ex-estilo inline del markup.
+   11px consciente: dato legal secundario, no lectura principal.  */
+.footer-brida__desc--fiscal { font-size: 11px; opacity: 0.75; margin-top: -18px; } /* -18 = sp-3 −6: compensa el margin del desc anterior */
+
+/* ── REDES SOCIALES ────────────────────────────────────────────── */
+.footer-brida__socials { display: flex; gap: 12px; }
+.footer-brida__social-link {
+    width: 42px; height: 42px; background: var(--primary-soft); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--primary-border); display: flex; align-items: center; justify-content: center;
+    border-radius: 12px; text-decoration: none; color: var(--primary); transition: all 0.3s var(--header-ease);
+}
+.footer-brida__social-link i { font-size: 1rem; }
+.footer-brida__social-link:hover { background: var(--primary); color: #fff; border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(49, 38, 131, 0.25); }
+
+/* ── 03. COLUMNAS GENERALES ────────────────────────────────────── */
+.footer-brida__title {
+    font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--text-body);
+    text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: var(--sp-3); /* 24px — antes 25px */
+    position: relative; padding-bottom: 14px; /* ritmo fino de control */
+}
+.footer-brida__title::after { content: ''; position: absolute; bottom: 0; left: 0; width: 32px; height: 3px; background: var(--primary); border-radius: 2px; }
+.footer-brida__list { list-style: none; padding: 0; margin: 0; }
+
+/* ── 04. LINKS Y CONTACTO ────────────────────────────────────────
+   Margins de items (12/18px): ritmo fino de lista (excepción doc.).
+   El 18px del contact-item → 16px (var(--sp-2), casi idéntico).  */
+.footer-brida__item { margin-bottom: 12px; }
+.footer-brida__link { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s ease; position: relative; }
+.footer-brida__link::before { content: ''; width: 0; height: 2px; background: var(--primary); transition: width 0.3s ease; }
+.footer-brida__link:hover { color: var(--primary); transform: translateX(5px); }
+.footer-brida__link:hover::before { width: 12px; }
+
+.footer-brida__contact-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: var(--sp-2); }
+.footer-brida__icon { color: var(--primary); font-size: 1.1rem; flex-shrink: 0; margin-top: 3px; }
+.footer-brida__text { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+.footer-brida__text strong { color: var(--text-body); font-weight: 600; display: block; margin-bottom: 3px; }
+.footer-brida__text-link { color: var(--text-muted); text-decoration: none; display: block; transition: color 0.3s ease; }
+.footer-brida__text-link:hover { color: var(--primary); }
+
+/* ── 05. HORARIO (PREPARADO — sin uso en el markup actual) ─────── */
+.footer-brida__schedule-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--primary-border); }
+.footer-brida__schedule-item:last-child { border-bottom: none; }
+.footer-brida__day { color: var(--text-body); font-size: 0.9rem; font-weight: 500; }
+.footer-brida__time { color: var(--text-muted); font-size: 0.85rem; }
+.footer-brida__schedule-item--closed .footer-brida__time { color: var(--stripe-red); font-weight: 600; }
+
+/* ── 06. COPYRIGHT / LEGAL ───────────────────────────────────────
+   35px→var(--sp-4) · 50px→var(--sp-6) (tokens más cercanos).     */
+.footer-brida__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: var(--sp-4); margin-top: var(--sp-6); border-top: 1px solid var(--primary-border); }
+.footer-brida__copy { color: var(--text-muted); font-size: 0.85rem; }
+.footer-brida__copy a { color: var(--primary); text-decoration: none; font-weight: 600; }
+.footer-brida__legal { display: flex; gap: var(--sp-3); } /* 24px — antes 25px */
+.footer-brida__legal-link { color: var(--text-muted); font-size: 0.8rem; text-decoration: none; transition: color 0.3s ease; }
+.footer-brida__legal-link:hover { color: var(--primary); }
+
+
+/* ────────────────────────────────────────────────────────────────
+   07. RESPONSIVE
+   ⭐ BREAKPOINT ALINEADO: móvil corta en 767px (era 768 — ahora
+   coincide con el resto del sistema; un viewport a 768px exactos
+   ya recibe el layout tablet, no el móvil).
+   Se fusionó el bloque iPad-landscape redundante (repetía el
+   layout del ≤1024 general sin añadir nada).
+   ⭐ NUEVO ≤480px: columna única — en 375px, dos columnas de
+   ~160px apretaban la Dirección (texto largo en 3 líneas forzadas).
+   ──────────────────────────────────────────────────────────────── */
+
+/* TABLET Y BELOW (≤1024px): grid 2×2                              */
+@media (max-width: 1024px) {
+    .footer-brida__container { padding-top: var(--sp-6); padding-bottom: var(--sp-6); } /* 48px — antes 55/45 */
+    .footer-brida__grid { grid-template-columns: 1.2fr 1fr; gap: var(--sp-5) var(--sp-4); } /* 40/32 — antes 40/30 */
+    .footer-brida__col--brand { grid-column: auto; }
+}
+
+/* MÓVIL (≤767px): marca y cobertura a lo ancho + par central      */
+@media (max-width: 767px) {
+    .footer-brida__grid { grid-template-columns: 1fr 1fr; gap: var(--sp-5) var(--sp-2); }
+    .footer-brida__col--brand { grid-column: 1 / -1; text-align: center; align-items: center; }
+    .footer-brida__col--brand .footer-brida__logo-stripes { margin-left: auto; margin-right: auto; }
+    .footer-brida__col--brand .footer-brida__socials { justify-content: center; }
+    .footer-brida__col:nth-child(4) { grid-column: 1 / -1; }
+    /* La línea fiscal centrada junto a la marca                   */
+    .footer-brida__col--brand .footer-brida__desc--fiscal { margin-top: 0; }
+}
+
+/* SMARTPHONE (≤480px): COLUMNA ÚNICA — la Dirección (texto más
+   largo del footer) respira a ancho completo; jerarquía vertical
+   natural: marca → info → dirección → cobertura → copyright.     */
+@media (max-width: 480px) {
+    .footer-brida__grid { grid-template-columns: 1fr; }
+    .footer-brida__col:nth-child(4) { grid-column: auto; } /* ya fluye en 1 col */
+    .footer-brida__bottom { flex-direction: column; gap: var(--sp-2); text-align: center; }
+}
+
+/* MÓVIL LANDSCAPE (≤767px girado): 2 columnas aprovechan la
+   altura limitada; la marca vuelve a alineación izquierda         */
+@media (max-width: 767px) and (orientation: landscape) {
+    .footer-brida__grid { grid-template-columns: 1.2fr 1fr; }
+    .footer-brida__col--brand { grid-column: auto; text-align: left; align-items: flex-start; }
+    .footer-brida__col--brand .footer-brida__logo-stripes { margin-left: 0; margin-right: auto; }
+    .footer-brida__col--brand .footer-brida__socials { justify-content: flex-start; }
+    .footer-brida__col--brand .footer-brida__desc--fiscal { margin-top: -18px; }
+    .footer-brida__col:nth-child(4) { grid-column: auto; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   08. TÁCTIL: hover neutralizado + PRESIÓN (:active)
+   El hover de "flotar" no existe con el dedo → se devuelve el
+   estado base y la presión entrega feedback inmediato (patrón
+   global del sitio: social-link hundido + borde morado).
+   ──────────────────────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+    .footer-brida__link:hover { transform: none; color: var(--text-muted); }
+    .footer-brida__link::before { width: 0; }
+    .footer-brida__social-link:hover { transform: none; background: var(--primary-soft); color: var(--primary); border-color: var(--primary-border); box-shadow: none; }
+    /* Feedback de presión al tocar un icono social                */
+    .footer-brida__social-link:active {
+        background: var(--primary); color: #fff; border-color: var(--primary);
+        transform: scale(0.95); box-shadow: 0 4px 12px rgba(49, 38, 131, 0.2);
+    }
+    /* Feedback de presión en links: sin translateX (saltaría),
+       solo el color confirma el toque                             */
+    .footer-brida__link:active { color: var(--primary); }
+    .footer-brida__text-link:active { color: var(--primary); }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   09. ACCESIBILIDAD — MOVIMIENTO REDUCIDO
+   (No existía: las transiciones del footer quedaban vivas en este
+   modo — ahora alineado con el estándar del sitio.)
+   ──────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .footer-brida__link, .footer-brida__link::before,
+    .footer-brida__social-link, .footer-brida__text-link,
+    .footer-brida__legal-link,
+    .footer-brida__col.reveal-up, .footer-brida__bottom.reveal-up {
+        transition: none !important;
+    }
+    /* Reveals del footer: visibles sin animación                  */
+    .footer-brida__col.reveal-up, .footer-brida__bottom.reveal-up {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}

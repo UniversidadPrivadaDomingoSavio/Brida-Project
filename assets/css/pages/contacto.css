@@ -1,0 +1,617 @@
+/* ════════════════════════════════════════════════════════════════
+   GUÍA DE ESTILOS — PÁGINA CONTACTO (BRIDA S.R.L.)
+   Archivo: assets/css/pages/contacto.css
+   ════════════════════════════════════════════════════════════════
+
+   PREFIJO:  ctt-  →  exclusivo de esta página.
+
+   ESTRUCTURA DE LA PÁGINA:
+             Hero → Compuertas de contacto (Conectemos) →
+             Formulario + Redes (fondo oscuro) → Mapa → Footer.
+
+   ⚠️ SISTEMA DE DISEÑO (variables.css — OBLIGATORIO):
+   - Ritmo vertical: --seccion-pad (sección clara) /
+     --seccion-pad-destacada (sección oscura del formulario) —
+     fluidos → NO se redefinen en media queries.
+   - Lateral: --pad-x (desktop) / --pad-x-compacto (≤1024px).
+   - Cabecera→contenido: --cabecera-gap.
+   - Espaciado de layout: --sp-1…--sp-9. Tipografía: --fs-*
+     (⭐ AUDITORÍA TIPOGRÁFICA COMPLETA: 0.62/0.68rem eliminados
+     — nada por debajo del piso de 12px; textos meta tokenizados
+     a --fs-small / --fs-micro).
+   - ⚠️ EXCEPCIONES DOCUMENTADAS:
+     · Paddings INTERNOS de controles (inputs, botones de red,
+       filas de inputs) en rem propio — son dimensiones de CONTROL,
+       no ritmo de layout (mantiene la sensación táctil aprobada).
+     · ALTURA FIJA del mapa (400/300/260px) y de la ESCENA de
+       compuertas en desktop/tablet (280/260px): el mapa es
+       vectorial y la escena es composición escénica — el patrón
+       aspect-ratio de las fotos no aplica. EN MÓVIL el panel
+       activo NO tiene altura fija: crece con su contenido.
+
+   MAPA DEL ARCHIVO:
+   01. COMPUERTAS de contacto (REGLAS BASE de sección + paneles
+       verticales rotados que se expanden al tocar/hover; entrada
+       por animation con cascada; espaciado compacto con knob
+       --escena-altura: 280 desktop · 260 tablet)
+   02. Formulario y redes (glassmorphism oscuro + rejilla)
+       2a. Layout grid + tarjetas
+       2b. Inputs y SELECTS (⚠️ chevron custom: background-color,
+           NUNCA background shorthand — pisaría el chevron;
+           autofill corregido; options legibles)
+       2c. Validación visual suave (solo tras interacción)
+       2d. Botón de envío (flecha animada)
+       2e. Botones de redes (hovers por marca)
+       2f. Mapa (estilo oscuro invertido)
+   03. Responsive del sistema (1024 / 767 / 480)
+       · Compuertas: escena 260px en tablet (knob) → acordeón
+         vertical en móvil (panel activo de ALTURA NATURAL —
+         crece con su contenido, sin desbordes posibles) →
+         ajustes finos ≤480.
+   04. Comportamiento táctil (hover none + pointer coarse)
+   05. Accesibilidad — movimiento reducido
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ════════════════════════════════════════════════════════════════
+   01. COMPUERTAS DE CONTACTO — "CONECTEMOS"
+   ────────────────────────────────────────────────────────────────
+   ⭐ REGLAS BASE DE SECCIÓN (OBLIGATORIAS — NUNCA ELIMINAR en
+   reemplazos de este bloque): .ctt-seccion / .ctt-contenedor /
+   .ctt-cabecera. Su pérdida en un reemplazo anterior causó el bug
+   de espaciado (sección sin aire vertical, escena pegada a los
+   bordes). Son el espaciado IDÉNTICO de las demás secciones.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Espaciado IDÉNTICO a las demás secciones del sitio:
+   ritmo vertical fluido --seccion-pad + lateral --pad-x          */
+.ctt-seccion {
+    padding: var(--seccion-pad) var(--pad-x);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Contenedor estándar del sitio (centrado + max-width)          */
+.ctt-contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* Gap estándar cabecera → contenido                              */
+.ctt-cabecera { margin-bottom: var(--cabecera-gap); text-align: center; }
+
+/* ────────────────────────────────────────────────────────────────
+   COMPUERTAS — la pieza escular
+   ⭐ CONTENCIÓN DEFENSIVA: la escena se auto-limita (max-width +
+   centrado) ADEMÁS de vivir dentro de .ctt-contenedor — doble capa.
+   ⭐ GRADIENTE CON RESPALDO: .es-activa lleva background-color
+     sólido ANTES del gradiente — el panel activo es MORADO
+     garantizado (nunca blanco con texto fantasma).
+   ⭐ KNOB DE COMPACTACIÓN (--escena-altura): gobierna el vacío del
+     panel CERRADO (num arriba · nombre rotado abajo — space-between
+     intacto); se reajusta por breakpoint en la sección 03.
+   ⭐ TIPOGRAFÍA (auditoría): rol y CTA a var(--fs-micro) — el piso
+     de legibilidad 12px del sitio (antes 9.9/10.9px, ilegibles).
+   ENTRADA: animation (NO transition) con delay por nth-child →
+     no contamina la transición flex del panel.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Escena: fila de paneles — AUTOCONTENIDA (defensa + wrapper)   */
+.ctt-compuertas {
+    display: flex; gap: 10px;
+    --escena-altura: 280px;
+    height: var(--escena-altura);
+    max-width: 1200px;      /* ⭐ defensa: nunca full-bleed          */
+    margin: 0 auto;         /* ⭐ centrada si el wrapper falta      */
+}
+
+/* Panel: cerrado = delgado · activo = se expande (flex 1 → 3.6) */
+.ctt-compuerta {
+    flex: 1; min-width: 0; position: relative;
+    border-radius: 16px; overflow: hidden; cursor: pointer;
+    background: var(--bg-main); border: 1px solid var(--primary-border);
+    box-shadow: 0 4px 14px rgba(49, 38, 131, 0.05);
+    transition: flex 0.65s var(--header-ease), background-color 0.5s ease,
+                border-color 0.4s ease, box-shadow 0.5s ease;
+    animation: ctt-compuerta-in 0.7s var(--header-ease) backwards;
+}
+.ctt-compuerta:nth-child(2) { animation-delay: 0.08s; }
+.ctt-compuerta:nth-child(3) { animation-delay: 0.16s; }
+.ctt-compuerta:nth-child(4) { animation-delay: 0.24s; }
+@keyframes ctt-compuerta-in {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ESTADO activo: expansión + inversión a morado profundo.
+   ⭐ background-color de respaldo ANTES del gradiente.           */
+.ctt-compuerta.es-activa {
+    flex: 3.6; cursor: default;
+    background-color: var(--primary);
+    background-image: linear-gradient(155deg, var(--primary) 0%, var(--primary-hover) 70%, #2a1f66 100%);
+    border-color: var(--primary);
+    box-shadow: 0 14px 34px rgba(49, 38, 131, 0.26);
+}
+
+/* ── Estado CERRADO: número + nombre rotado (writing-mode).
+   POSICIONES INTACTAS (space-between) · padding compactado.
+   Nombre tokenizado a --fs-small (13.6px — texto meta estándar
+   del sitio; era 0.82rem fijo).                                  */
+.ctt-compuerta__cerrado {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    padding: 14px 0;
+    transition: opacity 0.35s ease 0.15s;
+}
+.ctt-compuerta__num {
+    font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700;
+    color: var(--primary); opacity: 0.5; /* decorativo (12.8px) */
+}
+.ctt-compuerta__nombre {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-family: var(--font-heading); font-size: var(--fs-small); /* ⭐ token */
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-body); white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+/* ── Estado ABIERTO: icono + rol + dato + CTA (padding 18px)    */
+.ctt-compuerta__abierto {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 18px;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s ease 0.25s, visibility 0.4s ease 0.25s;
+}
+.ctt-compuerta.es-activa .ctt-compuerta__cerrado { opacity: 0; transition-delay: 0s; }
+.ctt-compuerta.es-activa .ctt-compuerta__abierto { opacity: 1; visibility: visible; }
+
+.ctt-compuerta__icono {
+    width: 46px; height: 46px; border-radius: 12px;
+    background: rgba(255, 255, 255, 0.14); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.05rem; margin-bottom: 10px;
+}
+/* Rol — ⭐ var(--fs-micro): el piso de 12px del sitio. Era
+   0.62rem (9.9px), el texto más pequeño del sitio entero.        */
+.ctt-compuerta__rol {
+    font-family: var(--font-heading); font-size: var(--fs-micro);
+    font-weight: 700; letter-spacing: 1.5px; /* ⭐ 1.8 → 1.5 con el nuevo tamaño */
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55); margin-bottom: 5px;
+}
+.ctt-compuerta__dato {
+    font-family: var(--font-heading); font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+    font-weight: 700; color: #ffffff; line-height: 1.35;
+    overflow-wrap: anywhere; /* emails largos nunca desbordan       */
+    margin-bottom: 10px;
+}
+/* CTA pill blanca: el único elemento navegable del panel.
+   ⭐ var(--fs-micro): era 0.68rem (10.9px) — un CTA accionable
+   no puede estar bajo el piso de legibilidad.                    */
+.ctt-compuerta__cta {
+    display: inline-flex; align-items: center; gap: 7px;
+    width: fit-content;
+    font-family: var(--font-heading); font-size: var(--fs-micro);
+    font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--primary); text-decoration: none;
+    background: #ffffff; padding: 8px 14px; border-radius: 50px;
+    transition: transform 0.3s var(--header-ease), box-shadow 0.3s ease;
+}
+.ctt-compuerta__cta i { font-size: 0.7rem; transition: transform 0.3s ease; } /* ⭐ escala con el texto */
+/* Variante estática (Horario: no es accionable)                  */
+.ctt-compuerta__cta--estatica { cursor: default; }
+
+@media (hover: hover) and (pointer: fine) {
+    .ctt-compuerta__cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); }
+    .ctt-compuerta__cta:hover i { transform: translateX(3px); }
+    .ctt-compuerta:not(.es-activa):hover { border-color: var(--primary); box-shadow: 0 8px 22px rgba(49, 38, 131, 0.12); }
+    .ctt-compuerta:not(.es-activa):hover .ctt-compuerta__nombre { color: var(--primary); }
+}
+
+/* ── FIN SECCIÓN 01 — COMPUERTAS ──────────────────────────────── */
+
+
+/* ════════════════════════════════════════════════════════════════
+   02. FORMULARIO Y REDES (ESTILO BRIDA PREMIUM)
+   Sección oscura de impacto → ritmo --seccion-pad-destacada.
+   ════════════════════════════════════════════════════════════════ */
+.ctt-form {
+    position: relative;
+    width: 100%;
+    padding: var(--seccion-pad-destacada) var(--pad-x);
+    overflow: hidden;
+    /* Fondo Oscuro con Rejilla BRIDA (mismo lenguaje que CTA/Pilares) */
+    background-color: #0a0a12;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(49, 38, 131, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(49, 38, 131, 0.15) 0%, transparent 20%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+
+.ctt-form__contenedor { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+
+.ctt-form__cabecera { margin-bottom: var(--cabecera-gap); text-align: center; }
+.ctt-form .section-eyebrow { color: rgba(255, 255, 255, 0.8); }
+.ctt-form .section-title { color: #ffffff; }
+
+/* PREPARADO (el markup actual no lo usa — lista para activarse)  */
+.ctt-form__subtitulo {
+    font-family: var(--font-body); font-size: clamp(1rem, 1.1vw, 1.15rem); line-height: 1.8;
+    color: rgba(255,255,255,0.6); max-width: 600px; margin: var(--sp-2) auto 0;
+}
+
+/* ── 2a. LAYOUT GRID ───────────────────────────────────────────── */
+.ctt-form__grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--sp-4); align-items: stretch; }
+
+.ctt-form__col-derecha {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+    justify-content: flex-start;
+}
+
+/* Tarjeta de WhatsApp: solo ocupa el espacio de su contenido     */
+.ctt-form__col-derecha > .ctt-form__tarjeta:first-child { flex: 0 0 auto; }
+/* Tarjeta de Redes: ocupa el espacio restante                    */
+.ctt-form__tarjeta--redes { flex: 1 1 auto; }
+/* Redes distribuidas uniformemente en el espacio disponible      */
+.ctt-form__tarjeta--redes .ctt-form__tarjeta-cuerpo { justify-content: space-evenly; }
+
+/* --- Tarjetas Glassmorphism --- */
+.ctt-form__tarjeta {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+}
+
+.ctt-form__tarjeta-cabecera {
+    padding: var(--sp-4) var(--sp-5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255,255,255,0.02);
+}
+/* Título — ⭐ TOKENIZADO: var(--fs-h3), rol "títulos de tarjeta" */
+.ctt-form__titulo {
+    font-family: var(--font-heading); font-size: var(--fs-h3); font-weight: 700;
+    color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin: 0;
+}
+/* ⭐ TOKEN: var(--fs-small) (era 0.85rem literal, mismo valor)   */
+.ctt-form__desc {
+    font-family: var(--font-body); color: rgba(255,255,255,0.5);
+    font-size: var(--fs-small); margin: var(--sp-1) 0 0 0; line-height: 1.5;
+}
+
+.ctt-form__tarjeta-cuerpo {
+    padding: var(--sp-4) var(--sp-5); flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+}
+
+/* ── 2b. FORMULARIO: FILAS, GRUPOS, INPUTS ─────────────────────── */
+.ctt-form__fila {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: var(--sp-2); margin-bottom: var(--sp-2);
+}
+/* Modificador: fila de ancho completo                            */
+.ctt-form__fila--completa { grid-template-columns: 1fr; }
+
+.ctt-form__grupo { display: flex; flex-direction: column; }
+/* Grupo del mensaje: aire extra antes del botón de envío         */
+.ctt-form__grupo--mensaje { margin-bottom: var(--sp-3); }
+
+/* ⭐ TOKEN: var(--fs-micro) (12px — pasa el piso de legibilidad) */
+.ctt-form__label {
+    display: block; font-family: var(--font-heading); font-size: var(--fs-micro);
+    font-weight: 700; color: rgba(255,255,255,0.5);
+    margin-bottom: var(--sp-1); letter-spacing: 1px; text-transform: uppercase;
+}
+
+.ctt-form__input, .ctt-form__textarea {
+    width: 100%; padding: 0.9rem 1rem;
+    /* ⚠️ background-COLOR (no shorthand): el select dependiente
+       lleva un chevron SVG en background-image — un shorthand
+       `background:` aquí BORRARÍA la flecha. Ver regla del select. */
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px; color: #ffffff;
+    font-family: var(--font-body); font-size: 0.9rem;
+    transition: border-color 0.3s var(--header-ease), background-color 0.3s var(--header-ease), box-shadow 0.3s var(--header-ease);
+    box-sizing: border-box;
+}
+.ctt-form__textarea { resize: vertical; min-height: 120px; }
+
+.ctt-form__input:focus, .ctt-form__textarea:focus {
+    outline: none; border-color: var(--primary);
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(49, 38, 131, 0.25);
+}
+.ctt-form__input::placeholder, .ctt-form__textarea::placeholder { color: rgba(255,255,255,0.25); }
+
+/* ⭐ AUTOFILL CORREGIDO: Chrome/Edge pintan los campos autollenados
+   con amarillo sólido ENCIMA del fondo translúcido → rompía el
+   glassmorphism. La sombra inset maciza + text-fill-color
+   restauran el look oscuro del formulario (detalle premium).     */
+.ctt-form__input:-webkit-autofill,
+.ctt-form__textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #1a1a24 inset;
+    -webkit-text-fill-color: #ffffff;
+    caret-color: #ffffff;
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+/* ⭐ OPTIONS LEGIBLES: el dropdown nativo puede heredar el color
+   blanco del select sobre fondo blanco del sistema → ilegible.
+   El estilo explícito garantiza contraste en todos los SO.       */
+select.ctt-form__input option {
+    color: var(--text-body);
+    background: var(--bg-main);
+}
+
+/* SELECTS con chevron personalizado:
+   appearance:none elimina la flecha nativa (en iOS/Android y
+   desktop) → sin esta imagen el usuario no percibe que es una
+   lista desplegable. El chevron vive en background-image sobre
+   el background-color de la base (compatibles entre sí).
+   ⚠️ Mantener TODAS las reglas de estado de inputs con
+   background-color — nunca `background:` shorthand.              */
+select.ctt-form__input {
+    appearance: none; -webkit-appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-opacity='0.55' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 14px;
+    padding-right: 2.75rem; /* aire para que el texto no choque la flecha */
+}
+
+/* --- Estado Deshabilitado (select dependiente) ----------------- */
+.ctt-form__input--disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* ── 2c. VALIDACIÓN VISUAL SUAVE ─────────────────────────────────
+   QUÉ HACE: borde rojo en campos con datos inválidos.
+   POR QUÉ con :not(:placeholder-shown): SIN él, un campo required
+   vacío estaría :invalid DESDE LA CARGA (borde rojo permanente
+   antes de que el usuario toque nada — ruido hostil). El modificador
+   solo activa el estado si el usuario YA escribió algo inválido.
+   El select (sin placeholder-shown) delega en la validación nativa
+   del navegador — patrón limpio y accesible.                     */
+.ctt-form__input:not(:placeholder-shown):invalid,
+.ctt-form__textarea:not(:placeholder-shown):invalid {
+    border-color: var(--stripe-red);
+}
+
+/* ── 2d. BOTÓN DE ENVÍO ────────────────────────────────────────── */
+.ctt-form__btn-enviar {
+    width: 100%; padding: 1rem; background: var(--primary); color: white;
+    font-family: var(--font-heading); font-weight: 700; font-size: var(--fs-small);
+    letter-spacing: 1px; text-transform: uppercase; border: none; border-radius: 8px;
+    cursor: pointer; transition: all 0.3s var(--header-ease);
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+}
+/* Flecha animada: misma mecánica que .btn-primary-pill global    */
+.ctt-form__btn-enviar i { transition: transform 0.3s var(--header-ease); }
+.ctt-form__btn-enviar:hover {
+    background: #4a3fa8; transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(49, 38, 131, 0.4);
+}
+.ctt-form__btn-enviar:hover i { transform: translateX(4px); }
+
+/* ── 2e. BOTONES DE REDES SOCIALES ─────────────────────────────── */
+.ctt-form__red-btn {
+    display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; text-decoration: none; transition: all 0.3s var(--header-ease);
+    margin-bottom: 0.8rem; /* ritmo fino de control (fuera de escala layout) */
+}
+.ctt-form__red-btn:last-child { margin-bottom: 0; }
+
+.ctt-form__red-icono {
+    width: 36px; height: 36px; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem; color: #fff;
+    transition: transform 0.3s var(--header-ease);
+}
+.ctt-form__red-icono--wa { background: #25D366; }
+.ctt-form__red-icono--fb { background: #1877F2; }
+.ctt-form__red-icono--ig { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); }
+.ctt-form__red-icono--li { background: #0A66C2; }
+.ctt-form__red-icono--tk { background: #121212; border: 1px solid #333; }
+
+.ctt-form__red-texto { flex: 1; min-width: 0; }
+.ctt-form__red-nombre { display: block; font-family: var(--font-heading); font-size: var(--fs-small); font-weight: 700; color: #fff; transition: color 0.3s; }
+/* ⭐ TOKEN: var(--fs-micro) — piso de legibilidad 12px           */
+.ctt-form__red-sub { display: block; font-size: var(--fs-micro); color: rgba(255,255,255,0.4); }
+
+.ctt-form__red-flecha { color: rgba(255,255,255,0.2); transition: all 0.3s var(--header-ease); }
+.ctt-form__red-btn:hover .ctt-form__red-flecha { transform: translateX(4px); color: #fff; }
+.ctt-form__red-btn:hover .ctt-form__red-icono { transform: scale(1.05); }
+
+/* Hovers específicos por marca                                   */
+.ctt-form__red-btn--wa:hover { border-color: #25D366; background: rgba(37, 211, 102, 0.1); box-shadow: 0 0 20px rgba(37, 211, 102, 0.15); }
+.ctt-form__red-btn--wa:hover .ctt-form__red-nombre { color: #25D366; }
+
+.ctt-form__red-btn--fb:hover { border-color: #1877F2; background: rgba(24, 119, 242, 0.1); box-shadow: 0 0 20px rgba(24, 119, 242, 0.15); }
+.ctt-form__red-btn--fb:hover .ctt-form__red-nombre { color: #1877F2; }
+
+.ctt-form__red-btn--ig:hover { border-color: #E4405F; background: rgba(228, 64, 95, 0.1); box-shadow: 0 0 20px rgba(228, 64, 95, 0.15); }
+.ctt-form__red-btn--ig:hover .ctt-form__red-nombre { color: #E4405F; }
+
+.ctt-form__red-btn--li:hover { border-color: #0A66C2; background: rgba(10, 102, 194, 0.1); box-shadow: 0 0 20px rgba(10, 102, 194, 0.15); }
+.ctt-form__red-btn--li:hover .ctt-form__red-nombre { color: #0A66C2; }
+
+.ctt-form__red-btn--tk:hover { border-color: #00F2EA; background: rgba(0, 242, 234, 0.1); box-shadow: 0 0 20px rgba(0, 242, 234, 0.1); }
+.ctt-form__red-btn--tk:hover .ctt-form__red-nombre { color: #00F2EA; }
+
+/* ── 2f. MAPA ────────────────────────────────────────────────────
+   ⚠️ ALTURA FIJA VÁLIDA AQUÍ (documentado): los iframes de Maps
+   se re-renderizan vectorialmente — no sufren el recorte "zoomiado"
+   de las fotos → el patrón aspect-ratio del timeline no aplica;
+   la altura fija por breakpoint es el patrón correcto.           */
+.ctt-form__mapa-contenedor { margin-top: var(--sp-6); }
+.ctt-form__mapa-tarjeta { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+.ctt-form__mapa-iframe {
+    width: 100%; height: 400px; border: 0; display: block;
+    filter: invert(90%) hue-rotate(180deg); /* Mapa estilo oscuro */
+}
+
+.ctt-form__mapa-footer {
+    padding: var(--sp-3) var(--sp-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-2);
+}
+.ctt-form__mapa-titulo { font-family: var(--font-heading); color: #fff; font-weight: 700; margin: 0; font-size: 1rem; text-transform: uppercase; }
+/* ⭐ TOKEN: var(--fs-small)                                      */
+.ctt-form__mapa-direccion { color: rgba(255,255,255,0.5); font-size: var(--fs-small); margin: 4px 0 0 0; }
+
+/* ⭐ TOKEN: var(--fs-micro)                                      */
+.ctt-form__mapa-link {
+    text-decoration: none; font-family: var(--font-heading); font-size: var(--fs-micro); font-weight: 700;
+    color: #fff; background: rgba(255,255,255,0.1); padding: 0.6rem 1.2rem;
+    border-radius: 8px; transition: all 0.3s var(--header-ease); text-transform: uppercase;
+}
+.ctt-form__mapa-link:hover { background: var(--primary); }
+
+
+/* ════════════════════════════════════════════════════════════════
+   03. RESPONSIVE DEL SISTEMA (1024 / 767 / 480)
+   NOTAS:
+   - Los paddings VERTICALES de sección NO se redefinen: los tokens
+     fluidos --seccion-pad / --seccion-pad-destacada los cubren.
+   - Solo se ajusta el LATERAL (--pad-x-compacto) y el layout interno.
+   - ⭐ COMPUERTAS: escena 260px en tablet (knob) → ACORDEÓN
+     VERTICAL en móvil. ⭐ EL PANEL ACTIVO MÓVIL NO TIENE ALTURA
+     FIJA: el abierto pasa a FLUJO ESTÁTICO → el panel crece con
+     su contenido → el rol a 12px y los datos de 2 líneas NUNCA
+     desbordan (elimina de raíz la clase de bug). La expansión
+     móvil ya era instantánea (sin transición de min-height) →
+     cero pérdida de animación.
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── ≤1024px (tablet): lateral compacto + escena más baja ─────── */
+@media (max-width: 1024px) {
+    .ctt-seccion { padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto); }
+
+    .ctt-form { padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto); }
+    .ctt-form__grid { grid-template-columns: 1fr; }
+
+    /* Compuertas: escena compactada en tablet (knob por breakpoint:
+       260px — antes 300px fijo, desconectado del knob base)      */
+    .ctt-compuertas { --escena-altura: 260px; }
+}
+
+/* ── ≤767px (móvil): acordeón vertical + form apilado ────────────
+   COMPUERTAS: apilado — expansión por ALTURA:
+   · Cerrado = fila horizontal (num + nombre sin rotar) de 52px.
+   · Activo = ⭐ ALTURA NATURAL: el abierto pasa de absolute a
+     static → el panel crece con su contenido (rol 12px + datos
+     de 2 líneas nunca desbordan; sin min-height fija que romper). */
+@media (max-width: 767px) {
+    .ctt-compuertas { flex-direction: column; height: auto; gap: 8px; }
+    .ctt-compuerta { flex: none; min-height: 52px; }
+    /* El activo cede el control de la altura al contenido        */
+    .ctt-compuerta.es-activa { flex: none; min-height: 0; }
+    /* Cerrado horizontal: num + nombre en fila                    */
+    .ctt-compuerta__cerrado {
+        flex-direction: row; align-items: center; justify-content: flex-start;
+        padding: 0 16px; gap: 12px;
+    }
+    .ctt-compuerta__num { font-size: 0.9rem; }
+    .ctt-compuerta__nombre { writing-mode: horizontal-tb; transform: none; }
+    /* ⭐ Abierto en FLUJO (no absolute) → altura natural del panel */
+    .ctt-compuerta.es-activa .ctt-compuerta__abierto {
+        position: static; padding: 14px 16px 16px; justify-content: flex-end;
+    }
+
+    /* Formulario: filas de 2 campos apiladas con aire propio      */
+    .ctt-form__fila { grid-template-columns: 1fr; gap: var(--sp-2); }
+    .ctt-form__fila .ctt-form__grupo + .ctt-form__grupo { margin-top: var(--sp-2); }
+
+    .ctt-form__tarjeta-cabecera, .ctt-form__tarjeta-cuerpo { padding: var(--sp-3); }
+    .ctt-form__mapa-iframe { height: 300px; }
+}
+
+/* ── ≤480px (smartphone): ajustes finos ──────────────────────────
+   Sin min-height del activo (altura natural desde el bloque 767).
+   Solo compacidad de la pila interna.                            */
+@media (max-width: 480px) {
+    .ctt-compuertas { gap: 7px; }
+    .ctt-compuerta__icono { width: 40px; height: 40px; font-size: 0.95rem; }
+    .ctt-compuerta__abierto { padding: 14px 16px; }
+    .ctt-compuerta__dato { margin-bottom: 8px; }
+
+    .ctt-form__mapa-iframe { height: 260px; }
+    .ctt-form__mapa-footer { flex-direction: column; align-items: flex-start; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   04. COMPORTAMIENTO TÁCTIL (hover none + pointer coarse)
+   QUÉ HACE: neutraliza hovers que se "pegan" y entrega feedback
+   de presión (:active) — patrón global del sitio.
+   COMPUERTAS: el hover no existe → la EXPANSIÓN es el feedback
+   principal (JS); la presión solo refuerza en el panel cerrado
+   y en el CTA. El panel activo NO se hunde (es la pieza en foco).
+   Cubre además: botón enviar, mapa-link y redes (con realce de
+   icono al presionar).
+   ════════════════════════════════════════════════════════════════ */
+@media (hover: none) and (pointer: coarse) {
+    /* Compuertas: solo el panel CERRADO recibe presión
+       (el activo es la pieza protagonista — no se deforma)        */
+    .ctt-compuerta:not(.es-activa):hover { border-color: var(--primary-border); box-shadow: 0 4px 14px rgba(49, 38, 131, 0.05); }
+    .ctt-compuerta:not(.es-activa):hover .ctt-compuerta__nombre { color: var(--text-body); }
+    .ctt-compuerta:active { border-color: var(--primary); }
+    .ctt-compuerta__cta:active { transform: scale(0.96); }
+
+    /* Botón de envío                                              */
+    .ctt-form__btn-enviar:hover { background: var(--primary); transform: none; box-shadow: none; }
+    .ctt-form__btn-enviar:hover i { transform: none; }
+    .ctt-form__btn-enviar:active { background: #4a3fa8; transform: scale(0.98); }
+    .ctt-form__btn-enviar:active i { transform: translateX(4px); }
+
+    /* Mapa: abrir en Maps                                         */
+    .ctt-form__mapa-link:hover { background: rgba(255,255,255,0.1); }
+    .ctt-form__mapa-link:active { background: var(--primary); }
+
+    /* Redes sociales                                              */
+    .ctt-form__red-btn:hover { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.1); box-shadow: none; transform: none; }
+    .ctt-form__red-btn:hover .ctt-form__red-nombre { color: #fff; }
+    .ctt-form__red-btn:hover .ctt-form__red-flecha { transform: none; color: rgba(255,255,255,0.2); }
+    .ctt-form__red-btn:hover .ctt-form__red-icono { transform: none; }
+    .ctt-form__red-btn:active { transform: scale(0.98); }
+    /* Feedback de presión: icono hundido + flecha avanza          */
+    .ctt-form__red-btn:active .ctt-form__red-icono { transform: scale(0.92); }
+    .ctt-form__red-btn:active .ctt-form__red-flecha { transform: translateX(3px); color: #fff; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   05. ACCESIBILIDAD — MOVIMIENTO REDUCIDO
+   QUÉ HACE: anula transiciones/animaciones de toda la página
+   (patrón del header.css) — compuertas, controles, botones,
+   redes y mapa.
+   ⭐ COMPUERTAS: la conmutación es/activa SIGUE funcionando
+   (instantánea, sin animación) — la usabilidad no depende del
+   movimiento.
+   ════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+    /* Compuertas: sin entrada animada ni transiciones de expansión */
+    .ctt-compuerta, .ctt-compuerta__cerrado, .ctt-compuerta__abierto,
+    .ctt-compuerta__cta, .ctt-compuerta__cta i {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .ctt-form__input, .ctt-form__textarea,
+    .ctt-form__btn-enviar, .ctt-form__btn-enviar i,
+    .ctt-form__red-btn, .ctt-form__red-flecha, .ctt-form__red-icono, .ctt-form__red-nombre,
+    .ctt-form__mapa-link, .ctt-form__tarjeta {
+        transition-duration: 0.01ms !important;
+    }
+}

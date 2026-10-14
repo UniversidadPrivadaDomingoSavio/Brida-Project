@@ -1,0 +1,20 @@
+/* 1. Base */
+@import url('./base/variables.css');
+@import url('./base/reset.css');
+
+/* 2. Componentes */
+@import url('./components/header.css');
+@import url('./components/buttons.css');
+@import url('./components/footer.css');
+@import url('./components/section-ui.css');
+
+/* 3. Páginas */
+@import url('./pages/inicio.css');
+@import url('./pages/quienes-somos.css');
+@import url('./pages/servicios.css');
+@import url('./pages/proyectos.css');
+@import url('./pages/contacto.css');
+
+/* Sub páginas */
+@import url('./pages/servicios-detalle.css');
+@import url('./pages/proyectos-detalle.css');

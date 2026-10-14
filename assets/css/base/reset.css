@@ -1,0 +1,41 @@
+/* assets/css/base/reset.css */
+/* ════════════════════════════════════════════════════════════════
+   RESET GLOBAL — BRIDA S.R.L.
+   Normaliza navegadores antes de cualquier estilo de componente.
+   ════════════════════════════════════════════════════════════════ */
+
+/* Reinicio de cajas y márgenes por defecto                        */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* Scroll suave global (los saltos de índice/JS lo refinan)        */
+html { scroll-behavior: smooth; }
+
+/* Base tipográfica del sitio
+   + antialiased: bordes de letra más finos en pantallas retina
+   + text-rendering: optimiza el dibujado del texto               */
+body {
+    font-family: var(--font-body);
+    color: var(--text-body);
+    background-color: var(--bg-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Enlaces: sin decoración por defecto (el diseño la agrega)       */
+a { text-decoration: none; color: inherit; }
+
+/* Listas sin viñetas (el diseño agrega marcadores propios)        */
+ul { list-style: none; }
+
+/* Imágenes: nunca desbordan su contenedor                         */
+img { max-width: 100%; display: block; }
+
+/* Foco visible consistente para navegación por teclado            */
+*:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
