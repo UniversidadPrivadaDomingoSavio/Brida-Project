@@ -1,0 +1,937 @@
+<!-- servicios/electricidad-automatizacion.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- ════════════════════════════════════════════════════════════════
+         00 · HEAD / METADATOS / RECURSOS
+         ════════════════════════════════════════════════════════════════
+         Página: Electricidad & Automatización
+         Sistema: BRIDA S.R.L. — páginas de servicio detalle
+         Versión HTML: v4.8 — contenido OFICIAL. Fuente única de datos:
+           PDF "Presentación de Servicios" de la empresa
+           (pp. 6 · 7 · 19 · 4).
+           REGLA: no se inventa información (sin clientes, sin
+           certificaciones ni servicios ajenos al alcance oficial).
+
+         ⭐ CHANGELOG v4.8 (IMAGEN DE LÍNEA APLICADA):
+           · HERO: portada definitiva de la línea generada con el
+             sistema de prompts aprobado (objetos, sin personas).
+             Ruta: ../assets/img/servicios/Electricidad & Automatización.jpg
+             (codificada en URL: %20 %26 %C3%B3 — espacios, ampersand
+             y acento). Aplicada al <link rel="preload"> y al fondo
+             del hero-interno.
+           · ⚠️ AL RENOMBRAR (plan kebab-case pendiente): si el
+             archivo pasa a llamarse hero-electricidad-automatizacion.jpg,
+             actualizar AQUÍ el preload, el fondo del hero y esta nota.
+
+         ⭐ CHANGELOG v4.7 (GLOBALIZACIÓN DEL CANVAS BLUEPRINT):
+           · Sección 04 (Alcance) lleva la clase GLOBAL
+             .bg-soft-pattern (canvas claro 32px — fuente única
+             section-ui.css). El CSS v4.6/v4.7 NO declara background
+             local en .srv-seccion_2 → sin conflicto (verificado).
+           · Sección 05 (Galería) permanece BLANCA por doctrina:
+             escena fotográfica (mismo criterio del index .ini-valores
+             y de la ficha de proyectos v3.1).
+           · Ritmo de página resultante:
+             canvas claro → blanco → canvas claro → canvas oscuro.
+
+         ÍNDICE DEL DOCUMENTO:
+           00 · HEAD / METADATOS / RECURSOS
+           01 · HEADER — componente global inyectado
+           02 · MAIN — contenido principal
+           03 · HERO INTERNO — componente global section-ui.css
+           04 · SECCIÓN 01 · ALCANCE DEL SERVICIO (Variante E · cards)
+           05 · SECCIÓN 02 · GALERÍA CARRUSEL SIN VISOR AMPLIADO
+           06 · SECCIÓN 03 · SUB-SERVICIOS / LÁMINAS TÉCNICAS
+           07 · SECCIÓN 04 · CTA FINAL — componente global contacto-cta
+           08 · FOOTER — componente global inyectado
+           09 · SCRIPTS — main.js enruta por body#page-servicio-detalle
+         ════════════════════════════════════════════════════════════════
+         CONTRATO COORDINADO (versiones reales):
+           · CSS: assets/css/pages/servicios-detalle.css — v4.6/v4.7
+           · JS:  assets/js/pages/servicios-detalle.js  — v4.4
+           · main.js NO cambia (routing por body#page-servicio-detalle).
+
+         Reglas de estructura de ESTE documento:
+           · Sección 01 = Variante E (banda visual + intro + 3 cards).
+             NO usa rail sticky → NO lleva [data-rail-fijo].
+           · Sección 02 = galería como <section class="pro-det-galeria">
+             INDEPENDIENTE. Lleva el título .section-title-group con el
+             <h2 id="srv-galeria-titulo"> (destinatario de aria-labelledby).
+           · La galería NO debe tener lightbox, lupa, modal ni zoom.
+           · Las cards del alcance usan .srv-alcance-card-extra como
+             bloque colapsable en móvil (JS: initExpansionAlcanceCards).
+           · Los sub-servicios usan .srv-fases__item-extra como bloque
+             colapsable en móvil (JS: initExpansionFases).
+           · Los enlaces internos de sub-servicio usan .js-carga.
+           · WhatsApp y mailto NO usan .js-carga (canales externos).
+         ════════════════════════════════════════════════════════════════ -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO básico -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="BRIDA Ingeniería de Proyectos – Oil &amp; Gas Energía SRL">
+    <meta name="theme-color" content="#312683">
+
+    <meta name="description" content="Electricidad &amp; Automatización BRIDA S.R.L.: trabajos eléctricos de baja, media y alta tensión, montaje electromecánico de subestaciones, automatización de procesos industriales y electromecánicos, redes eléctricas de distribución, mantenimiento preventivo y correctivo de equipos eléctricos y rotativos, fibra óptica en Bolivia.">
+    <title>Electricidad &amp; Automatización | BRIDA S.R.L. - Ingeniería de Proyectos y Oil &amp; Gas</title>
+
+    <!-- Fuentes e iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicon — ruta de subpágina -->
+    <link rel="icon" type="image/png" href="../assets/img/icons/logo-brida.png">
+
+    <!-- ⭐ v4.8 Precarga de la imagen de la línea (LCP de la página).
+         Imagen generada con el sistema de prompts (objetos, sin
+         personas): assets/img/servicios/Electricidad & Automatización.jpg
+         Codificación URL: %20 (espacio) · %26 (ampersand) ·
+         %C3%B3 (ó). Si renombras el archivo (kebab-case), actualizar
+         ESTA ruta y el fondo del hero.                        -->
+    <link rel="preload" as="image" href="../assets/img/servicios/Electricidad%20%26%20Automatizaci%C3%B3n.jpg" fetchpriority="high">
+
+    <!-- Estilos principales del sitio -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+
+<body id="page-servicio-detalle">
+
+    <!-- ════════════════════════════════════════════════════════════════
+         01 · HEADER — COMPONENTE GLOBAL
+         ════════════════════════════════════════════════════════════════
+         El menú completo vive en:
+           assets/js/components/header-menu.js
+
+         Detecta la subcarpeta /servicios/ y antepone ../ a sus rutas.
+         El estado is-active se detecta automáticamente según la URL.
+         ════════════════════════════════════════════════════════════════ -->
+    <div id="header-placeholder"></div>
+
+
+    <!-- ════════════════════════════════════════════════════════════════
+         02 · MAIN — CONTENIDO PRINCIPAL
+         ════════════════════════════════════════════════════════════════ -->
+    <main id="contenido-principal" aria-label="Contenido principal de Electricidad y Automatización">
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             03 · HERO INTERNO — COMPONENTE GLOBAL
+             ════════════════════════════════════════════════════════════════
+             Estilo global en:
+               assets/css/components/section-ui.css
+             No lleva CSS local.
+
+             ⭐ v4.8 PORTADA DEFINITIVA DE LA LÍNEA:
+             assets/img/servicios/Electricidad & Automatización.jpg
+             (generada con el sistema de prompts: objetos técnicos de
+             la línea — subestación, tableros, automatización — sobre
+             atmósfera índigo/violeta; sin personas ni texto).
+             Codificada: %20 %26 %C3%B3.
+             Su composición (sujeto centro-derecha, tercio izquierdo
+             limpio) está calibrada para el degradado morado del
+             overlay y para el recorte central vertical del móvil.
+             ════════════════════════════════════════════════════════════════ -->
+        <section class="hero-interno" aria-label="Presentación de Electricidad y Automatización">
+
+            <div
+                class="hero-interno__fondo"
+                style="background-image: url('../assets/img/servicios/Electricidad%20%26%20Automatizaci%C3%B3n.jpg');"
+                aria-hidden="true">
+            </div>
+
+            <div class="hero-interno__superposicion" aria-hidden="true"></div>
+
+            <div class="hero-interno__contenido hero-animar">
+                <div class="section-title-group">
+                    <span class="section-eyebrow">Línea de Servicio</span>
+                    <h1 class="section-title">ELECTRICIDAD &amp; AUTOMATIZACIÓN</h1>
+                    <span class="section-title-line" aria-hidden="true"></span>
+                </div>
+
+                <!-- Fuente: PDF p. 6 (trabajos eléctricos B/M/A tensión,
+                     automatización de procesos, mantenimiento) + p. 7
+                     (subestaciones, redes de distribución).              -->
+                <p class="hero-interno__descripcion">
+                    Obras eléctricas de baja, media y alta tensión, montaje
+                    electromecánico de subestaciones y automatización de procesos
+                    industriales y electromecánicos. Proyectos eléctricos para el
+                    rubro industrial y comercial, con mantenimiento preventivo y
+                    correctivo de equipos.
+                </p>
+            </div>
+
+        </section>
+        <!-- ═════════════════════ /03 · HERO INTERNO ═════════════════════ -->
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             04 · SECCIÓN 01 · ALCANCE DEL SERVICIO — VARIANTE E · CARDS
+             ════════════════════════════════════════════════════════════════
+             ⭐ v4.7 CANVAS GLOBAL: esta sección lleva la clase GLOBAL
+             .bg-soft-pattern (rejilla técnica 32px del sitio — fuente
+             única section-ui.css). El CSS v4.6/v4.7 no declara
+             background local en .srv-seccion_2 → sin conflicto.
+
+             Estructura:
+               · Miga de pan            — .srv-miga
+               · Banda visual superior  — .srv-marco--banda
+               · Intro editorial        — .srv-bloque-editorial--intro
+               · 3 cards técnicas       — .srv-alcance-card
+
+             Hooks JS/CSS:
+               · [data-aparicion]         → initAparicionArticulos()
+               · .srv-alcance-card        → initExpansionAlcanceCards()
+               · .srv-alcance-card-extra  → bloque colapsable en móvil
+               · .reveal-up               → observer global
+             ════════════════════════════════════════════════════════════════ -->
+        <section
+            class="srv-seccion_2 srv-seccion--alcance bg-soft-pattern"
+            id="alcance-servicio"
+            aria-labelledby="alcance-servicio-titulo">
+
+            <div class="srv-contenedor">
+
+                <!-- ─────────────────────────────────────────────
+                     04.1 · MIGA DE PAN
+                     ───────────────────────────────────────────── -->
+                <nav class="srv-miga" aria-label="Ruta de navegación">
+                    <a class="srv-miga__link" href="../index.html">Inicio</a>
+                    <i class="fa-solid fa-chevron-right srv-miga__sep" aria-hidden="true"></i>
+
+                    <a class="srv-miga__link" href="../servicios.html">Servicios</a>
+                    <i class="fa-solid fa-chevron-right srv-miga__sep" aria-hidden="true"></i>
+
+                    <span class="srv-miga__actual" aria-current="page">Electricidad y Automatización</span>
+                </nav>
+
+                <!-- ─────────────────────────────────────────────
+                     04.2 · FICHA DEL SERVICIO — VARIANTE E CARDS
+                     ───────────────────────────────────────────── -->
+                <div class="srv-ficha srv-ficha--cards">
+
+                    <!-- Banda visual superior -->
+                    <figure class="srv-marco srv-marco--banda reveal-up">
+                        <div class="srv-marco__lienzo">
+                            <span class="srv-marco__rejilla" aria-hidden="true"></span>
+
+                            <img
+                                src="../assets/img/servicios/SRV-04 — Electricidad & Automatización.jpg"
+                                alt="Ilustración de marca BRIDA S.R.L. — grúa y silueta industrial de ingeniería de proyectos."
+                                loading="lazy"
+                                decoding="async">
+                            <!-- TODO: Reemplazar por imagen real de la línea cuando esté disponible. -->
+                        </div>
+
+                        <figcaption class="srv-marco__cota">
+                            <span>Cobertura nacional · Santa Cruz · La Paz · Cochabamba · Tarija</span>
+                        </figcaption>
+                    </figure>
+
+                    <!-- Bloques editoriales: intro + 3 cards -->
+                    <div
+                        class="srv-bloques-editoriales srv-bloques-editoriales--cards"
+                        data-aparicion>
+
+                        <!-- Intro editorial
+                             Fuente: PDF p. 6 (líneas eléctricas, automatización,
+                             mantenimiento, fibra óptica) + p. 7 (subestaciones,
+                             redes de distribución).                          -->
+                        <article class="srv-bloque-editorial srv-bloque-editorial--intro">
+                            <h2 id="alcance-servicio-titulo">Alcance del servicio</h2>
+                            <p>
+                                BRIDA ejecuta <strong>proyectos de trabajos eléctricos</strong> para el
+                                rubro industrial y comercial: obras de <strong>baja, media y alta
+                                tensión</strong>, provisión y montaje electromecánico de
+                                <strong>subestaciones</strong>, y <strong>automatización de procesos
+                                industriales</strong> y electromecánicos. La línea se complementa con
+                                redes eléctricas de distribución, mantenimiento preventivo y correctivo
+                                de equipos eléctricos y rotativos, y provisión y tendido de
+                                <strong>fibra óptica</strong>.
+                            </p>
+                        </article>
+
+                        <!-- Card 1 — Fuente: PDF p. 6 "Trabajos Eléctricos de Baja, Media
+                             y Alta Tensión" + "Proyectos de Trabajos Eléctricos para el
+                             rubro industrial y comercial" + p. 7 "Instalación Industrial,
+                             Viviendas, Edificios y Otros" + p. 19 "Canalización Conduit
+                             para Iluminación" y "Colocado de Bandejas en Cárcamos". -->
+                        <article
+                            class="srv-bloque-editorial srv-alcance-card"
+                            id="alcance-electrica-tension">
+
+                            <div class="srv-alcance-card-cabecera">
+                                <span class="srv-alcance-card-icono">
+                                    <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+                                </span>
+
+                                <h3 class="srv-alcance-card-titulo">
+                                    Trabajos eléctricos de baja, media y alta tensión
+                                </h3>
+                            </div>
+
+                            <div class="srv-alcance-card-extra">
+                                <p>
+                                    <strong>Instalaciones eléctricas</strong> industriales, comerciales,
+                                    viviendas y edificios: canalización conduit para iluminación,
+                                    colocación de <strong>bandejas en cárcamos</strong> y montaje
+                                    electromecánico completo.
+                                </p>
+                            </div>
+                        </article>
+
+                        <!-- Card 2 — Fuente: PDF p. 7 "Provisión y Montaje Electromecánico
+                             de Subestación de Alta, Media y Baja Tensión" + p. 19 "Montaje
+                             de Seccionadores Subestación" y "Armado y Ensamblado Tableros
+                             Elect." + p. 6 "Automatización de Procesos Industriales y
+                             Electromecánicos, Electrónicas, Hidráulicas y Sanitarias". -->
+                        <article
+                            class="srv-bloque-editorial srv-alcance-card"
+                            id="alcance-subestaciones-automatizacion">
+
+                            <div class="srv-alcance-card-cabecera">
+                                <span class="srv-alcance-card-icono">
+                                    <i class="fa-solid fa-microchip" aria-hidden="true"></i>
+                                </span>
+
+                                <h3 class="srv-alcance-card-titulo">
+                                    Subestaciones y automatización de procesos
+                                </h3>
+                            </div>
+
+                            <div class="srv-alcance-card-extra">
+                                <p>
+                                    <strong>Montaje electromecánico de subestaciones</strong> de alta,
+                                    media y baja tensión —incluye seccionadores—, armado y ensamblado
+                                    de <strong>tableros eléctricos</strong>, y automatización de procesos
+                                    electromecánicos, electrónicos, hidráulicos y sanitarios para
+                                    <strong>mejorar la eficiencia operativa</strong>.
+                                </p>
+                            </div>
+                        </article>
+
+                        <!-- Card 3 — Fuente: PDF p. 7 "Servicio de Pre diseño, Diseño y
+                             Estacado, Construcción y Puesta de Servicios de Redes Eléctricas
+                             de Distribución" + p. 6 "Mantenimiento Preventivo, Correctivo de
+                             Equipos Eléctricos y Equipos Rotativos", "Provisión, Tendido y
+                             Etiquetado de Fibra Óptica" y "Supervisión en todo tipo de
+                             Instalaciones Eléctricas".                             -->
+                        <article
+                            class="srv-bloque-editorial srv-alcance-card"
+                            id="alcance-redes-mantenimiento">
+
+                            <div class="srv-alcance-card-cabecera">
+                                <span class="srv-alcance-card-icono">
+                                    <i class="fa-solid fa-network-wired" aria-hidden="true"></i>
+                                </span>
+
+                                <h3 class="srv-alcance-card-titulo">
+                                    Redes de distribución, mantenimiento y fibra óptica
+                                </h3>
+                            </div>
+
+                            <div class="srv-alcance-card-extra">
+                                <p>
+                                    Pre diseño, diseño y estacado de <strong>redes eléctricas de
+                                    distribución</strong> hasta su puesta en servicio. Mantenimiento
+                                    preventivo y correctivo de <strong>equipos eléctricos y rotativos</strong>,
+                                    provisión y tendido de <strong>fibra óptica</strong> con etiquetado,
+                                    y supervisión de todo tipo de instalaciones eléctricas.
+                                </p>
+                            </div>
+                        </article>
+
+                    </div>
+                    <!-- /Bloques editoriales -->
+
+                </div>
+                <!-- ─────────────────────────────────────────────
+                     /04.2 · FICHA DEL SERVICIO — VARIANTE E CARDS
+                     ───────────────────────────────────────────── -->
+
+            </div>
+        </section>
+        <!-- ═════════════════════ /04 · SECCIÓN 01 · ALCANCE — VARIANTE E ═════════════════════ -->
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             05 · SECCIÓN 02 · GALERÍA — CARRUSEL SIN VISOR AMPLIADO
+             ════════════════════════════════════════════════════════════════
+             Sección INDEPENDIENTE (no fusionada con la 01).
+
+             ⭐ v4.7 DOCTRINA DE FONDO: esta galería permanece BLANCA
+             (escena fotográfica — las fotos necesitan suelo neutro).
+             Mismo criterio que .ini-valores del index y que la galería
+             de la ficha de proyectos v3.1.
+
+             Comportamiento aprobado:
+               · Escritorio: 3 slides visibles + flechas.
+               · Tablet: 2 slides visibles + puntos + swipe.
+               · Móvil: 1 slide visible + puntos + swipe.
+
+             Prohibido en esta página:
+               · SIN lightbox. · SIN lupa. · SIN zoom modal.
+               · SIN cursor zoom-in. · SIN visor ampliado.
+
+             Accesibilidad:
+               · aria-labelledby apunta al <h2 id="srv-galeria-titulo">
+                 (bloque .section-title-group presente en esta sección).
+
+             Dependencias:
+               · CSS: bloque de galería independiente de servicios-detalle.css v4.6
+               · JS: initGaleriaServicio() en servicios-detalle.js v4.4
+             ════════════════════════════════════════════════════════════════ -->
+        <section
+            class="pro-det-galeria"
+            id="srv-galeria-pro"
+            aria-labelledby="srv-galeria-titulo">
+
+            <!-- Destellos decorativos de fondo -->
+            <div class="pro-det-galeria__destello pro-det-galeria__destello--1" aria-hidden="true"></div>
+            <div class="pro-det-galeria__destello pro-det-galeria__destello--2" aria-hidden="true"></div>
+
+            <!-- Título de la galería (destinatario real de aria-labelledby) -->
+            <div class="section-title-group center reveal-up">
+                <span class="section-eyebrow">Trabajo Técnico</span>
+                <h2 class="section-title" id="srv-galeria-titulo">GALERÍA</h2>
+                <span class="section-title-line" aria-hidden="true"></span>
+                <p class="pro-det-galeria__subtitulo">
+                    Registro fotográfico de obras eléctricas, tableros, subestaciones
+                    y automatización de procesos.
+                </p>
+            </div>
+
+            <!-- Carrusel -->
+            <div
+                class="pro-det-galeria__carrusel reveal-up"
+                aria-roledescription="carrusel"
+                aria-label="Galería fotográfica de Electricidad y Automatización">
+
+                <!-- Flecha anterior: visible solo en escritorio según CSS -->
+                <button
+                    class="pro-det-galeria__btn pro-det-galeria__btn--prev"
+                    id="galeria-prev"
+                    type="button"
+                    aria-label="Imagen anterior"
+                    aria-controls="galeria-track">
+                    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                </button>
+
+                <!-- Viewport: área visible del carrusel -->
+                <div class="pro-det-galeria__viewport" id="galeria-viewport">
+
+                    <!-- Track: pista deslizante controlada por JS -->
+                    <div class="pro-det-galeria__track" id="galeria-track">
+
+                        <!-- Slide 1 — Fuente: PDF p. 6 (automatización de procesos).
+                             Imagen oficial de la línea en el repositorio.      -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/Inicio/Servicio_Automatizaci%C3%B3n%20de%20Procesos%20Industriales%20y%20Electromec%C3%A1nicos.png"
+                                alt="Electricidad y automatización BRIDA — automatización de procesos industriales y electromecánicos"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                        <!-- Slide 2 — Fuente: PDF p. 6 (automatización y eficiencia
+                             operativa). Portada de la línea en el index.       -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/Inicio/Portada%206.jpeg"
+                                alt="Electricidad y automatización BRIDA — soluciones tecnológicas para procesos industriales"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                        <!-- Slide 3 — Fuente: PDF p. 6 (supervisión de instalaciones
+                             eléctricas).                                        -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/Inicio/Servicio_Supervisi%C3%B3n%20e%20Inspecci%C3%B3n%20de%20Obras.jpg"
+                                alt="Electricidad y automatización BRIDA — supervisión de instalaciones eléctricas"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                        <!-- Slide 4 — Fuente: PDF p. 4 (sistema integrado, puesta en
+                             marcha de plantas).                                 -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/Inicio/Servicio_Precomisionado%2C%20Comisionado%20y%20Puesta%20en%20Marcha.jpg"
+                                alt="Electricidad y automatización BRIDA — precomisionado, comisionado y puesta en marcha de plantas"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                        <!-- Slide 5 — Fuente: PDF p. 5 (diseño e ingeniería de obras
+                             eléctricas).                                        -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/Inicio/Servicio_Dise%C3%B1o%20e%20Ingenier%C3%ADa%20de%20Obras%20Civiles%2C%20Mec%C3%A1nicas%20y%20El%C3%A9ctricas.jpg"
+                                alt="Electricidad y automatización BRIDA — diseño e ingeniería de obras eléctricas"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                        <!-- Slide 6 — ⭐ v4.8: la imagen de la línea (generada
+                             con el sistema de prompts) se incorpora al registro
+                             visual de la galería. Codificación: %20 %26 %C3%B3. -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/servicios/Electricidad%20%26%20Automatizaci%C3%B3n.jpg"
+                                alt="Electricidad y automatización BRIDA — subestación, tableros y automatización de procesos industriales"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                    </div>
+                    <!-- /Track -->
+
+                </div>
+                <!-- /Viewport -->
+
+                <!-- Flecha siguiente: visible solo en escritorio según CSS -->
+                <button
+                    class="pro-det-galeria__btn pro-det-galeria__btn--next"
+                    id="galeria-next"
+                    type="button"
+                    aria-label="Imagen siguiente"
+                    aria-controls="galeria-track">
+                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </button>
+
+            </div>
+            <!-- /Carrusel -->
+
+            <!-- Puntos de paginación: generados por JS -->
+            <div
+                class="pro-det-galeria__puntos"
+                id="galeria-puntos"
+                role="group"
+                aria-label="Paginación de galería">
+            </div>
+
+        </section>
+        <!-- ═════════════════════ /05 · SECCIÓN 02 · GALERÍA ═════════════════════ -->
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             06 · SECCIÓN 03 · SUB-SERVICIOS — LÁMINAS TÉCNICAS
+             ════════════════════════════════════════════════════════════════
+             Gemelas visuales de .ini-servicios__lamina del index.
+             5 láminas: el CSS v4.6 (bloque 03.1) centra la fila inferior
+             con :nth-child(4):nth-last-child(2) y :nth-child(5):nth-last-child(1).
+             ⭐ v4.7: esta sección YA llevaba el canvas global
+             .bg-soft-pattern (sin cambios).
+
+             Estructura por lámina:
+               · .srv-fases__item-cabecera (código EA-01…05 + icono morado)
+               · .srv-fases__item-cuerpo (título + .srv-fases__item-extra
+                 con lista de checks + enlace .js-carga)
+
+             Comportamiento responsive:
+               · Escritorio: grid técnico 6 columnas (3×2 / 5 → centrado).
+               · Tablet: 2 columnas (última centrada si hay impar).
+               · Móvil ≤767: lámina comprimida + acordeón por scroll
+                 (solo si el JS añade .js-fases-expansion en <html>).
+                 Sin JS: contenido visible (fallback seguro).
+
+             Trazabilidad EA-01…05 (PDF pp. 6, 7, 19): sin cambios v4.8.
+             ════════════════════════════════════════════════════════════════ -->
+        <section
+            class="srv-seccion srv-seccion--laminas bg-soft-pattern"
+            id="subservicios-electricidad"
+            aria-labelledby="subservicios-electricidad-titulo">
+
+            <div class="srv-contenedor">
+                <div class="srv-fases">
+
+                    <!-- Cabecera de sección -->
+                    <header class="srv-fases__cabecera reveal-up">
+                        <div class="section-title-group center">
+                            <span class="section-eyebrow">Alcance de la Línea</span>
+                            <h2 class="section-title" id="subservicios-electricidad-titulo">SUB-SERVICIOS</h2>
+                            <span class="section-title-line" aria-hidden="true"></span>
+                        </div>
+                    </header>
+
+                    <!-- Grid de láminas técnicas -->
+                    <div class="srv-fases__grid" role="list">
+
+                        <!-- ─────────────────────────────────────────
+                             EA-01 · Obras Eléctricas B/M/A Tensión
+                             ───────────────────────────────────────── -->
+                        <article
+                            class="srv-fases__item reveal-up"
+                            id="electrica-baja-media-alta-tension"
+                            role="listitem"
+                            aria-labelledby="srv-sub-ea-01-titulo">
+
+                            <div class="srv-fases__item-cabecera">
+                                <span class="srv-fases__item-codigo">EA-01</span>
+                                <span class="srv-fases__item-icono">
+                                    <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="srv-fases__item-cuerpo">
+                                <h3 class="srv-fases__item-titulo" id="srv-sub-ea-01-titulo">
+                                    Obras Eléctricas de Baja, Media y Alta Tensión
+                                </h3>
+
+                                <div class="srv-fases__item-extra">
+                                    <ul class="srv-fases__item-lista">
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Trabajos eléctricos de baja, media y alta tensión
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Proyectos eléctricos para el rubro industrial y comercial
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Instalación industrial, viviendas y edificios
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Canalización conduit y colocación de bandejas en cárcamos
+                                        </li>
+                                    </ul>
+
+                                    <a
+                                        href="../contacto.html"
+                                        class="srv-fases__item-link js-carga"
+                                        aria-label="Solicitar asesoría sobre obras eléctricas de baja, media y alta tensión">
+                                        Solicitar asesoría
+                                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- ─────────────────────────────────────────
+                             EA-02 · Subestaciones y Tableros
+                             ───────────────────────────────────────── -->
+                        <article
+                            class="srv-fases__item reveal-up"
+                            id="subestaciones-electromecanicas"
+                            role="listitem"
+                            aria-labelledby="srv-sub-ea-02-titulo">
+
+                            <div class="srv-fases__item-cabecera">
+                                <span class="srv-fases__item-codigo">EA-02</span>
+                                <span class="srv-fases__item-icono">
+                                    <i class="fa-solid fa-plug-circle-bolt" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="srv-fases__item-cuerpo">
+                                <h3 class="srv-fases__item-titulo" id="srv-sub-ea-02-titulo">
+                                    Subestaciones y Montaje Electromecánico
+                                </h3>
+
+                                <div class="srv-fases__item-extra">
+                                    <ul class="srv-fases__item-lista">
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Provisión y montaje electromecánico de subestaciones de alta, media y baja tensión
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Montaje de seccionadores de subestación
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Armado y ensamblado de tableros eléctricos
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Integración con obra civil y estructuras de soporte
+                                        </li>
+                                    </ul>
+
+                                    <a
+                                        href="../contacto.html"
+                                        class="srv-fases__item-link js-carga"
+                                        aria-label="Solicitar asesoría sobre subestaciones y montaje electromecánico">
+                                        Solicitar asesoría
+                                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- ─────────────────────────────────────────
+                             EA-03 · Automatización de Procesos
+                             ───────────────────────────────────────── -->
+                        <article
+                            class="srv-fases__item reveal-up"
+                            id="automatizacion-industrial"
+                            role="listitem"
+                            aria-labelledby="srv-sub-ea-03-titulo">
+
+                            <div class="srv-fases__item-cabecera">
+                                <span class="srv-fases__item-codigo">EA-03</span>
+                                <span class="srv-fases__item-icono">
+                                    <i class="fa-solid fa-microchip" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="srv-fases__item-cuerpo">
+                                <h3 class="srv-fases__item-titulo" id="srv-sub-ea-03-titulo">
+                                    Automatización de Procesos Industriales
+                                </h3>
+
+                                <div class="srv-fases__item-extra">
+                                    <ul class="srv-fases__item-lista">
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Automatización de procesos industriales y electromecánicos
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Sistemas electrónicos, hidráulicos y sanitarios
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Mejora de la eficiencia operativa de plantas
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Integración tecnológica en instalaciones existentes
+                                        </li>
+                                    </ul>
+
+                                    <a
+                                        href="../contacto.html"
+                                        class="srv-fases__item-link js-carga"
+                                        aria-label="Solicitar asesoría sobre automatización de procesos industriales">
+                                        Solicitar asesoría
+                                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- ─────────────────────────────────────────
+                             EA-04 · Redes Eléctricas de Distribución
+                             ───────────────────────────────────────── -->
+                        <article
+                            class="srv-fases__item reveal-up"
+                            id="redes-electricas-distribucion"
+                            role="listitem"
+                            aria-labelledby="srv-sub-ea-04-titulo">
+
+                            <div class="srv-fases__item-cabecera">
+                                <span class="srv-fases__item-codigo">EA-04</span>
+                                <span class="srv-fases__item-icono">
+                                    <i class="fa-solid fa-network-wired" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="srv-fases__item-cuerpo">
+                                <h3 class="srv-fases__item-titulo" id="srv-sub-ea-04-titulo">
+                                    Redes Eléctricas de Distribución
+                                </h3>
+
+                                <div class="srv-fases__item-extra">
+                                    <ul class="srv-fases__item-lista">
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Pre diseño, diseño y estacado de redes
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Construcción de redes eléctricas de distribución
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Puesta en servicio de redes
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Acompañamiento técnico de punta a punta
+                                        </li>
+                                    </ul>
+
+                                    <a
+                                        href="../contacto.html"
+                                        class="srv-fases__item-link js-carga"
+                                        aria-label="Solicitar asesoría sobre redes eléctricas de distribución">
+                                        Solicitar asesoría
+                                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- ─────────────────────────────────────────
+                             EA-05 · Mantenimiento y Fibra Óptica
+                             ───────────────────────────────────────── -->
+                        <article
+                            class="srv-fases__item reveal-up"
+                            id="mantenimiento-fibra-optica"
+                            role="listitem"
+                            aria-labelledby="srv-sub-ea-05-titulo">
+
+                            <div class="srv-fases__item-cabecera">
+                                <span class="srv-fases__item-codigo">EA-05</span>
+                                <span class="srv-fases__item-icono">
+                                    <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="srv-fases__item-cuerpo">
+                                <h3 class="srv-fases__item-titulo" id="srv-sub-ea-05-titulo">
+                                    Mantenimiento Eléctrico y Fibra Óptica
+                                </h3>
+
+                                <div class="srv-fases__item-extra">
+                                    <ul class="srv-fases__item-lista">
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Mantenimiento preventivo y correctivo de equipos eléctricos
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Mantenimiento de equipos rotativos
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Provisión, tendido y etiquetado de fibra óptica
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Supervisión en todo tipo de instalaciones eléctricas
+                                        </li>
+                                    </ul>
+
+                                    <a
+                                        href="../contacto.html"
+                                        class="srv-fases__item-link js-carga"
+                                        aria-label="Solicitar asesoría sobre mantenimiento eléctrico y fibra óptica">
+                                        Solicitar asesoría
+                                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                    </div>
+                    <!-- /Grid de láminas técnicas -->
+
+                </div>
+            </div>
+        </section>
+        <!-- ═════════════════════ /06 · SECCIÓN 03 · SUB-SERVICIOS ═════════════════════ -->
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             07 · SECCIÓN 04 · CTA FINAL — COMPONENTE GLOBAL
+             ════════════════════════════════════════════════════════════════
+             Componente global:
+               .contacto-cta
+             (canvas oscuro: bg-dark + radiales + rejilla blanca 0.03 a
+             32px — definidos una sola vez en section-ui.css bloque 04).
+
+             Regla documentada:
+               · Las tarjetas NO llevan .js-carga.
+               · WhatsApp y mailto son canales externos del sistema.
+               · El feedback táctil lo gobierna el componente global.
+               · WhatsApp conserva el mensaje prellenado de la línea.
+             ════════════════════════════════════════════════════════════════ -->
+        <section
+            id="contacto-cta"
+            class="contacto-cta"
+            aria-labelledby="contacto-cta-titulo">
+
+            <div class="contacto-cta__contenedor">
+                <div class="contacto-cta__grid">
+
+                    <!-- Panel izquierdo: título + descripción -->
+                    <div class="contacto-cta__panel-izq reveal-up">
+                        <div class="section-title-group left">
+                            <span class="section-eyebrow">Contacto Directo</span>
+                            <h2 class="section-title" id="contacto-cta-titulo">SOLICITE UNA ASESORÍA</h2>
+                            <span class="section-title-line" aria-hidden="true"></span>
+                        </div>
+
+                        <p class="contacto-cta__descripcion">
+                            <strong>Obtenga la asesoría que su proyecto necesita</strong>
+                            contactando a uno de nuestros consultores expertos en obras
+                            eléctricas, subestaciones y automatización de procesos
+                            industriales.
+                        </p>
+                    </div>
+
+                    <!-- Panel derecho: tarjetas de contacto -->
+                    <div class="contacto-cta__panel-der">
+
+                        <!-- WhatsApp — canal externo, sin .js-carga -->
+                        <a
+                            href="https://wa.me/59176644531?text=Hola%20BRIDA%20S.R.L.%2C%20quisiera%20asesor%C3%ADa%20sobre%20Electricidad%20y%20Automatizaci%C3%B3n"
+                            class="contacto-cta__tarjeta"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Contactar por WhatsApp">
+                            <div class="contacto-cta__icono">
+                                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                            </div>
+                            <div class="contacto-cta__contenido">
+                                <span class="contacto-cta__etiqueta">Respuesta Inmediata</span>
+                                <span class="contacto-cta__titulo">WhatsApp</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-right contacto-cta__flecha" aria-hidden="true"></i>
+                        </a>
+
+                        <!-- Correo — canal externo, sin .js-carga -->
+                        <a
+                            href="mailto:bridabolivia@gmail.com?subject=Asesor%C3%ADa%20-%20Electricidad%20y%20Automatizaci%C3%B3n%20-%20BRIDA%20S.R.L."
+                            class="contacto-cta__tarjeta"
+                            aria-label="Escribir por correo electrónico">
+                            <div class="contacto-cta__icono">
+                                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                            </div>
+                            <div class="contacto-cta__contenido">
+                                <span class="contacto-cta__etiqueta">Propuestas y Cotizaciones</span>
+                                <span class="contacto-cta__titulo">Correo Electrónico</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-right contacto-cta__flecha" aria-hidden="true"></i>
+                        </a>
+
+                    </div>
+                    <!-- /Panel derecho -->
+
+                </div>
+                <!-- /contacto-cta__grid -->
+            </div>
+            <!-- /contacto-cta__contenedor -->
+        </section>
+        <!-- ═════════════════════ /07 · SECCIÓN 04 · CTA FINAL ═════════════════════ -->
+
+    </main>
+    <!-- ═════════════════════ /02 · MAIN ═════════════════════ -->
+
+
+    <!-- ════════════════════════════════════════════════════════════════
+         08 · FOOTER — COMPONENTE GLOBAL
+         ════════════════════════════════════════════════════════════════
+         El footer completo vive en:
+           assets/js/components/footer-menu.js
+         Detecta la subcarpeta /servicios/ y antepone ../ a sus rutas.
+         ════════════════════════════════════════════════════════════════ -->
+    <div id="footer-placeholder"></div>
+
+
+    <!-- ════════════════════════════════════════════════════════════════
+         09 · SCRIPTS — main.js enruta por body#page-servicio-detalle
+         ════════════════════════════════════════════════════════════════ -->
+    <script type="module" src="../assets/js/main.js"></script>
+
+</body>
+</html>

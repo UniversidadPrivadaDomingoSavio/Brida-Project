@@ -19,6 +19,13 @@
      (⭐ AUDITORÍA TIPOGRÁFICA COMPLETA: 0.62/0.68rem eliminados
      — nada por debajo del piso de 12px; textos meta tokenizados
      a --fs-small / --fs-micro).
+   - ⭐ CANVAS BLUEPRINT (section-ui.css — doctrina v6.3): las
+     secciones NO pintan rejilla local. La pinta el canvas global
+     .bg-soft-pattern (clara, 32px) / .bg-soft-pattern.dark
+     (oscura, sobre --bg-dark), activado por clase en el HTML.
+     El CSS de página solo aporta background-color de DEFENSA
+     (mismo token del canvas): un background local (shorthand o
+     background-image) BORRA el canvas por orden de carga.
    - ⚠️ EXCEPCIONES DOCUMENTADAS:
      · Paddings INTERNOS de controles (inputs, botones de red,
        filas de inputs) en rem propio — son dimensiones de CONTROL,
@@ -34,7 +41,8 @@
        verticales rotados que se expanden al tocar/hover; entrada
        por animation con cascada; espaciado compacto con knob
        --escena-altura: 280 desktop · 260 tablet)
-   02. Formulario y redes (glassmorphism oscuro + rejilla)
+   02. Formulario y redes (glassmorphism oscuro SOBRE EL CANVAS
+       GLOBAL .bg-soft-pattern.dark — sin rejilla local)
        2a. Layout grid + tarjetas
        2b. Inputs y SELECTS (⚠️ chevron custom: background-color,
            NUNCA background shorthand — pisaría el chevron;
@@ -64,7 +72,9 @@
    ──────────────────────────────────────────────────────────────── */
 
 /* Espaciado IDÉNTICO a las demás secciones del sitio:
-   ritmo vertical fluido --seccion-pad + lateral --pad-x          */
+   ritmo vertical fluido --seccion-pad + lateral --pad-x
+   ⭐ Sin background local: la REJILLA la pinta el canvas global
+   .bg-soft-pattern (clara) — ver doctrina en la cabecera.        */
 .ctt-seccion {
     padding: var(--seccion-pad) var(--pad-x);
     position: relative;
@@ -83,7 +93,7 @@
 .ctt-cabecera { margin-bottom: var(--cabecera-gap); text-align: center; }
 
 /* ────────────────────────────────────────────────────────────────
-   COMPUERTAS — la pieza escular
+   COMPUERTAS — la pieza escénica
    ⭐ CONTENCIÓN DEFENSIVA: la escena se auto-limita (max-width +
    centrado) ADEMÁS de vivir dentro de .ctt-contenedor — doble capa.
    ⭐ GRADIENTE CON RESPALDO: .es-activa lleva background-color
@@ -107,11 +117,15 @@
     margin: 0 auto;         /* ⭐ centrada si el wrapper falta      */
 }
 
-/* Panel: cerrado = delgado · activo = se expande (flex 1 → 3.6) */
+/* Panel: cerrado = delgado · activo = se expande (flex 1 → 3.6)
+   ⭐ background-COLOR (no shorthand): higiene doctrinal — el panel
+   es componente y PUEDE pintarse, pero el shorthand queda como
+   mina retroactiva si el panel necesitara imagen del canvas.     */
 .ctt-compuerta {
     flex: 1; min-width: 0; position: relative;
     border-radius: 16px; overflow: hidden; cursor: pointer;
-    background: var(--bg-main); border: 1px solid var(--primary-border);
+    background-color: var(--bg-main);
+    border: 1px solid var(--primary-border);
     box-shadow: 0 4px 14px rgba(49, 38, 131, 0.05);
     transition: flex 0.65s var(--header-ease), background-color 0.5s ease,
                 border-color 0.4s ease, box-shadow 0.5s ease;
@@ -126,11 +140,14 @@
 }
 
 /* ESTADO activo: expansión + inversión a morado profundo.
-   ⭐ background-color de respaldo ANTES del gradiente.           */
+   ⭐ background-color de respaldo ANTES del gradiente.
+   ⭐ #4a3fa8 LITERAL: --primary-hover NO existe en variables.css —
+   un var() indefinido sin fallback mata la declaración entera y
+   el gradiente desaparecería (bug de producción corregido).      */
 .ctt-compuerta.es-activa {
     flex: 3.6; cursor: default;
     background-color: var(--primary);
-    background-image: linear-gradient(155deg, var(--primary) 0%, var(--primary-hover) 70%, #2a1f66 100%);
+    background-image: linear-gradient(155deg, var(--primary) 0%, #4a3fa8 70%, #2a1f66 100%);
     border-color: var(--primary);
     box-shadow: 0 14px 34px rgba(49, 38, 131, 0.26);
 }
@@ -217,23 +234,42 @@
 /* ════════════════════════════════════════════════════════════════
    02. FORMULARIO Y REDES (ESTILO BRIDA PREMIUM)
    Sección oscura de impacto → ritmo --seccion-pad-destacada.
+   ────────────────────────────────────────────────────────────────
+   ⭐ CANVAS GLOBAL v5 (section-ui.css) — RECETA DE SECCIÓN COMPLETA:
+   .bg-soft-pattern.dark NO es solo un fondo: aporta LAYOUT
+   (display:flex + centrado), RITMO (--seccion-pad-destacada /
+   --pad-x), overflow y el FONDO (radiales + rejilla 32px sobre
+   --bg-dark). Especificidad (0,2,0) → gana a todo valor local.
+   CONTRATO HTML: <section class="ctt-form bg-soft-pattern dark">
+   Por eso esta hoja:
+   - NO redeclara position/width/padding/overflow de la sección
+     (serían código muerto: el canvas los pisa por especificidad).
+   - Solo aporta DEFENSA de color (si la clase del canvas faltara).
+   - Añade COMPATIBILIDAD FLEX en el contenedor: el hijo único de
+     una sección flex ENCOGE a su ancho de contenido — sin
+     width:100% el formulario colapsa a ~600px centrado.
+   (QS-principios funciona sin esto porque ES un bloque único
+   centrado: la receta v5 fue escrita para esa forma.)
    ════════════════════════════════════════════════════════════════ */
 .ctt-form {
-    position: relative;
-    width: 100%;
-    padding: var(--seccion-pad-destacada) var(--pad-x);
-    overflow: hidden;
-    /* Fondo Oscuro con Rejilla BRIDA (mismo lenguaje que CTA/Pilares) */
-    background-color: #0a0a12;
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(49, 38, 131, 0.15) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(49, 38, 131, 0.15) 0%, transparent 20%),
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    /* ⭐ DEFENSA (mismo token que aporta el canvas). La REJILLA y
+       los radiales NO se declaran: los pinta .bg-soft-pattern.dark.
+       ⚠️ NUNCA background shorthand ni background-image aquí.    */
+    background-color: var(--bg-dark);
 }
 
-.ctt-form__contenedor { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+/* ⭐ COMPATIBILIDAD FLEX DEL CANVAS: width:100% restaura el
+   estirado de bloque dentro de la sección flex (el canvas pone
+   display:flex). Sin él el contenedor encoge a fit-content y la
+   sección colapsa. Con él: 100% del disponible, topado por
+   max-width:1200px, centrado — píxel-idéntico al layout block.   */
+.ctt-form__contenedor {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
 
 .ctt-form__cabecera { margin-bottom: var(--cabecera-gap); text-align: center; }
 .ctt-form .section-eyebrow { color: rgba(255, 255, 255, 0.8); }
@@ -262,7 +298,7 @@
 /* Redes distribuidas uniformemente en el espacio disponible      */
 .ctt-form__tarjeta--redes .ctt-form__tarjeta-cuerpo { justify-content: space-evenly; }
 
-/* --- Tarjetas Glassmorphism --- */
+/* --- Tarjetas Glassmorphism (componentes SOBRE el canvas)       */
 .ctt-form__tarjeta {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -511,7 +547,7 @@ select.ctt-form__input {
    · Cerrado = fila horizontal (num + nombre sin rotar) de 52px.
    · Activo = ⭐ ALTURA NATURAL: el abierto pasa de absolute a
      static → el panel crece con su contenido (rol 12px + datos
-     de 2 líneas nunca desbordan; sin min-height fija que romper). */
+     de 2 líneas nunca desbordan; sin min-height fija que rompa). */
 @media (max-width: 767px) {
     .ctt-compuertas { flex-direction: column; height: auto; gap: 8px; }
     .ctt-compuerta { flex: none; min-height: 52px; }

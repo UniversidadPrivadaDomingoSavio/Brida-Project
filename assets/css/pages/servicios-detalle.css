@@ -1,539 +1,1503 @@
 /* ════════════════════════════════════════════════════════════════
-   GUÍA DE ESTILOS — SERVICIO DETALLE (BRIDA S.R.L.)
-   Archivo: assets/css/pages/servicios-detalle.css
+   SERVICIOS-DETALLE.CSS — v4.6 (ORDENADO POR SECCIONES DEL HTML)
+   Página: servicios/ingenieria-consultoria.html (+ gemelas de la línea)
    ════════════════════════════════════════════════════════════════
-
-   PREFIJO:  srv-  →  exclusivo de las páginas /servicios/*.html
-             (5 sub-servicios comparten esta plantilla).
-
-   ESTRUCTURA DE LA PÁGINA (referente narrativo — NO tarjetas):
-             Hero → Breadcrumb → Intro (corchetes + imagen) →
-             Descripción extendida → Galería → Sub-servicios
-             (grid de fases) → CTA final → Footer.
-
-   ⚠️ SISTEMA DE DISEÑO (variables.css — OBLIGATORIO):
-   - Ritmo vertical: --seccion-pad / --seccion-pad-destacada
-     (fluidos → NO se redefinen en media queries).
-   - Lateral: --pad-x (desktop) / --pad-x-compacto (≤1024px).
-   - Espaciado de layout: --sp-1…--sp-9. Tipografía: --fs-*
-     (⭐ AUDITORÍA: cero texto bajo el piso de 12px — meta en
-     --fs-small/--fs-micro, cuerpo en --fs-body, títulos en
-     --fs-h3/--fs-display; cero tipografías hardcodeadas).
-   - Imágenes con aspect-ratio (anti-zoom, patrón timeline/modal).
-   - Galería: scroll horizontal con snap — AQUÍ SÍ es válido
-     (a diferencia de los filtros de Proyectos: no hay JS de
-     auto-centrado que el snap pueda interferir).
+   CONTRATO COORDINADO:
+     · HTML: servicios/ingenieria-consultoria.html — v4.5
+     · JS:   assets/js/pages/servicios-detalle.js  — v4.4
+       (fábrica crearAcordeonMovil + galería matchMedia)
+     · main.js NO cambia (routing por body#page-servicio-detalle).
 
    MAPA DEL ARCHIVO:
-   01. Reglas base de sección + contenedor + breadcrumb
-   02. Intro del servicio (corchetes BRIDA + imagen con marco)
-   03. Descripción extendida (columna de lectura)
-   04. Galería del servicio (carrusel snap + flechas desktop)
-   05. Sub-servicios en grid de fases (chevrons + checks)
-   06. CTA final (banner con imagen de fondo)
-   07. Responsive (1024 / 767 / 480)
-   08. Comportamiento táctil (hover none + pointer coarse)
-   09. Accesibilidad — movimiento reducido
+     00 · BASES COMUNES          — body / .srv-seccion / .srv-contenedor
+                                   anclas internas / ritmo lateral
+     01 · SECCIÓN 01 · ALCANCE   — VARIANTE E · CARDS
+                                   miga + banda visual + intro + 3 cards
+                                   + aparición por scroll + responsive
+                                   + táctil + reduced
+     02 · SECCIÓN 02 · GALERÍA   — carrusel 3/2/1 (sección independiente)
+                                   SIN lightbox · SIN lupa · SIN modal
+                                   SIN cursor zoom-in
+     03 · SECCIÓN 03 · SUBSERV.  — láminas técnicas .srv-fases
+                                   gemelas de .ini-servicios del index
+     04 · SECCIÓN 04 · CTA FINAL — componente global .contacto-cta
+                                   (sin CSS local en este archivo)
+   ════════════════════════════════════════════════════════════════
+   LEYES DEL SITIO APLICADAS:
+   · Ritmo: --seccion-pad / --pad-x · Espaciados: --sp-*
+   · Tipografía: SOLO tokens (--fs-h3 / --fs-body / --fs-small / --fs-micro)
+   · ANTI-ZOOM: imágenes por aspect-ratio + object-fit
+   · Táctil: :active con literal #4a3fa8
+     (var(--primary-hover) NO existe en variables.css — documentado)
+   · Aparición: estado oculto SOLO si el JS añade .aparicion-activa
+     (regla base en 01.4 — restaurada en v4.6; sin ella el efecto muere).
+   · Expansión móvil (acordeón): estado colapsado SOLO si el JS añade
+     .js-alcance-expansion (Sección 01) o .js-fases-expansion (Sección 03)
+     en <html>. Sin JS: contenido visible (fallback seguro).
+   · Galería de servicio: carrusel sin visor ampliado.
+   · overflow:visible en secciones/contenedor = DEFENSA de sombras de
+     cards/láminas y del acordeón (NO es "ley sticky": la Variante E
+     ya no usa rail sticky).
+   ════════════════════════════════════════════════════════════════
+   ⭐ v4.6 CAMBIOS (auditoría contra HTML v4.5 + JS v4.4):
+   · FIX CRÍTICO: se RESTAURA el bloque de aparición por scroll en 01.4
+     ([data-aparicion].aparicion-activa > article + .esta-visible +
+     cascada nth-child). Estaba ausente → el efecto estaba muerto.
+   · FIX CRÍTICO: .pro-det-galeria padding de 1 valor → 2 valores
+     (var(--seccion-pad) var(--pad-x)). Corrige el hundimiento lateral.
+   · ALINEACIÓN DE REJILLA: carrusel max-width 1300 → 1200 (mismo ancho
+     que .srv-contenedor → las 3 secciones locales comparten bordes).
+   · LIMPIEZA: eliminado código muerto del layout rail anterior
+     (.srv-resaltado y su ::after; article+article{margin-top:0}).
+   · DOCUMENTAL: mapa/leyes actualizados a Variante E (sin sticky rail);
+     00.1/00.2 comentarios corregidos (clip/visible ya no son "fix sticky").
+   · ANCLAS: se añade .srv-alcance-card[id] a scroll-margin-top.
    ════════════════════════════════════════════════════════════════ */
 
 
-/* ════════════════════════════════════════════════════════════════
-   01. REGLAS BASE DE SECCIÓN + BREADCRUMB
-   ⭐ REGLAS OBLIGATORIAS (lección de contacto.css): el ritmo
-   --seccion-pad es lo que iguala esta página con sus hermanas.
-   NUNCA eliminarlas en reemplazos de este bloque.
-   ──────────────────────────────────────────────────────────────── */
+/* ================================================================
+   00 · BASES COMUNES DE LA PÁGINA DE SERVICIO
+   ================================================================
+   Reglas compartidas por las secciones locales del HTML:
+   · Sección 01 · Alcance (Variante E)
+   · Sección 02 · Galería
+   · Sección 03 · Sub-servicios
+   ================================================================ */
 
-/* Sección clara estándar (misma textura de puntos que Proyectos) */
+/* ----------------------------------------------------------------
+   00.1 · ÁMBITO DEL BODY
+   ----------------------------------------------------------------
+   Prevención de scroll horizontal SIN crear scroll container.
+
+   El reset global trae body { overflow-x: hidden; }, que en algunos
+   navegadores convierte al body en contenedor de scroll (puede
+   afectar position:sticky de gemelas que aún lo usen y generar
+   comportamientos raros de anclas).
+
+   clip corta el desborde horizontal sin crear scroll container.
+   Fallback a hidden donde clip no exista.
+   ---------------------------------------------------------------- */
+body#page-servicio-detalle {
+  overflow-x: clip;
+}
+
+@supports not (overflow-x: clip) {
+  body#page-servicio-detalle {
+    overflow-x: hidden;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   00.2 · BASE DE SECCIÓN
+   ----------------------------------------------------------------
+   .srv-seccion es la base rítmica de:
+   · Sección 03 · Sub-servicios
+
+   .srv-seccion_2 es la variante de la:
+   · Sección 01 · Alcance (Variante E) — sigue directamente al
+     hero interno.
+
+   La Sección 02 · Galería usa .pro-det-galeria y define su propio
+   ritmo, pero mantiene el mismo lenguaje lateral (--pad-x).
+
+   ⭐ v4.7 FIX CRÍTICO (espaciado tablet/móvil — reportado con
+   captura en Responsively: banda/intro/cards tocando bordes):
+   `.srv-seccion_2` SOLO definía padding-top (60px literal) — sin
+   padding lateral. En DESKTOP el vacío lateral lo tapaban los
+   auto-margins de .srv-contenedor (max-width 1200px centrado);
+   en tablet/móvil (<1200px) esos márgenes desaparecen y el
+   contenido tocaba los bordes de pantalla.
+   · FIX: padding lateral var(--pad-x) — mismo lenguaje de
+     .srv-seccion. En desktop el resultado visual es IDÉNTICO
+     (el contenedor 1200px sigue centrado: padding 5% + centro
+     dentro del box acolchado ≈ mismos márgenes de antes).
+   · El padding-bottom sigue en 0 POR DISEÑO: el respiro hacia la
+     galería contigua lo aporta el padding-top de ella
+     (--seccion-pad_2) — ritmo acoplado documentado (evita doble
+     gap 01→02).
+   · ⭐ TOKENIZACIÓN: padding-top 60px literal → var(--seccion-pad)
+     (clamp 48–60px): IDÉNTICO en desktop (techo del clamp = 60px,
+     cero cambio visual ≥1143px), fluido en móvil (48px — antes
+     quedaba clavado en 60px fuera de escala). Cumple la ley de
+     tokens de variables.css (cero literales verticales).
+   ---------------------------------------------------------------- */
 .srv-seccion {
-    padding: var(--seccion-pad) var(--pad-x);
-    background-color: var(--bg-soft);
-    position: relative;
-    overflow: hidden;
-    background-image: radial-gradient(rgba(49, 38, 131, 0.03) 1px, transparent 1px);
-    background-size: 24px 24px;
+  padding: var(--seccion-pad) var(--pad-x);
+  position: relative;
+  overflow: visible;
 }
 
-/* Contenedor de lectura: 1100px (página de contenido denso,
-   más estrecho que los 1200/1300 de las páginas-índice)         */
+.srv-seccion_2 {
+  padding-top: var(--seccion-pad); /* ⭐ v4.7 tokenizado (era literal 60px) */
+  padding-left: var(--pad-x);      /* ⭐ v4.7 NUEVO — causa raíz del bug   */
+  padding-right: var(--pad-x);     /* ⭐ v4.7 NUEVO — causa raíz del bug   */
+  position: relative;
+  overflow: visible;
+}
+
 .srv-contenedor {
-    max-width: 1100px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: visible;
 }
 
-/* ── BREADCRUMB (ruta de navegación bajo el hero) ────────────────
-   QUÉ ES:  Inicio / Servicios / [Categoría actual] — patrón del
-            referente. La página actual va en <span> (no es link).
-   ⭐ var(--fs-small): es meta de navegación (13.6px — legible). */
-.srv-miga {
-    display: flex; align-items: center; flex-wrap: wrap;
-    gap: 8px; margin-bottom: var(--sp-5);
-    font-family: var(--font-heading); font-size: var(--fs-small); /* ⭐ token */
-}
-.srv-miga__link {
-    color: var(--text-muted); text-decoration: none;
-    display: inline-flex; align-items: center; gap: 6px;
-    transition: color 0.3s ease;
-}
-.srv-miga__link i { font-size: 0.7rem; } /* icono decorativo */
-.srv-miga__link:hover { color: var(--primary); }
-.srv-miga__sep { color: var(--primary-border); } /* separador "/" */
-.srv-miga__actual {
-    color: var(--primary); font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.5px;
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   02. INTRO DEL SERVICIO — corchetes BRIDA + imagen con marco
-   QUÉ ES:  grid 2 columnas: izquierda = título decorativo (marco
-            de esquinas moradas — versión BRIDA del referente
-            amarillo) + descripción corta; derecha = imagen
-            representativa con el MARCO DESPLAZADO (firma visual
-            del timeline de Quiénes Somos).
-   ⭐ La imagen usa aspect-ratio 16/10 (anti-zoom, patrón del
-            timeline): escala con su ancho, cover recorta lo mínimo.
-   ──────────────────────────────────────────────────────────────── */
-
-.srv-intro__grid {
-    display: grid;
-    grid-template-columns: 1fr 1.1fr; /* texto | imagen (imagen protagonista) */
-    gap: var(--sp-7);
-    align-items: center;
-}
-
-/* Columna de texto */
-.srv-intro__texto { display: flex; flex-direction: column; align-items: flex-start; }
-
-/* Marco de esquinas: corchete sup-izq (::before) + inf-der
-   (::after) — las 2 esquinas opuestas bastan (simetría dinámica,
-   más moderna que las 4). Morado institucional.                */
-.srv-intro__titulo-marco {
-    position: relative;
-    display: inline-block;
-    padding: var(--sp-4) var(--sp-5);
-    margin-bottom: var(--sp-4);
-}
-.srv-intro__titulo-marco::before {
-    content: ''; position: absolute; top: 0; left: 0;
-    width: 34px; height: 34px;
-    border-top: 3px solid var(--primary);
-    border-left: 3px solid var(--primary);
-}
-.srv-intro__titulo-marco::after {
-    content: ''; position: absolute; bottom: 0; right: 0;
-    width: 34px; height: 34px;
-    border-bottom: 3px solid var(--primary);
-    border-right: 3px solid var(--primary);
-}
-
-/* Kicker interno (mini-eyebrow sobre el título del marco)       */
-.srv-intro__kicker {
-    display: block;
-    font-family: var(--font-heading); font-size: var(--fs-micro); /* ⭐ 12px */
-    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--text-muted); margin-bottom: var(--sp-1);
-}
-
-/* Título del servicio dentro del marco: token display
-   (jerarquía: el H1 del hero es mayor — --fs-h1-hero)          */
-.srv-intro__titulo {
-    font-family: var(--font-heading); font-size: var(--fs-display); /* ⭐ token */
-    font-weight: 700; color: var(--primary);
-    line-height: 1.15; text-transform: uppercase; letter-spacing: -0.5px;
-    margin: 0;
-}
-
-/* Línea tricolor bajo el marco (firma BRIDA — reemplaza la
-   línea amarilla del referente)                                */
-.srv-intro__linea {
-    display: block; width: 96px; height: 4px; border-radius: 2px;
-    margin: var(--sp-3) 0 0;
-    background: linear-gradient(to right,
-        var(--stripe-red) 33.33%, var(--stripe-yellow) 33.33%,
-        var(--stripe-yellow) 66.66%, var(--stripe-green) 66.66%);
-}
-
-/* Descripción corta: token body                                 */
-.srv-intro__desc {
-    font-family: var(--font-body); font-size: var(--fs-body);
-    line-height: 1.8; color: var(--text-muted); margin: var(--sp-3) 0 0;
-}
-
-/* ── Imagen con MARCO DESPLAZADO (firma del timeline) ─────────── */
-.srv-intro__visual { position: relative; }
-.srv-intro__imagen-contenedor {
-    position: relative;
-    aspect-ratio: 16 / 10; /* ⭐ anti-zoom: escala con su ancho     */
-    overflow: hidden;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(49, 38, 131, 0.1);
-    background: var(--bg-main);
-    border: 1px solid var(--primary-border);
-}
-.srv-intro__imagen {
-    width: 100%; height: 100%; object-fit: cover; object-position: center;
-    transition: transform 0.6s var(--header-ease);
-}
-@media (hover: hover) and (pointer: fine) {
-    .srv-intro__imagen-contenedor:hover .srv-intro__imagen { transform: scale(1.04); }
-}
-/* Marco desplazado decorativo (idéntico lenguaje al timeline:
-   aparece siempre con opacidad baja)                           */
-.srv-intro__marco {
-    position: absolute; inset: 0;
-    top: 14px; left: 14px;
-    border: 2px solid var(--primary); border-radius: 14px;
-    opacity: 0.18; pointer-events: none;
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   03. DESCRIPCIÓN EXTENDIDA — columna de lectura
-   QUÉ ES:  los párrafos largos del servicio, a ancho óptimo de
-            lectura (720px — estándar editorial) centrados.
-   ⭐ Los <p> van en --fs-body; párrafos separados por --sp-3.
-   ──────────────────────────────────────────────────────────────── */
-.srv-descripcion { margin-top: var(--sp-7); }
-.srv-descripcion__columna { max-width: 720px; margin: 0 auto; }
-.srv-descripcion__columna p {
-    font-family: var(--font-body); font-size: var(--fs-body);
-    line-height: 1.85; color: var(--text-muted);
-    margin: 0 0 var(--sp-3);
-}
-.srv-descripcion__columna p:last-child { margin-bottom: 0; }
-/* Resaltes dentro de los párrafos (términos clave)              */
-.srv-descripcion__columna strong { color: var(--text-body); font-weight: 600; }
-
-
-/* ════════════════════════════════════════════════════════════════
-   04. GALERÍA DEL SERVICIO — carrusel horizontal con snap
-   QUÉ ES:  fotos de trabajos de la línea. AQUÍ SÍ se usa
-            scroll-snap (a diferencia de los filtros de Proyectos:
-            no hay JS de auto-centrado que pueda interferir).
-   PATRÓN:  sangrado a los bordes + fade extremos (idéntico al
-            carrusel de filtros de proyectos.css — código probado).
-   FLECHAS: botones que JS desplaza por item (solo desktop —
-            el scroll táctil nativo manda en móvil). El JS vive
-            en initServicioDetalle (se entrega con el HTML).
-   ──────────────────────────────────────────────────────────────── */
-.srv-galeria__zona { position: relative; margin-top: var(--sp-7); }
-
-.srv-galeria {
-    display: flex; gap: var(--sp-2);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    /* Sangrado a los bordes de la sección (full-bleed controlado) */
-    margin-left: calc(-1 * var(--pad-x));
-    margin-right: calc(-1 * var(--pad-x));
-    padding-left: var(--pad-x);
-    padding-right: var(--pad-x);
-    padding-bottom: 8px; /* aire para la sombra sin clip */
-    scrollbar-width: none; -ms-overflow-style: none;
-    /* Fade en extremos: pista visual de deslizamiento            */
-    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
-}
-.srv-galeria::-webkit-scrollbar { display: none; }
-
-/* Item: aspect-ratio (anti-zoom) + snap                         */
-.srv-galeria__item {
-    flex: 0 0 clamp(280px, 32vw, 440px);
-    scroll-snap-align: start;
-    aspect-ratio: 4 / 3;
-    border-radius: 14px; overflow: hidden;
-    border: 1px solid var(--primary-border);
-    box-shadow: 0 8px 24px rgba(49, 38, 131, 0.08);
-    background: var(--bg-main);
-}
-.srv-galeria__item img {
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform 0.5s var(--header-ease);
-}
-@media (hover: hover) and (pointer: fine) {
-    .srv-galeria__item:hover img { transform: scale(1.05); }
-}
-
-/* FLECHAS: solo escritorio (táctil usa el gesto nativo)         */
-.srv-galeria__flecha {
-    display: none; /* base + móvil: el gesto manda */
-}
-@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
-    .srv-galeria__flecha {
-        display: flex; align-items: center; justify-content: center;
-        position: absolute; top: 50%; transform: translateY(-50%);
-        width: 44px; height: 44px; border-radius: 50%;
-        background: var(--primary); color: #fff;
-        border: 2px solid var(--bg-soft);
-        box-shadow: 0 6px 18px rgba(49, 38, 131, 0.3);
-        font-size: 0.8rem; cursor: pointer; z-index: 3;
-        transition: background-color 0.3s ease, transform 0.3s var(--header-ease);
-    }
-    .srv-galeria__flecha--prev { left: -6px; }
-    .srv-galeria__flecha--next { right: -6px; }
-    .srv-galeria__flecha:hover { background: var(--primary-hover); transform: translateY(-50%) scale(1.08); }
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   05. SUB-SERVICIOS EN GRID DE FASES
-   QUÉ ES:  los 5 sub-servicios (antes "bloques") en grid 2×N:
-            chevron morado (versión BRIDA de los ">>" amarillos del
-            referente) + título (--fs-h3) + lista de checks verdes
-            (patrón existente: --stripe-green).
-   QUÉ HACE: cada item es un panel claro (no tarjeta pesada):
-            fondo blanco, borde suave, sin cabecera/pie — el
-            contenido manda.
-   ⭐ ALTURA NATURAL: sin alturas fijas — el grid estira los items
-            (align-items: stretch) y el contenido fluye.
-   ──────────────────────────────────────────────────────────────── */
-.srv-fases { margin-top: var(--sp-8); }
-.srv-fases__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--sp-4);
-    align-items: stretch; /* filas iguales — simetría garantizada */
-}
-
-/* Item: panel claro minimalista                                 */
-.srv-fases__item {
-    background: var(--bg-main);
-    border: 1px solid var(--primary-border);
-    border-radius: 16px;
-    padding: var(--sp-5);
-    display: flex; flex-direction: column;
-    transition: transform 0.4s var(--header-ease), box-shadow 0.4s var(--header-ease),
-                border-color 0.3s ease;
-}
-@media (hover: hover) and (pointer: fine) {
-    .srv-fases__item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 18px 40px rgba(49, 38, 131, 0.1);
-        border-color: rgba(49, 38, 131, 0.3);
-    }
-}
-
-/* Cabecera del item: chevron + título en línea                  */
-.srv-fases__item-cabecera {
-    display: flex; align-items: flex-start; gap: 12px;
-    margin-bottom: var(--sp-3);
-}
-/* Chevron ">>" morado (la versión BRIDA del referente)          */
-.srv-fases__item-cabecera > i {
-    color: var(--primary); font-size: 1rem; margin-top: 4px; flex-shrink: 0;
-    transition: transform 0.3s var(--header-ease);
-}
-@media (hover: hover) and (pointer: fine) {
-    .srv-fases__item:hover .srv-fases__item-cabecera > i { transform: translateX(4px); }
-}
-.srv-fases__item-titulo {
-    font-family: var(--font-heading); font-size: var(--fs-h3); /* ⭐ token */
-    font-weight: 700; color: var(--primary); line-height: 1.3; margin: 0;
-}
-
-/* Lista de checks (patrón existente — checks verdes)            */
-.srv-fases__item-lista { list-style: none; padding: 0; margin: 0; }
-.srv-fases__item-lista li {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-family: var(--font-body); font-size: var(--fs-body); /* ⭐ token */
-    color: var(--text-body); margin-bottom: 10px; font-weight: 500;
-    line-height: 1.5;
-}
-.srv-fases__item-lista li:last-child { margin-bottom: 0; }
-.srv-fases__item-lista li i {
-    color: var(--stripe-green); font-size: 1rem; margin-top: 3px; flex-shrink: 0;
-} /* icono decorativo */
-
-/* CTA por item: enlace discreto al final (opcional en markup)   */
-.srv-fases__item-link {
-    display: inline-flex; align-items: center; gap: 7px;
-    margin-top: auto; padding-top: var(--sp-3); /* empuja al pie */
-    font-family: var(--font-heading); font-size: var(--fs-small); /* ⭐ token */
-    font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-    color: var(--primary); text-decoration: none;
-    transition: gap 0.3s var(--header-ease);
-}
-.srv-fases__item-link i { font-size: 0.7rem; transition: transform 0.3s var(--header-ease); } /* icono */
-@media (hover: hover) and (pointer: fine) {
-    .srv-fases__item-link:hover { gap: 10px; }
-    .srv-fases__item-link:hover i { transform: translateX(3px); }
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   06. CTA FINAL — banner con imagen de fondo
-   QUÉ ES:  el cierre del referente ("PARA MÁS INFORMACIÓN /
-            CONTÁCTENOS") en lenguaje BRIDA: fondo con imagen de
-            obra + degradado morado profundo (mismo lenguaje del
-            hero y contacto-cta) + título display + botón píldora.
-   La imagen va inline via <div class="srv-cta-final__fondo"
-   style="background-image: url('...')"> (patrón hero-interno).
-   ──────────────────────────────────────────────────────────────── */
-.srv-cta-final {
-    position: relative;
-    width: 100%;
-    padding: var(--seccion-pad-destacada) var(--pad-x); /* ritmo de sección oscura de impacto */
-    overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-}
-/* Fondo con imagen + overscan (patrón hero-interno)              */
-.srv-cta-final__fondo {
-    position: absolute; inset: 0;
-    background-size: cover; background-position: center;
-    transform: scale(1.05);
-    z-index: 1;
-}
-/* Degradado morado profundo: legibilidad total del texto        */
-.srv-cta-final__superposicion {
-    position: absolute; inset: 0;
-    background: linear-gradient(120deg, rgba(49, 38, 131, 0.94) 0%, rgba(26, 26, 36, 0.88) 55%, rgba(15, 23, 42, 0.82) 100%);
-    z-index: 2;
-}
-.srv-cta-final__contenido {
-    position: relative; z-index: 3;
-    max-width: 760px; text-align: center;
-    display: flex; flex-direction: column; align-items: center;
-}
-.srv-cta-final .section-eyebrow { color: rgba(255, 255, 255, 0.8); }
-.srv-cta-final__titulo {
-    font-family: var(--font-heading); font-size: var(--fs-display); /* ⭐ token (H2 de impacto) */
-    font-weight: 700; color: #ffffff;
-    text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.1;
-    margin: 0;
-}
-.srv-cta-final__desc {
-    font-family: var(--font-body); font-size: var(--fs-body); /* ⭐ token */
-    line-height: 1.8; color: rgba(255, 255, 255, 0.8);
-    max-width: 560px; margin: var(--sp-3) 0 0;
-}
-.srv-cta-final__boton {
-    display: inline-flex; align-items: center; gap: 10px;
-    margin-top: var(--sp-5); padding: 15px 38px;
-    border-radius: 50px;
-    background: #ffffff; color: var(--primary);
-    font-family: var(--font-heading); font-size: var(--fs-small); /* ⭐ token */
-    font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-    text-decoration: none;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-    transition: transform 0.4s var(--header-ease), box-shadow 0.4s ease;
-}
-.srv-cta-final__boton i { transition: transform 0.3s var(--header-ease); }
-@media (hover: hover) and (pointer: fine) {
-    .srv-cta-final__boton:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
-    }
-    .srv-cta-final__boton:hover i { transform: translateX(4px); }
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   07. RESPONSIVE (1024 / 767 / 480)
-   NOTAS: paddings VERTICALES de sección NO se redefinen (tokens
-   fluidos). Solo lateral + reflows de grid.
-   ──────────────────────────────────────────────────────────────── */
-
-/* ── ≤1024px (tablet): intro apilada + fases en columna ───────── */
+/* Ritmo lateral compacto para tablet/móvil.
+   Aplica a todas las secciones que usen .srv-seccion.
+   ⭐ v4.7: incluye .srv-seccion_2 (antes quedaba FUERA de esta
+   regla — segunda mitad del bug: sin compacto en tablet/móvil). */
 @media (max-width: 1024px) {
-    .srv-seccion { padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto); }
-
-    /* Intro: texto primero, imagen después (jerarquía narrativa) */
-    .srv-intro__grid { grid-template-columns: 1fr; gap: var(--sp-5); }
-    .srv-intro__texto { align-items: center; text-align: center; }
-    .srv-intro__linea { margin-left: auto; margin-right: auto; }
-    /* La imagen centrada con ancho contenido                     */
-    .srv-intro__visual { max-width: 560px; margin: 0 auto; width: 100%; }
-
-    /* Fases: 1 columna (los items tienen listas de 4 checks —
-       a 2 columnas en tablet quedarían apretados)                */
-    .srv-fases__grid { grid-template-columns: 1fr; max-width: 720px; margin-left: auto; margin-right: auto; }
+  .srv-seccion,
+  .srv-seccion_2 {
+    padding-left: var(--pad-x-compacto);
+    padding-right: var(--pad-x-compacto);
+  }
 }
 
-/* ── ≤767px (móvil): compacidad + galería más chica ───────────── */
+/* ----------------------------------------------------------------
+   00.3 · ANCLAS INTERNAS
+   ----------------------------------------------------------------
+   Evita que el header fijo tape el inicio al navegar por:
+   · #alcance-servicio            (Sección 01)
+   · #alcance-ingenieria / -consultoria / -soldadura  (cards 01)
+   · #srv-galeria-pro             (Sección 02)
+   · #subservicios-ingenieria     (Sección 03)
+   · #diseno-ingenieria … #avaluos-peritajes-topografia (láminas 03)
+   · #contacto-cta                (Sección 04)
+   ---------------------------------------------------------------- */
+.srv-seccion[id],
+.srv-alcance-card[id],
+.srv-fases__item[id],
+body#page-servicio-detalle .pro-det-galeria[id],
+body#page-servicio-detalle #contacto-cta {
+  scroll-margin-top: calc(var(--header-h-scrolled, 70px) + var(--sp-3));
+}
+
+
+/* ================================================================
+   01 · SECCIÓN 01 · ALCANCE DEL SERVICIO — VARIANTE E · CARDS
+   ================================================================
+   Corresponde al HTML:
+
+     <section class="srv-seccion srv-seccion--alcance" id="alcance-servicio">
+       <nav class="srv-miga">...</nav>
+       <div class="srv-ficha srv-ficha--cards">
+         <figure class="srv-marco srv-marco--banda reveal-up">
+           <div class="srv-marco__lienzo">
+             <span class="srv-marco__rejilla"></span>
+             <img ...>
+           </div>
+           <figcaption class="srv-marco__cota"><span>...</span></figcaption>
+         </figure>
+         <div class="srv-bloques-editoriales srv-bloques-editoriales--cards" data-aparicion>
+           <article class="srv-bloque-editorial--intro">...</article>
+           <article class="srv-alcance-card">...<div class="srv-alcance-card-extra">...</div></article>
+           <article class="srv-alcance-card">...</article>
+           <article class="srv-alcance-card">...</article>
+         </div>
+       </div>
+     </section>
+
+   Comportamiento aprobado:
+     · Escritorio: banda visual superior + intro + 3 cards en grid 3 col.
+     · Tablet 768–1024: grid 2 col + tercera card centrada (mismo ancho).
+     · Móvil ≤767: 1 col + expansión por scroll (acordeón).
+     · Sin JS: en móvil el contenido extra queda visible (fallback).
+     · Con JS: se añade .js-alcance-expansion en <html>; la card más
+       cercana al centro del viewport se expande con .es-expandida +
+       max-height (mismo patrón de sub-servicios, fábrica JS v4.4).
+     · Aparición por scroll: .aparicion-activa + .esta-visible (01.4).
+
+   Subbloques:
+     01.1 · Miga de pan
+     01.2 · Ficha Variante E (contenedor flex)
+     01.3 · Banda visual superior
+     01.4 · Bloques editoriales + cards + APARICIÓN POR SCROLL
+     01.5 · Responsive cards
+     01.6 · Táctil alcance
+     01.7 · Movimiento reducido alcance
+   ================================================================ */
+
+
+/* ----------------------------------------------------------------
+   01.1 · MIGA DE PAN (breadcrumb)
+   ----------------------------------------------------------------
+   Selectores defensivos: funcionan con <a>, separadores <i> y el
+   elemento actual por [aria-current] o clase modificadora.
+   ---------------------------------------------------------------- */
+.srv-miga {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  margin-bottom: var(--sp-4);
+  font-family: var(--font-heading);
+  font-size: var(--fs-small);
+}
+
+.srv-miga a {
+  color: var(--text-muted);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.srv-miga a:hover,
+.srv-miga a:focus-visible {
+  color: var(--primary);
+}
+
+/* Separadores: solo <i> directos o .srv-miga__sep. Así no rompemos
+   iconos que puedan vivir dentro de <a>. */
+.srv-miga > i,
+.srv-miga__sep {
+  color: var(--primary);
+  font-size: 9px;
+  pointer-events: none;
+}
+
+/* Defensa: icono propio dentro de un enlace hereda su color. */
+.srv-miga a i {
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Elemento actual */
+.srv-miga [aria-current="page"],
+.srv-miga .srv-miga__actual {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+
+/* ----------------------------------------------------------------
+   01.2 · FICHA DEL SERVICIO — VARIANTE E CARDS (contenedor)
+   ----------------------------------------------------------------
+   Columna única interna: banda → bloques (intro + cards).
+   El grid de cards lo gobierna 01.4; aquí solo el ritmo vertical.
+   ---------------------------------------------------------------- */
+.srv-seccion--alcance .srv-ficha--cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  overflow: visible;
+}
+
+.srv-seccion--alcance .srv-ficha--cards > * {
+  min-width: 0;
+  overflow: visible;
+}
+
+
+/* ----------------------------------------------------------------
+   01.3 · BANDA VISUAL SUPERIOR
+   ----------------------------------------------------------------
+   La ilustración de marca NO se recorta: se muestra contenida
+   (object-fit: contain) dentro de un lienzo panorámico con rejilla
+   blueprint, coherente con el lenguaje técnico del sitio.
+   El <figure> lleva ambas clases .srv-marco .srv-marco--banda;
+   todas las propiedades viven en --banda (no hay base .srv-marco
+   suelta en Variante E).
+   ---------------------------------------------------------------- */
+.srv-seccion--alcance .srv-marco--banda {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: auto;
+
+  background: var(--bg-main);
+  border: 2px solid var(--primary);
+  border-radius: 4px; /* EXCEPCIÓN: esquinas de plano técnico */
+  box-shadow: 0 14px 36px rgba(49, 38, 131, 0.12);
+  overflow: hidden;
+}
+
+.srv-seccion--alcance .srv-marco__lienzo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--bg-soft);
+}
+
+.srv-seccion--alcance .srv-marco__rejilla {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(rgba(49, 38, 131, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(49, 38, 131, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.srv-seccion--alcance .srv-marco--banda img {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: calc(100% - var(--sp-5));
+  object-fit: contain;
+  object-position: center;
+  background: transparent;
+}
+
+.srv-seccion--alcance .srv-marco__cota {
+  border-top: 2px solid var(--primary);
+  padding: 10px 14px; /* EXCEPCIÓN: control de cota de plano */
+  background: rgba(49, 38, 131, 0.04);
+  text-align: center;
+}
+
+.srv-seccion--alcance .srv-marco__cota span {
+  font-family: var(--font-heading);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+/* Fallback de imagen faltante en banda (initFallbackFotos añade
+   .srv-sin-foto al <figure>, que coincide con .srv-marco). */
+.srv-seccion--alcance .srv-marco--banda.srv-sin-foto .srv-marco__lienzo {
+  border-bottom: 2px dashed var(--primary-border);
+}
+
+.srv-seccion--alcance .srv-marco--banda.srv-sin-foto img {
+  display: none;
+}
+
+.srv-seccion--alcance .srv-marco--banda.srv-sin-foto .srv-marco__lienzo::after {
+  content: 'Imagen no disponible';
+  position: absolute;
+  z-index: 2;
+
+  font-family: var(--font-heading);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+
+/* ----------------------------------------------------------------
+   01.4 · BLOQUES EDITORIALES + CARDS + APARICIÓN POR SCROLL
+   ----------------------------------------------------------------
+   Grid: intro (fila completa) + 3 cards.
+   El estado oculto de aparición existe SOLO cuando el JS activa
+   .aparicion-activa en el contenedor [data-aparicion].
+   Sin JS: todo visible (fallback). Con JS: fade-in escalonado.
+   ---------------------------------------------------------------- */
+.srv-seccion--alcance .srv-bloques-editoriales--cards {
+  --alcance-gap: var(--sp-3);
+
+  min-width: 0;
+  overflow: visible;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--alcance-gap);
+  align-items: stretch;
+}
+
+/* Intro editorial: ocupa toda la fila superior */
+.srv-seccion--alcance .srv-bloque-editorial--intro {
+  grid-column: 1 / -1;
+}
+
+.srv-seccion--alcance .srv-bloque-editorial--intro h2 {
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  color: var(--text-body);
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+  margin: 0 0 var(--sp-2);
+}
+
+.srv-seccion--alcance .srv-bloque-editorial--intro p {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.srv-seccion--alcance .srv-bloque-editorial--intro strong {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+
+/* — Card técnica — */
+.srv-seccion--alcance .srv-alcance-card {
+  background: var(--bg-main);
+  border: 2px solid var(--primary);
+  border-radius: 4px; /* EXCEPCIÓN: esquinas de plano técnico */
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  transition:
+    transform 0.4s var(--header-ease),
+    box-shadow 0.4s var(--header-ease),
+    border-color 0.4s ease;
+}
+
+.srv-seccion--alcance .srv-alcance-card-cabecera {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+}
+
+.srv-seccion--alcance .srv-alcance-card-icono {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  flex-shrink: 0;
+
+  background: var(--primary);
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem; /* EXCEPCIÓN: tamaño de icono decorativo */
+
+  transition: background-color 0.3s ease;
+}
+
+.srv-seccion--alcance .srv-alcance-card-titulo {
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  color: var(--text-body);
+  line-height: 1.25;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.srv-seccion--alcance .srv-alcance-card-extra {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--sp-3) var(--sp-3);
+}
+
+.srv-seccion--alcance .srv-alcance-card-extra p {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0;
+
+  padding-top: var(--sp-2);
+  border-top: 1px dashed rgba(49, 38, 131, 0.18);
+}
+
+.srv-seccion--alcance .srv-alcance-card-extra strong {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Hover escritorio: solo puntero fino */
+@media (hover: hover) and (pointer: fine) {
+  .srv-seccion--alcance .srv-alcance-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(49, 38, 131, 0.12);
+  }
+
+  .srv-seccion--alcance .srv-alcance-card:hover .srv-alcance-card-icono {
+    background: #4a3fa8; /* hover institucional documentado */
+  }
+
+  .srv-seccion--alcance .srv-alcance-card:hover .srv-alcance-card-titulo {
+    color: var(--primary);
+  }
+}
+
+
+/* — Modo aparición por scroll (RESTAURADO en v4.6) —
+   La clase .aparicion-activa la añade initAparicionArticulos() al
+   contenedor [data-aparicion]; .esta-visible a cada <article> al
+   entrar al viewport (IO umbral 0.15 esc / 0.20 tablet-móvil).
+   Sin JS estas reglas NO existen → contenido siempre visible. */
+[data-aparicion].aparicion-activa > article {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s var(--header-ease),
+              transform 0.7s var(--header-ease);
+  will-change: opacity, transform;
+}
+
+[data-aparicion].aparicion-activa > article.esta-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Cascada sutil de entrada (intro = child 1 sin delay; cards 2–4). */
+[data-aparicion].aparicion-activa > article:nth-child(2) { transition-delay: 0.08s; }
+[data-aparicion].aparicion-activa > article:nth-child(3) { transition-delay: 0.16s; }
+[data-aparicion].aparicion-activa > article:nth-child(4) { transition-delay: 0.24s; }
+[data-aparicion].aparicion-activa > article:nth-child(5) { transition-delay: 0.32s; }
+
+
+/* ----------------------------------------------------------------
+   01.5 · RESPONSIVE CARDS
+   ----------------------------------------------------------------
+   TABLET 768–1024: 2 col; con 3 cards la tercera queda CENTRADA con
+   el mismo ancho que las otras dos (no suelta a la izquierda).
+   MÓVIL ≤767: 1 col; card comprimida (icono + título); el párrafo se
+   colapsa SOLO si el JS añade .js-alcance-expansion; la card más
+   cercana al centro se expande con .es-expandida + max-height.
+   ---------------------------------------------------------------- */
+
+/* ── TABLET 768–1024 ─────────────────────────────────────────── */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .srv-seccion--alcance .srv-marco__lienzo {
+    aspect-ratio: 16 / 9;
+  }
+
+  .srv-seccion--alcance .srv-marco--banda img {
+    max-width: calc(100% - var(--sp-4));
+  }
+
+  .srv-seccion--alcance .srv-bloques-editoriales--cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Tercera card centrada, con ancho equivalente a una columna. */
+  .srv-seccion--alcance .srv-bloques-editoriales--cards > .srv-alcance-card:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 100%;
+    max-width: calc((100% - var(--alcance-gap)) / 2);
+  }
+}
+
+/* ── MÓVIL ≤767 ──────────────────────────────────────────────── */
 @media (max-width: 767px) {
-    /* Galería: items más angostos (260px base) + fade menor      */
-    .srv-galeria__item { flex-basis: 78%; } /* asoma la siguiente: pista de scroll */
+  .srv-seccion--alcance .srv-ficha--cards {
+    gap: var(--sp-4);
+  }
 
-    /* Fases: padding compacto                                    */
-    .srv-fases__item { padding: var(--sp-4); }
-    .srv-fases__item-lista li { margin-bottom: 8px; }
+  .srv-seccion--alcance .srv-marco__lienzo {
+    aspect-ratio: 4 / 3;
+  }
 
-    /* CTA: botón a ancho completo (patrón de bloques táctiles)   */
-    .srv-cta-final__boton { width: 100%; justify-content: center; }
-    .srv-cta-final__fondo { background-attachment: scroll; } /* parallax off en táctil */
+  .srv-seccion--alcance .srv-marco--banda img {
+    max-width: calc(100% - var(--sp-3));
+  }
+
+  .srv-seccion--alcance .srv-marco__cota {
+    padding: 8px 12px;
+  }
+
+  .srv-seccion--alcance .srv-bloques-editoriales--cards {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Reset del centrado tablet: en móvil todas ocupan 1 columna. */
+  .srv-seccion--alcance .srv-bloques-editoriales--cards > .srv-alcance-card:last-child {
+    grid-column: auto;
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .srv-seccion--alcance .srv-alcance-card-cabecera {
+    padding: var(--sp-2) var(--sp-3);
+  }
+
+  .srv-seccion--alcance .srv-alcance-card-extra {
+    padding: 0 var(--sp-3) var(--sp-2);
+  }
+
+  /* Sin JS: título con aire respecto al contenido visible. */
+  .srv-seccion--alcance .srv-alcance-card-titulo {
+    margin-bottom: 0;
+  }
+
+  /* Con JS: modo acordeón (fábrica crearAcordeonMovil, JS v4.4).
+     El bloque extra colapsa; solo se expande la card más cercana al
+     centro del viewport (.es-expandida + max-height inline del JS). */
+  .js-alcance-expansion .srv-seccion--alcance .srv-alcance-card-extra {
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    flex: none;
+
+    transition:
+      max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.3s ease,
+      visibility 0s linear 0.3s;
+  }
+
+  .js-alcance-expansion .srv-seccion--alcance .srv-alcance-card.es-expandida .srv-alcance-card-extra {
+    opacity: 1;
+    visibility: visible;
+
+    transition:
+      max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.4s ease 0.15s,
+      visibility 0s;
+  }
+
+  .srv-seccion--alcance .srv-alcance-card.es-expandida {
+    border-color: #4a3fa8; /* feedback de foco documentado */
+    box-shadow: 0 12px 28px rgba(49, 38, 131, 0.14);
+  }
 }
 
-/* ── ≤480px (smartphone): ajustes finos ────────────────────────── */
+/* ── MÓVIL PEQUEÑO ≤480 ──────────────────────────────────────── */
 @media (max-width: 480px) {
-    /* Corchetes del marco: proporcionales a la pantalla           */
-    .srv-intro__titulo-marco { padding: var(--sp-3) var(--sp-4); }
-    .srv-intro__titulo-marco::before,
-    .srv-intro__titulo-marco::after { width: 26px; height: 26px; }
+  .srv-seccion--alcance .srv-ficha--cards {
+    gap: var(--sp-3);
+  }
 
-    /* Galería: casi pantalla completa con asomo sutil            */
-    .srv-galeria__item { flex-basis: 86%; }
+  .srv-seccion--alcance .srv-marco__lienzo {
+    aspect-ratio: 1 / 1;
+  }
 
-    /* CTA: desc con respiro vertical                              */
-    .srv-cta-final__desc { line-height: 1.7; }
+  .srv-seccion--alcance .srv-marco--banda img {
+    max-width: calc(100% - var(--sp-2));
+  }
+
+  .srv-seccion--alcance .srv-alcance-card-icono {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  .srv-seccion--alcance .srv-alcance-card-cabecera {
+    padding: var(--sp-2);
+  }
+
+  .srv-seccion--alcance .srv-alcance-card-extra {
+    padding: 0 var(--sp-2) var(--sp-2);
+  }
 }
 
-/* LANDSCAPE móvil: el parallax vuelve (hay altura de sobra)      */
+/* ── LANDSCAPE MÓVIL ─────────────────────────────────────────── */
 @media (max-width: 767px) and (orientation: landscape) {
-    .srv-cta-final__fondo { background-attachment: fixed; }
+  .srv-seccion--alcance .srv-marco__lienzo {
+    aspect-ratio: 16 / 9;
+  }
+
+  .srv-seccion--alcance .srv-bloques-editoriales--cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: none;
+  }
+
+  /* Tercera card centrada también en landscape móvil. */
+  .srv-seccion--alcance .srv-bloques-editoriales--cards > .srv-alcance-card:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    max-width: calc((100% - var(--alcance-gap)) / 2);
+  }
 }
 
 
-/* ════════════════════════════════════════════════════════════════
-   08. COMPORTAMIENTO TÁCTIL (hover none + pointer coarse)
-   QUÉ HACE: neutraliza hovers y entrega presión (:active) —
-   patrón global del sitio. Cubre: breadcrumb, galería, fases
-   (item + link), CTA.
-   ════════════════════════════════════════════════════════════════ */
+/* ----------------------------------------------------------------
+   01.6 · TÁCTIL ALCANCE
+   ----------------------------------------------------------------
+   Presión limpia: los :active solo tocan COLOR/BORDE.
+   Literal #4a3fa8 documentado (var(--primary-hover) no existe).
+   ---------------------------------------------------------------- */
 @media (hover: none) and (pointer: coarse) {
-    /* Intro: hover de imagen neutralizado                         */
-    .srv-intro__imagen-contenedor:hover .srv-intro__imagen { transform: none; }
+  .srv-miga a:active {
+    color: #4a3fa8;
+  }
 
-    /* Fases: hover de flotación neutralizado; presión con
-       hundido + borde morado (patrón organigrama)                 */
-    .srv-fases__item:hover {
-        transform: none;
-        box-shadow: none;
-        border-color: var(--primary-border);
-    }
-    .srv-fases__item:active { transform: scale(0.98); border-color: var(--primary); }
-    .srv-fases__item-link:active { color: var(--primary-hover); }
+  .srv-seccion--alcance .srv-alcance-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
 
-    /* CTA: hover neutralizado; presión hunde el botón             */
-    .srv-cta-final__boton:hover { transform: none; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); }
-    .srv-cta-final__boton:hover i { transform: none; }
-    .srv-cta-final__boton:active { transform: scale(0.97); }
-    .srv-cta-final__boton:active i { transform: translateX(4px); }
-
-    /* Breadcrumb: el color de presión basta                       */
-    .srv-miga__link:active { color: var(--primary); }
+  .srv-seccion--alcance .srv-alcance-card:active {
+    border-color: #4a3fa8;
+  }
 }
 
 
-/* ════════════════════════════════════════════════════════════════
-   09. ACCESIBILIDAD — MOVIMIENTO REDUCIDO
-   QUÉ HACE: anula transiciones/animaciones de toda la página.
-   ⭐ PARALLAX del CTA: el fondo fijo (background-attachment:
-   fixed) es movimiento perceptible al scrollear → se apaga en
-   este modo (va a scroll normal).
-   ──────────────────────────────────────────────────────────────── */
+/* ----------------------------------------------------------------
+   01.7 · MOVIMIENTO REDUCIDO ALCANCE
+   ----------------------------------------------------------------
+   Instantáneo pero FUNCIONAL: la aparición sigue revelando; la
+   expansión móvil sigue cambiando clase/altura; las cards responden
+   a hover/táctil sin movimiento.
+   ---------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-    .srv-intro__imagen, .srv-galeria__item img,
-    .srv-fases__item, .srv-fases__item-cabecera > i, .srv-fases__item-link,
-    .srv-fases__item-link i, .srv-cta-final__boton, .srv-cta-final__boton i,
-    .srv-miga__link {
-        transition: none !important;
-    }
-    /* Parallax off (también cubre el landscape fijo de arriba)    */
-    .srv-cta-final__fondo {
-        background-attachment: scroll !important;
-        transform: none !important;
-    }
+  .srv-miga a,
+  .srv-seccion--alcance .srv-alcance-card,
+  .srv-seccion--alcance .srv-alcance-card-icono,
+  .srv-seccion--alcance .srv-alcance-card-titulo,
+  .js-alcance-expansion .srv-seccion--alcance .srv-alcance-card-extra,
+  .js-alcance-expansion .srv-seccion--alcance .srv-alcance-card.es-expandida .srv-alcance-card-extra {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  .js-alcance-expansion .srv-seccion--alcance .srv-alcance-card-extra,
+  .js-alcance-expansion .srv-seccion--alcance .srv-alcance-card.es-expandida .srv-alcance-card-extra {
+    transition-delay: 0s !important;
+  }
+
+  [data-aparicion].aparicion-activa > article {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
 }
+
+
+/* ================================================================
+   02 · SECCIÓN 02 · GALERÍA — CARRUSEL SIN VISOR AMPLIADO
+   ================================================================
+   Corresponde al HTML (sección INDEPENDIENTE, no fusionada):
+
+     <section class="pro-det-galeria" id="srv-galeria-pro">
+       <div class="pro-det-galeria__destello ...--1"></div>
+       <div class="pro-det-galeria__destello ...--2"></div>
+       <div class="section-title-group center reveal-up">
+         ...<h2 id="srv-galeria-titulo">GALERÍA</h2>...
+         <p class="pro-det-galeria__subtitulo">...</p>
+       </div>
+       <div class="pro-det-galeria__carrusel reveal-up">
+         <button class="...__btn ...__btn--prev">
+         <div class="...__viewport"><div class="...__track">
+           <figure class="...__slide"><img></figure> ×6
+         </div></div>
+         <button class="...__btn ...__btn--next">
+       </div>
+       <div class="pro-det-galeria__puntos"></div>
+     </section>
+
+   Comportamiento aprobado:
+   · Escritorio: 3 slides visibles + flechas.
+   · Tablet ≤1024: 2 slides visibles + puntos + swipe.
+   · Móvil ≤767: 1 slide visible + puntos + swipe.
+
+   Blindaje: SIN lightbox · SIN lupa · SIN zoom modal · SIN cursor
+   zoom-in · SIN ::after con icono de expansión.
+
+   Scope: body#page-servicio-detalle para no pisar la galería de
+   proyectos-detalle.css (mismas clases).
+
+   Ritmo: la galería se trata como sección rítmica normal —
+   padding vertical --seccion-pad uniforme (igual que 01 y 03) y
+   lateral --pad-x (compacto ≤1024). El carrusel se limita a
+   max-width 1200px = mismo ancho de rejilla que .srv-contenedor,
+   así las 3 secciones locales comparten bordes (una sola hoja).
+   El overflow:hidden de la raíz recorta destellos; las flechas
+   (-24px) caen dentro del pasillo lateral de la sección → no se
+   recortan (a diferencia del caso fusionado, que requería raíz
+   overflow:visible).
+   ================================================================ */
+
+
+/* ----------------------------------------------------------------
+   02.1 · ESTRUCTURA DE LA GALERÍA
+   ---------------------------------------------------------------- */
+body#page-servicio-detalle .pro-det-galeria {
+  --galeria-radio: 16px;
+  --galeria-gap: var(--sp-3);
+
+  position: relative;
+  overflow: hidden;
+  margin-top: 0;
+  padding: var(--seccion-pad_2) var(--pad-x); /* FIX v4.6: 2 valores */
+  background-color: var(--bg-main);
+}
+
+/* Destellos decorativos */
+body#page-servicio-detalle .pro-det-galeria__destello {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle, rgba(49, 38, 131, 0.05) 0%, transparent 70%);
+}
+
+body#page-servicio-detalle .pro-det-galeria__destello--1 {
+  width: 500px;
+  height: 500px;
+  top: -10%;
+  right: -8%;
+}
+
+body#page-servicio-detalle .pro-det-galeria__destello--2 {
+  width: 400px;
+  height: 400px;
+  bottom: -15%;
+  left: -8%;
+}
+
+/* Título de sección dentro de la galería */
+body#page-servicio-detalle .pro-det-galeria .section-title-group {
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body#page-servicio-detalle .pro-det-galeria__subtitulo {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+  margin-top: var(--sp-2);
+  line-height: 1.7;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* ----------------------------------------------------------------
+   02.2 · CARRUSEL / SLIDES
+   ---------------------------------------------------------------- */
+body#page-servicio-detalle .pro-det-galeria__carrusel {
+  position: relative;
+  max-width: 1200px; /* ALINEADO a .srv-contenedor (era 1300) */
+  margin: var(--sp-5) auto 0;
+  z-index: 1;
+}
+
+body#page-servicio-detalle .pro-det-galeria__viewport {
+  overflow: hidden;
+  padding: 10px;
+  margin: -10px;
+  touch-action: pan-y;
+}
+
+body#page-servicio-detalle .pro-det-galeria__track {
+  display: flex;
+  gap: var(--galeria-gap);
+  transition: transform 0.6s var(--header-ease);
+  will-change: transform;
+}
+
+/* Slide escritorio: 3 visibles */
+body#page-servicio-detalle .pro-det-galeria__slide {
+  flex: 0 0 calc((100% - (var(--galeria-gap) * 2)) / 3);
+  min-width: 0;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+
+  border-radius: var(--galeria-radio);
+  background: var(--bg-soft);
+  border: 1px solid var(--primary-border);
+  box-shadow: 0 10px 30px rgba(49, 38, 131, 0.06);
+
+  /* Blindaje anti-lightbox: no promete ampliación ni zoom. */
+  cursor: default !important;
+}
+
+body#page-servicio-detalle .pro-det-galeria__slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: var(--bg-soft);
+  transition: transform 0.6s var(--header-ease);
+}
+
+/* Hover decorativo suave, sin implicar clic */
+@media (hover: hover) and (pointer: fine) {
+  body#page-servicio-detalle .pro-det-galeria__slide:hover img {
+    transform: scale(1.04);
+  }
+}
+
+/* Eliminación total de lupa / overlay / pseudo-efectos */
+body#page-servicio-detalle .pro-det-galeria__slide::before,
+body#page-servicio-detalle .pro-det-galeria__slide::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Fallback de imagen rota */
+body#page-servicio-detalle .pro-det-galeria__slide.srv-sin-foto {
+  background: var(--bg-soft);
+  border-style: dashed;
+  border-color: var(--primary-border);
+}
+
+body#page-servicio-detalle .pro-det-galeria__slide.srv-sin-foto img {
+  display: none;
+}
+
+
+/* ----------------------------------------------------------------
+   02.3 · CONTROLES DE LA GALERÍA
+   ---------------------------------------------------------------- */
+
+/* — Flechas — */
+body#page-servicio-detalle .pro-det-galeria__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  background: var(--bg-main);
+  border: 1px solid var(--primary-border);
+  color: var(--primary);
+  font-size: 0.9rem; /* EXCEPCIÓN: control de icono de flecha */
+  cursor: pointer;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(49, 38, 131, 0.12);
+  transition: all 0.3s var(--header-ease);
+}
+
+body#page-servicio-detalle .pro-det-galeria__btn:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  transform: translateY(-50%) scale(1.05);
+}
+
+body#page-servicio-detalle .pro-det-galeria__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+body#page-servicio-detalle .pro-det-galeria__btn--prev {
+  left: -24px;
+}
+
+body#page-servicio-detalle .pro-det-galeria__btn--next {
+  right: -24px;
+}
+
+/* — Puntos — */
+body#page-servicio-detalle .pro-det-galeria__puntos {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: var(--sp-5);
+  position: relative;
+  z-index: 1;
+}
+
+body#page-servicio-detalle .pro-det-galeria__punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary-border);
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  transition: all 0.3s var(--header-ease);
+}
+
+body#page-servicio-detalle .pro-det-galeria__punto.es-activo {
+  background: var(--primary);
+  transform: scale(1.3);
+}
+
+
+/* ----------------------------------------------------------------
+   02.4 · RESPONSIVE GALERÍA
+   ----------------------------------------------------------------
+   Vertical: --seccion-pad uniforme (ritmo de sección, como 01/03).
+   Lateral: compacto ≤1024. Márgenes internos del carrusel/puntos
+   graduados para respiración en pantallas chicas.
+   ---------------------------------------------------------------- */
+
+/* — Tablet ≤1024: 2 slides visibles, flechas fuera — */
+@media (max-width: 1024px) {
+  body#page-servicio-detalle .pro-det-galeria {
+    padding-left: var(--pad-x-compacto);
+    padding-right: var(--pad-x-compacto);
+  }
+
+  body#page-servicio-detalle .pro-det-galeria__slide {
+    flex: 0 0 calc((100% - var(--galeria-gap)) / 2);
+  }
+
+  body#page-servicio-detalle .pro-det-galeria__btn {
+    display: none;
+  }
+
+  body#page-servicio-detalle .pro-det-galeria__carrusel {
+    margin-top: var(--sp-4);
+  }
+
+  body#page-servicio-detalle .pro-det-galeria__puntos {
+    margin-top: var(--sp-4);
+  }
+}
+
+/* — Móvil ≤767: 1 slide visible — */
+@media (max-width: 767px) {
+  body#page-servicio-detalle .pro-det-galeria__slide {
+    flex: 0 0 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: calc(var(--galeria-radio) - 4px);
+  }
+
+  body#page-servicio-detalle .pro-det-galeria__carrusel {
+    margin-top: var(--sp-3);
+  }
+
+  body#page-servicio-detalle .pro-det-galeria__puntos {
+    margin-top: var(--sp-3);
+    gap: 10px;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   02.5 · MOVIMIENTO REDUCIDO GALERÍA
+   ----------------------------------------------------------------
+   El carrusel sigue navegando, pero sin transiciones perceptibles.
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  body#page-servicio-detalle .pro-det-galeria__track,
+  body#page-servicio-detalle .pro-det-galeria__slide img,
+  body#page-servicio-detalle .pro-det-galeria__btn,
+  body#page-servicio-detalle .pro-det-galeria__punto {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  body#page-servicio-detalle .pro-det-galeria__slide:hover img {
+    transform: none !important;
+  }
+}
+
+
+/* ================================================================
+   03 · SECCIÓN 03 · SUB-SERVICIOS — LÁMINAS TÉCNICAS (.srv-fases)
+   ================================================================
+   Corresponde al HTML:
+
+     <section class="srv-seccion srv-seccion--laminas bg-soft-pattern"
+              id="subservicios-ingenieria">
+       <div class="srv-contenedor">
+         <div class="srv-fases">
+           <header class="srv-fases__cabecera">...</header>
+           <div class="srv-fases__grid" role="list">
+             <article class="srv-fases__item" role="listitem">
+               <div class="srv-fases__item-cabecera">codigo + icono</div>
+               <div class="srv-fases__item-cuerpo">
+                 <h3 class="srv-fases__item-titulo">...</h3>
+                 <div class="srv-fases__item-extra">
+                   <ul class="srv-fases__item-lista">...</ul>
+                   <a class="srv-fases__item-link js-carga">...</a>
+                 </div>
+               </div>
+             </article>
+           </div>
+         </div>
+       </div>
+     </section>
+
+   Conversión directa desde .ini-servicios del index (mismo lenguaje).
+
+   GRID:
+   · ESCRITORIO: grid 6 col. Con 6 láminas → 3×2 mismo ancho.
+     Con 5 láminas → fila sup. 3 tarjetas, fila inf. 2 centradas.
+   · TABLET 768–1024: grid 2 col. Si el total es impar, la última
+     ocupa 1/-1 (sin hueco).
+   · MÓVIL ≤767: grid 1 col. Lámina comprimida (código+icono+título).
+     El bloque .srv-fases__item-extra se colapsa SOLO si el JS añade
+     .js-fases-expansion en <html>. Sin JS: visible (fallback).
+   · LANDSCAPE móvil: vuelve a 2 col (acordeón sigue activo).
+   · TÁCTIL: :active solo color/borde. REDUCED: instantáneo funcional.
+
+   EXCEPCIÓN DOCUMENTADA: radius 4px (plano técnico); padding 8px 14px
+   en cabecera (control visual); fondo cabecera rgba(49,38,131,0.04).
+   ================================================================ */
+
+
+/* ----------------------------------------------------------------
+   03.1 · GRID Y LÁMINAS
+   ---------------------------------------------------------------- */
+.srv-fases__cabecera {
+  margin-bottom: var(--sp-3);
+}
+
+.srv-fases__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--sp-2);
+  align-items: stretch;
+}
+
+/* — Lámina individual — */
+.srv-fases__item {
+  grid-column: span 2;
+
+  background: var(--bg-main);
+  border: 2px solid var(--primary);
+  border-radius: 4px; /* EXCEPCIÓN: esquinas de plano técnico */
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  transition: transform 0.4s var(--header-ease),
+              box-shadow 0.4s var(--header-ease),
+              border-color 0.4s ease;
+}
+
+/* Con exactamente 5 láminas: fila inferior centrada, mismo ancho.
+   Con 6 láminas, estas reglas no afectan. */
+.srv-fases__item:nth-child(4):nth-last-child(2) { grid-column: 2 / 4; }
+.srv-fases__item:nth-child(5):nth-last-child(1) { grid-column: 4 / 6; }
+
+@media (hover: hover) and (pointer: fine) {
+  .srv-fases__item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(49, 38, 131, 0.12);
+  }
+
+  .srv-fases__item:hover .srv-fases__item-icono {
+    background: #4a3fa8; /* hover institucional documentado */
+  }
+
+  .srv-fases__item:hover .srv-fases__item-titulo {
+    color: var(--primary);
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   03.2 · CABECERA / CUERPO / LISTA / ENLACE
+   ---------------------------------------------------------------- */
+
+/* — Cabecera de lámina — */
+.srv-fases__item-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap; /* defensa: nunca desborda en pantallas mínimas */
+  padding: 8px 14px; /* EXCEPCIÓN: control de cabecera de plano */
+  border-bottom: 2px solid var(--primary);
+  background: rgba(49, 38, 131, 0.04);
+}
+
+.srv-fases__item-codigo {
+  font-family: var(--font-heading);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.srv-fases__item-icono {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  flex-shrink: 0;
+
+  background: var(--primary);
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem; /* EXCEPCIÓN: tamaño de icono decorativo */
+
+  transition: background-color 0.3s ease;
+}
+
+/* — Cuerpo — */
+.srv-fases__item-cuerpo {
+  padding: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.srv-fases__item-titulo {
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  color: var(--text-body);
+  line-height: 1.25;
+  margin: 0 0 var(--sp-1);
+  transition: color 0.3s ease;
+}
+
+/* — Bloque colapsable —
+   En escritorio/tablet siempre visible.
+   En móvil se colapsa solo si el JS activa .js-fases-expansion. */
+.srv-fases__item-extra {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* — Lista de checks — */
+.srv-fases__item-lista {
+  list-style: none;
+  margin: 0 0 var(--sp-2);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  flex: 1;
+}
+
+.srv-fases__item-lista li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.srv-fases__item-lista li i {
+  color: var(--primary);
+  font-size: 0.8rem; /* EXCEPCIÓN: tamaño de icono de check */
+  line-height: 1;
+  margin-top: 0.3em;
+  flex-shrink: 0;
+}
+
+/* — Enlace texto-con-línea —
+   La línea la inyecta nav-carga.js. Aquí solo color/tipo/icono. */
+.srv-fases__item-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+
+  border: none;
+  background: transparent;
+  padding: 5px 0;
+  cursor: pointer;
+
+  position: relative;
+  width: fit-content;
+  margin-top: auto;
+
+  transition: color 0.3s ease;
+}
+
+.srv-fases__item-link i {
+  font-size: 10px; /* EXCEPCIÓN: tamaño de icono de flecha */
+  margin-left: 4px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .srv-fases__item-link:hover i {
+    transform: translateX(4px);
+  }
+}
+
+.srv-fases__item-link:focus-visible {
+  color: var(--primary);
+}
+
+
+/* ----------------------------------------------------------------
+   03.3 · RESPONSIVE SUB-SERVICIOS
+   ---------------------------------------------------------------- */
+
+/* TABLET 768–1024: 2 col; última impar a ancho completo. */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .srv-fases__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .srv-fases__item,
+  .srv-fases__item:nth-child(4):nth-last-child(2),
+  .srv-fases__item:nth-child(5):nth-last-child(1) {
+    grid-column: auto;
+  }
+
+  .srv-fases__item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* MÓVIL ≤767: 1 col; lámina comprimida + expansión por scroll.
+   El colapso solo se activa si el JS añade .js-fases-expansion. */
+@media (max-width: 767px) {
+  .srv-fases__grid {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .srv-fases__item,
+  .srv-fases__item:nth-child(4):nth-last-child(2),
+  .srv-fases__item:nth-child(5):nth-last-child(1),
+  .srv-fases__item:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+
+  .srv-fases__item-cuerpo {
+    padding: var(--sp-2) var(--sp-3);
+  }
+
+  /* Sin JS: título con aire respecto al contenido visible. */
+  .srv-fases__item-titulo {
+    margin-bottom: var(--sp-1);
+  }
+
+  /* Con JS: modo acordeón (fábrica crearAcordeonMovil, JS v4.4). */
+  .js-fases-expansion .srv-fases__item-titulo {
+    margin-bottom: 0;
+  }
+
+  .js-fases-expansion .srv-fases__item-extra {
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    flex: none;
+
+    transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.3s ease,
+                visibility 0s linear 0.3s;
+  }
+
+  .js-fases-expansion .srv-fases__item.es-expandida .srv-fases__item-extra {
+    opacity: 1;
+    visibility: visible;
+
+    transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.4s ease 0.15s,
+                visibility 0s;
+  }
+
+  .js-fases-expansion .srv-fases__item.es-expandida .srv-fases__item-titulo {
+    margin-bottom: var(--sp-1);
+  }
+
+  .srv-fases__item.es-expandida {
+    border-color: #4a3fa8; /* feedback de foco documentado */
+  }
+}
+
+/* MÓVIL PEQUEÑO ≤480: compacidad fina de cabecera e icono. */
+@media (max-width: 480px) {
+  .srv-fases__item-icono {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .srv-fases__item-cabecera {
+    padding: 8px 12px;
+  }
+}
+
+/* LANDSCAPE MÓVIL: vuelve a 2 col; acordeón sigue activo. */
+@media (max-width: 767px) and (orientation: landscape) {
+  .srv-fases__grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: none;
+  }
+
+  .srv-fases__item,
+  .srv-fases__item:nth-child(4):nth-last-child(2),
+  .srv-fases__item:nth-child(5):nth-last-child(1) {
+    grid-column: auto;
+  }
+
+  .srv-fases__item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   03.4 · TÁCTIL SUB-SERVICIOS
+   ---------------------------------------------------------------- */
+@media (hover: none) and (pointer: coarse) {
+  .srv-fases__item:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .srv-fases__item:active {
+    border-color: #4a3fa8;
+  }
+
+  .srv-fases__item-link:active {
+    color: #4a3fa8;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   03.5 · MOVIMIENTO REDUCIDO SUB-SERVICIOS
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .srv-fases__item,
+  .srv-fases__item-icono,
+  .srv-fases__item-titulo,
+  .srv-fases__item-link,
+  .srv-fases__item-link i {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  .js-fases-expansion .srv-fases__item-extra,
+  .js-fases-expansion .srv-fases__item.es-expandida .srv-fases__item-extra {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}
+
+
+/* ================================================================
+   04 · SECCIÓN 04 · CTA FINAL — COMPONENTE GLOBAL
+   ================================================================
+   Corresponde al HTML:
+
+     <section id="contacto-cta" class="contacto-cta"> ... </section>
+
+   Este bloque NO lleva CSS local en servicios-detalle.css.
+   Su estilo vive en el componente global:
+     assets/css/components/section-ui.css (bloque 04)
+
+   Motivo: el CTA final es idéntico en index, quienes-somos,
+   servicios, proyectos y páginas de servicio. Mantenerlo global
+   evita duplicar reglas y garantiza coherencia.
+   ================================================================ */

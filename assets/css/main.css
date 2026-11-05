@@ -1,3 +1,10 @@
+/* ════════════════════════════════════════════════════════════════
+   MAIN.CSS — ORQUESTADOR DE IMPORTS — BRIDA S.R.L.
+   ⚠️ REGLA CRÍTICA: los @import deben ser las PRIMERAS reglas del
+   archivo. Cualquier regla/declaración antes de ellos hace que el
+   navegador los ignore TODOS → sitio sin estilos.
+   ════════════════════════════════════════════════════════════════ */
+
 /* 1. Base */
 @import url('./base/variables.css');
 @import url('./base/reset.css');

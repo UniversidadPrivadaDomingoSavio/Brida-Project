@@ -45,8 +45,15 @@
    - Los ICONOS decorativos (flecha 0.7rem, punto del chip 7px)
      NO son texto → quedan por debajo del piso legítimamente.
 
+   ⭐ FONDO DE SECCIÓN (v2 — CANVAS GLOBAL):
+   la textura de puntos local (24px) fue RETIRADA de
+   .proy-seccion — pintaba por encima del patrón blueprint
+   aprobado y lo ocultaba. La rejilla (celda 32px) ahora la
+   pinta .bg-soft-pattern desde el HTML (section-ui.css,
+   fuente única). Detalle completo en el bloque 01.
+
    MAPA DEL ARCHIVO:
-   01. Sección principal y contenedor
+   01. Sección principal y contenedor (fondo = CANVAS GLOBAL)
    02. Filtros por servicio (escritorio)
    03. Rejilla de proyectos (escritorio: 3 columnas)
    04. Tarjeta de proyecto (capa, servicio, título, detalles)
@@ -66,17 +73,33 @@
 /* ────────────────────────────────────────────────────────────────
    01. SECCIÓN PRINCIPAL Y CONTENEDOR
    QUÉ ES:  el <section> que envuelve todo el portafolio.
-   QUÉ HACE: fondo con textura de puntos (identidad BRIDA) y
-             relleno lateral del 5%.
-   DÓNDE:    proyectos.html → <section class="proy-seccion">
+   QUÉ HACE: relleno lateral del 5% y soporte del CANVAS GLOBAL
+             (patrón blueprint que pinta .bg-soft-pattern).
+   DÓNDE:    proyectos.html → <section class="proy-seccion bg-soft-pattern">
+   ⚠️ AQUÍ ESTABA EL CHOQUE (v1): esta hoja pintaba su propia
+             textura de puntos (radial-gradient 24px · alpha .04)
+             sobre .proy-seccion. Como .proy-seccion y
+             .bg-soft-pattern EMPATAN en especificidad (0,1,0) y
+             este archivo carga DESPUÉS de section-ui.css, el
+             fondo local ganaba por orden de carga → el canvas
+             predeterminado nunca se veía.
+             (En index SÍ se veía porque el override
+             body#page-inicio .proy-seccion — 0,2,0 — le ganaba a
+             este local: era el árbitro que esta página no tiene.)
+   REGLA:   NINGÚN background en el CSS de página. La rejilla se
+             escribe UNA vez, en section-ui.css (fuente única).
    ──────────────────────────────────────────────────────────────── */
 .proy-seccion {
     padding: 60px 5%;
-    background-color: var(--bg-main);
     position: relative;
     overflow: hidden;
-    background-image: radial-gradient(rgba(49, 38, 131, 0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
+
+    /* SIN background-color NI background-image: la base y la
+       rejilla las aporta .bg-soft-pattern (variante clara).
+       Si mañana se quita la clase en el HTML, la sección cae al
+       fondo del body (--bg-main) sin romperse — en fondos CLAROS
+       la caída es segura, no hace falta color de defensa como en
+       las secciones oscuras (QS principios). */
 }
 
 /* QUÉ ES:  caja interior que centra el contenido a 1300px máx.
@@ -238,35 +261,70 @@
 
 
 /* ────────────────────────────────────────────────────────────────
-   05. CHIP DE ESTADO DEL PROYECTO
-   QUÉ ES:  píldora blanca fija en la esquina superior izquierda
-            (siempre visible, no depende de hover).
-   QUÉ HACE: informa el ciclo de vida del proyecto. proyectos.js
-            le asigna la variante de color con estadoClase():
-            es-concluido (verde) | es-desarrollo (ámbar) |
-            es-operacion (azul).
-   ⭐ var(--fs-micro) en TODOS los breakpoints: era 0.65/0.6/0.55rem
-   (10.4/9.6/8.8px) — TEXTO REAL de información ("Proyecto
-   Concluido") ilegible, el peor valor de todo el sitio. El chip
-   crece levemente: precio justo por legibilidad.
-   El <i> (7px) es el PUNTO de color decorativo → no es texto,
-   queda bajo el piso legítimamente.                              */
-.proy-tarjeta-estado {
-    position: absolute; top: 20px; left: 20px; z-index: 5;
-    background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    padding: 6px 14px; border-radius: 50px;
-    font-family: var(--font-heading); font-size: var(--fs-micro); /* ⭐ token (era 0.65rem) */
-    font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary);
-    display: inline-flex; align-items: center; gap: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    pointer-events: none; /* decorativo: nunca roba el toque */
+   05-bis · ⭐ v3 TARJETA DE DOCUMENTACIÓN (obra sin foto aún)
+   QUÉ ES: variante para obras del inventario oficial cuyo registro
+            fotográfico aún no está incorporado (proyectos-data.js:
+            portada null — 16 entradas v2). En lugar de una imagen
+            rota o un repetido genérico: LENGUAJE BLUEPRINT del
+            sitio — rejilla técnica 32px (el mismo trío ornamental
+            de las láminas: .srv-marco__rejilla /
+            .qs-historia-lamina-rejilla; deuda consciente: el trío
+            vive por componente hasta tener clase compartida) +
+            sello de archivo. TODA la información (servicio, título,
+            detalles, estado) permanece SIEMPRE visible (regla de
+            táctil) — sin capa ni hover: el contenido es nativo de
+            la tarjeta. La nota usa la MISMA voz del aviso vacío
+            ("referencias a solicitud") — coherencia editorial.
+   ──────────────────────────────────────────────────────────────── */
+.proy-tarjeta--documento {
+    background-color: var(--bg-main);
+    background-image:
+        linear-gradient(rgba(49, 38, 131, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(49, 38, 131, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
 }
-.proy-tarjeta-estado i { font-size: 7px; } /* punto decorativo */
-.proy-tarjeta-estado.es-concluido i { color: #16a34a; }
-.proy-tarjeta-estado.es-desarrollo i { color: #d97706; }
-.proy-tarjeta-estado.es-operacion i { color: #2563eb; }
+
+.proy-tarjeta-documento {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    gap: 6px;
+    padding: 24px 20px;
+}
+
+.proy-tarjeta-documento-icono {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: var(--primary-soft); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; /* EXCEPCIÓN: icono decorativo */
+    margin-bottom: 4px;
+    flex-shrink: 0;
+}
+
+/* En fondo claro: el amarillo de la capa fotográfica NO aplica
+   (contraste insuficiente) → servicio y detalles en colores del
+   sistema. Sin transforms de entrada (no hay hover que los
+   libere — regla de táctil aplicada también en escritorio).     */
+.proy-tarjeta--documento .proy-tarjeta-servicio {
+    color: var(--primary); transform: none; transition: none;
+}
+.proy-tarjeta--documento .proy-tarjeta-titulo {
+    color: var(--text-body); transform: none; transition: none;
+}
+.proy-tarjeta--documento .proy-tarjeta-detalles {
+    color: var(--text-muted); transform: none; transition: none;
+    justify-content: center;
+}
+.proy-tarjeta--documento .proy-tarjeta-detalles i { color: var(--primary); }
+
+.proy-tarjeta-documento-nota {
+    font-family: var(--font-body); font-size: var(--fs-micro);
+    color: var(--text-muted); line-height: 1.4; max-width: 240px;
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 4px;
+}
+.proy-tarjeta-documento-nota i { font-size: 10px; color: var(--primary); } /* icono decorativo */
 
 
 /* ────────────────────────────────────────────────────────────────
@@ -594,6 +652,7 @@
             la rejilla pasa a 2 columnas compactas para aprovechar
             el ancho sin que las tarjetas aplasten la pantalla.
    ──────────────────────────────────────────────────────────────── */
+   
 @media (max-height: 500px) and (orientation: landscape) {
     .proy-seccion { padding: 40px 5%; }
     .proy-filtros { margin-bottom: 20px; }

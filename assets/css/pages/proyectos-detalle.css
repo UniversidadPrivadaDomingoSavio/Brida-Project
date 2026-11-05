@@ -1,13 +1,128 @@
-/* ================================================================
-   PÁGINA DETALLE DE PROYECTO (Prefijo pro-det) - ESTILO BRIDA PREMIUM
-   Patrón de bloques heredado de srv-detalle para armonía global
-   ================================================================ */
+/* ════════════════════════════════════════════════════════════════
+   PÁGINA DETALLE DE PROYECTO — v3.1 (TARJETA IMPERIO + LÁMINA)
+   Archivo: assets/css/pages/proyectos-detalle.css
+   ════════════════════════════════════════════════════════════════
 
-/* --- Breadcrumb del Hero --- */
+   PREFIJO:  pro-det  →  exclusivo de las fichas de /proyectos/.
+
+   ESTRUCTURA DE LA PÁGINA (v3.1):
+   Hero Expediente + breadcrumb → Tarjeta Imperio → Alcance
+   (Lámina de Plano) → Galería (carrusel + lightbox) → Navegación
+   editorial → Contacto CTA → Footer.
+
+   ⭐ CHANGELOG v3.1 (ALCANCE → LÁMINA DE PLANO, aprobada):
+   · El alcance adopta el lenguaje blueprint de las láminas SRV
+     del index: borde 2px --primary, radius 4px (excepción:
+     esquinas de plano técnico), cabecera con código DOC-01 +
+     tinte 0.04 + icono, partidas numeradas en grid con
+     separadores de 1px.
+   · ELIMINADO el bloque base .pro-det-bloque* (bloque 02 de la
+     v3.0): solo lo consumía el Alcance → cero código muerto.
+     Con él se retira el efecto luz-de-ratón de esta ficha
+     (initLuzRaton retirado del JS v3.1).
+   · Hover elevación de la lámina SOLO con puntero fino (patrón
+     .ini-servicios__lamina del index: translateY(-4px) + sombra).
+   · El título del bloque es un H2 real (semántica + SEO).
+
+   ⚠️ SISTEMA DE DISEÑO (variables.css — OBLIGATORIO):
+   - Lateral: --pad-x / --pad-x-compacto. Tipografía: piso 12px.
+   - Ritmo vertical de escena: EXCEPCIÓN DOCUMENTADA (px de escena
+     con comentario — deuda consciente, como en v2.1/v3.0).
+   - BREAKPOINTS oficiales: Escritorio >1024 · Tablet 768–1024 ·
+     Móvil ≤767 · Fino ≤480. SYNC JS v3.1: mqMovil (767) y
+     mqTablet (1024) en proyectos-detalle.js.
+
+   MAPA DEL ARCHIVO:
+   00 · Tokens de la ficha (solape/respiro en :root)
+   01 · Hero Expediente (canvas global + solape)
+   02 · Breadcrumb del hero
+   03 · Tarjeta Imperio (foto + tarjeta + compartir)
+   04 · Alcance — Lámina de Plano (blueprint técnico)
+   05 · Sección galería (carrusel aspect-ratio + alineación 1200)
+   06 · Navegación editorial entre proyectos
+   07 · Lightbox (con estados de foco)
+   08 · Responsive (1024 / 767 / 480)
+   09 · Accesibilidad — movimiento reducido
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ================================================================
+   00 · TOKENS DE LA FICHA (solape hero→foto y respiro breadcrumb)
+   En :root porque .pro-det-hero y .pro-det-imp son HERMANOS —
+   las custom props de un hermano no alcanzan al otro.
+   · --imp-solape : cuánto sube la foto sobre el canvas oscuro.
+   · --imp-respiro: aire garantizado breadcrumb → foto.
+   ================================================================ */
+:root {
+    --imp-solape: clamp(96px, 12vw, 150px);
+    --imp-respiro: clamp(28px, 4vw, 48px);
+}
+
+
+/* ================================================================
+   01 · HERO EXPEDIENTE
+   El canvas oscuro completo (bg-dark + radiales + rejilla 32px)
+   lo pinta .bg-soft-pattern.dark (clase en el HTML). Esta hoja
+   SOLO define el padding de la escena con especificidad (0,3,0)
+   para pisar el padding genérico de la variante dark (0,2,0).
+   ================================================================ */
+.bg-soft-pattern.dark.pro-det-hero {
+    padding: calc(var(--header-h) + clamp(32px, 5vw, 56px)) var(--pad-x)
+             calc(var(--imp-solape) + var(--imp-respiro));
+}
+
+.pro-det-hero__contenido {
+    max-width: 820px;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+}
+
+.pro-det-hero__eyebrow {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: clamp(0.72rem, 0.8vw, 0.82rem); /* EXCEPCIÓN: control (11.5–13px) */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 14px;
+}
+
+/* H1 — clamp unificado del sistema (section-ui v5.2)             */
+.pro-det-hero__titulo {
+    font-family: var(--font-heading);
+    font-size: clamp(2.1rem, 3.25vw, 3.2rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    color: #fff;
+    margin: 0;
+}
+
+/* Línea blanca animada (se dibuja al activarse el reveal)        */
+.pro-det-hero__linea {
+    display: block;
+    width: 100%;
+    height: 4px;
+    background: #fff;
+    border-radius: 2px;
+    margin-top: var(--sp-2, 16px);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.8s var(--header-ease) 0.3s; /* entra tras el texto */
+}
+.is-active .pro-det-hero__linea { transform: scaleX(1); }
+
+
+/* ================================================================
+   02 · BREADCRUMB DEL HERO
+   ================================================================ */
 .pro-det__breadcrumb {
     display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
     gap: 10px; margin-top: 28px;
-    font-family: var(--font-heading); font-size: 0.8rem;
+    font-family: var(--font-heading); font-size: 0.8rem; /* EXCEPCIÓN: control (12.8px — pasa el piso) */
     text-transform: uppercase; letter-spacing: 1px;
     color: rgba(255,255,255,0.6);
 }
@@ -17,189 +132,274 @@
     transition: color 0.3s ease;
 }
 .pro-det__breadcrumb a:hover { color: #fff; }
+.pro-det__breadcrumb a:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.8);
+    outline-offset: 3px; border-radius: 4px;
+}
 .pro-det__breadcrumb-sep { opacity: 0.5; }
 .pro-det__breadcrumb-actual { color: #fff; font-weight: 600; }
 
+
 /* ================================================================
-   BLOQUE BASE (firma visual compartida con srv-detalle)
+   03 · TARJETA IMPERIO (foto protagonista + tarjeta superpuesta)
+   ARQUITECTURA DEL SOLAPE:
+   · .pro-det-imp sube --imp-solape sobre el hero (toda la escena).
+   · .pro-det-imp__tarjeta sube a su vez sobre la FOTO (escalón
+     por breakpoint: -90 / -72 / -48px) — la foto conserva ~80%
+     visible en los 3 viewports.
    ================================================================ */
-.pro-det-bloque {
+.pro-det-imp {
+    padding: 0 var(--pad-x) 80px;
+    margin-top: calc(-1 * var(--imp-solape)); /* sube SOLO el solape */
+    position: relative;
+    z-index: 5;
+}
+.pro-det-imp__escena { max-width: 980px; margin: 0 auto; }
+
+.pro-det-imp__foto {
+    position: relative;
+    border-radius: 22px; /* EXCEPCIÓN: radio de pieza de escena */
+    overflow: hidden;
+    border: 1px solid var(--primary-border);
+    box-shadow: 0 30px 70px rgba(49, 38, 131, 0.25);
+}
+.pro-det-imp__foto img {
+    width: 100%;
+    aspect-ratio: 16 / 9; /* ley ANTI-ZOOM: el ratio gobierna */
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s var(--header-ease);
+}
+@media (hover:hover) and (pointer:fine) {
+    .pro-det-imp__foto:hover img { transform: scale(1.035); }
+}
+
+/* Insignia de estado (glass sobre la foto)
+   Base: verde (--stripe-green) · Modificador --proceso: ámbar    */
+.pro-det-imp__estado {
+    position: absolute; top: 20px; left: 20px;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    color: var(--stripe-green);
+    font-family: var(--font-heading);
+    font-size: var(--fs-micro); font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 16px; border-radius: 50px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+.pro-det-imp__estado--proceso { color: var(--stripe-yellow); }
+
+/* Tarjeta blanca superpuesta                                     */
+.pro-det-imp__tarjeta {
+    position: relative; z-index: 2;
+    margin: -90px auto 0;
+    width: calc(100% - 56px); max-width: 780px;
     background: var(--bg-main);
     border: 1px solid var(--primary-border);
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 15px 40px rgba(49, 38, 131, 0.06);
-    transition: transform 0.5s var(--header-ease), box-shadow 0.5s var(--header-ease), border-color 0.3s ease;
+    border-radius: 18px;
+    box-shadow: 0 28px 64px rgba(49, 38, 131, 0.18);
+    padding: 34px clamp(22px, 4vw, 44px) 36px;
+    text-align: center;
 }
 
-/* Efecto Luz Ratón (Heredado del Hub / Servicios) */
-.pro-det-bloque::after {
+/* Eyebrow de tarjeta con mini-línea tricolor (firma del sitio)   */
+.pro-det-imp__eyebrow {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: var(--fs-micro);
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 16px;
+    position: relative; padding-bottom: 12px;
+}
+.pro-det-imp__eyebrow::after {
     content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(49, 38, 131, 0.04), transparent 40%);
-    opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 1;
+    position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: 0; width: 44px; height: 3px; border-radius: 2px;
+    background: linear-gradient(to right,
+        var(--stripe-red) 33.33%, var(--stripe-yellow) 33.33%,
+        var(--stripe-yellow) 66.66%, var(--stripe-green) 66.66%);
 }
-.pro-det-bloque:hover::after { opacity: 1; }
 
-@media (hover: hover) and (pointer: fine) {
-    .pro-det-bloque:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 30px 70px rgba(49, 38, 131, 0.12);
-        border-color: rgba(49, 38, 131, 0.25);
+.pro-det-imp__desc {
+    font-size: var(--fs-body); line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 600px; margin: 0 auto 26px;
+}
+.pro-det-imp__desc strong { color: var(--primary); font-weight: 600; }
+
+/* Grid de datos (4 columnas — 2 en móvil) con separadores de 1px */
+.pro-det-imp__datos {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--primary-border);
+    border: 1px solid var(--primary-border);
+    border-radius: 12px; overflow: hidden;
+    margin-bottom: 22px;
+}
+.pro-det-imp__dato { background: var(--bg-main); padding: 16px 10px; }
+.pro-det-imp__dato i {
+    color: var(--primary); font-size: 0.85rem;
+    display: block; margin-bottom: 7px;
+}
+.pro-det-imp__dato b {
+    display: block;
+    font-family: var(--font-heading); font-size: 0.8rem; /* EXCEPCIÓN: control (12.8px — pasa el piso) */
+    font-weight: 700; color: var(--text-body); line-height: 1.35;
+}
+.pro-det-imp__dato small {
+    display: block; margin-top: 3px;
+    font-family: var(--font-heading);
+    font-size: var(--fs-micro); font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--text-muted);
+}
+
+/* Tags del alcance resumido                                      */
+.pro-det-imp__tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.pro-det-imp__tag {
+    font-family: var(--font-heading);
+    font-size: var(--fs-micro);
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--primary); background: var(--primary-soft);
+    border: 1px solid var(--primary-border);
+    padding: 6px 14px; border-radius: 50px;
+}
+
+/* Compartir (nativo + fallback portapapeles — ver JS)            */
+.pro-det-imp__compartir {
+    margin-top: 24px;
+    display: inline-flex; align-items: center; gap: 9px;
+    background: transparent; color: var(--primary);
+    font-family: var(--font-heading); font-size: var(--fs-small); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    border: none; cursor: pointer;
+    padding: 6px 2px;
+    transition: color 0.3s ease;
+}
+.pro-det-imp__compartir i { font-size: 0.75rem; transition: transform 0.3s var(--header-ease); }
+@media (hover:hover) and (pointer:fine) {
+    .pro-det-imp__compartir:hover i { transform: translateX(4px); }
+}
+@media (hover:none) and (pointer:coarse) {
+    .pro-det-imp__compartir:active { color: var(--primary-hover-fallback, #4a3fa8); } /* fallback documentado (patrón inicio.css v6.2.1) */
+}
+.pro-det-imp__compartir:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+
+
+/* ================================================================
+   04 · ALCANCE — LÁMINA DE PLANO (blueprint técnico)
+   ⭐ v3.1: el alcance adopta el lenguaje de las láminas SRV del
+   index (inicio.css bloque 03): borde 2px --primary, radius 4px
+   (EXCEPCIÓN: esquinas de plano técnico), cabecera con código +
+   tinte rgba 0.04 + icono, partidas numeradas en grid con
+   separadores de 1px. Sin sombra base — igual que las láminas
+   del index — para que el "peso de caja" se lo lleva la Tarjeta
+   Imperio y la lámina lea como DOCUMENTO técnico.
+   Sin background local: la rejilla 32px la pinta .bg-soft-pattern
+   (clase en el HTML). Si mañana se quita la clase, la sección
+   cae al fondo del body sin romperse (patrón documentado).
+   ================================================================ */
+.pro-det-alcance {
+    padding: 40px var(--pad-x) 80px;
+    position: relative;
+}
+
+.pro-det-alcance__lamina {
+    max-width: 980px;
+    margin: 0 auto;
+    background: var(--bg-main);
+    border: 2px solid var(--primary);
+    border-radius: 4px; /* EXCEPCIÓN: esquinas de plano técnico */
+    overflow: hidden;
+    transition: transform 0.5s var(--header-ease), box-shadow 0.5s var(--header-ease);
+}
+
+/* Hover elevación — SOLO puntero fino (patrón láminas del index) */
+@media (hover:hover) and (pointer:fine) {
+    .pro-det-alcance__lamina:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 36px rgba(49, 38, 131, 0.12);
     }
 }
 
-/* --- Cabecera de Bloque (icono + número + título) --- */
-.pro-det-bloque__cabecera {
-    display: flex; align-items: center; gap: 20px;
-    padding: 30px 40px 20px; position: relative; z-index: 2;
-    border-bottom: 1px solid var(--primary-border);
+/* --- Cabecera de lámina: código + título + icono ---
+   Tinte rgba 0.04 = tinte de control a MITAD de --primary-soft
+   (0.08) — mismo criterio de las cabeceras de lámina del index.  */
+.pro-det-alcance__lamina-cabecera {
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 20px;
+    border-bottom: 2px solid var(--primary);
+    background: rgba(49, 38, 131, 0.04);
 }
-.pro-det-bloque__icono-caja { position: relative; flex-shrink: 0; }
-.pro-det-bloque__icono {
-    width: 70px; height: 70px; background: var(--primary-soft); border-radius: 16px;
+.pro-det-alcance__lamina-codigo {
+    font-family: var(--font-heading); font-size: var(--fs-micro);
+    font-weight: 700; letter-spacing: 1.5px; color: var(--primary);
+    flex-shrink: 0;
+}
+.pro-det-alcance__lamina-titulo {
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    font-weight: 700; color: var(--primary);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    line-height: 1.2; margin: 0;
+    flex: 1; text-align: center;
+    min-width: 0;
+}
+.pro-det-alcance__lamina-icono {
+    width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+    background: var(--primary); color: #fff;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.4s var(--header-ease);
-}
-.pro-det-bloque__icono i { font-size: 1.8rem; color: var(--primary); transition: color 0.4s var(--header-ease); }
-.pro-det-bloque:hover .pro-det-bloque__icono { background: var(--primary); }
-.pro-det-bloque:hover .pro-det-bloque__icono i { color: #fff; }
-
-.pro-det-bloque__numero {
-    position: absolute; top: -8px; right: -8px;
-    width: 24px; height: 24px; background: var(--stripe-yellow);
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-heading); font-weight: 700; font-size: 0.75rem; color: var(--bg-main);
-}
-.pro-det-bloque__titulo-contenedor { flex: 1; }
-.pro-det-bloque__categoria {
-    display: block;
-    font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1.5px;
-    color: var(--text-muted); margin-bottom: 4px;
-}
-.pro-det-bloque__titulo {
-    font-family: var(--font-heading); font-size: clamp(1.3rem, 1.6vw, 1.6rem);
-    font-weight: 700; color: var(--primary); line-height: 1.2; margin: 0;
+    font-size: 0.95rem;
 }
 
-/* ================================================================
-   SECCIÓN RESUMEN (Ficha Técnica | Imagen Principal)
-   ================================================================ */
-.pro-det-resumen {
-    padding: 60px 5%;
-    background-color: var(--bg-main);
-    position: relative; overflow: hidden;
-}
-.pro-det-resumen__contenedor {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1.05fr 0.95fr;
-    gap: clamp(40px, 5vw, 70px); align-items: center;
-}
+/* --- Cuerpo: intro centrada + partidas numeradas ---            */
+.pro-det-alcance__lamina-cuerpo { padding: clamp(24px, 3.5vw, 40px); }
 
-/* --- Ficha Técnica: grid de datos --- */
-.pro-det-ficha__cuerpo {
-    padding: 30px 40px 35px; position: relative; z-index: 2;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 22px 30px;
+.pro-det-alcance__intro {
+    font-family: var(--font-body);
+    font-size: var(--fs-body); line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 720px;
+    margin: 0 auto 28px;
+    text-align: center;
 }
-.pro-det-ficha__dato { display: flex; align-items: flex-start; gap: 12px; }
-.pro-det-ficha__dato--completo { grid-column: 1 / -1; }
-.pro-det-ficha__dato > i {
-    width: 38px; height: 38px; flex-shrink: 0;
-    background: var(--primary-soft); border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--primary); font-size: 0.9rem;
-    transition: background 0.3s ease, color 0.3s ease;
-}
-.pro-det-bloque:hover .pro-det-ficha__dato > i { background: var(--primary-soft); color: var(--primary); }
-.pro-det-ficha__dato-texto { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.pro-det-ficha__dato-label {
-    font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);
-}
-.pro-det-ficha__dato-valor {
-    font-family: var(--font-body); font-size: 0.92rem; font-weight: 500;
-    color: var(--text-body); line-height: 1.45;
-}
+.pro-det-alcance__intro strong { color: var(--primary); font-weight: 600; }
 
-/* --- Imagen Principal con marco desplazado + insignia --- */
-.pro-det-visual { position: relative; }
-.pro-det-visual::before {
-    content: ''; position: absolute; inset: 0;
-    transform: translate(22px, 22px);
-    background: var(--primary-soft);
+/* Partidas: grid 2×4 con separadores de 1px (misma mecánica del
+   grid de datos de la Tarjeta Imperio — consistencia interna).   */
+.pro-det-alcance__lista {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--primary-border);
     border: 1px solid var(--primary-border);
-    border-radius: 20px; z-index: 0;
+    border-radius: 10px; overflow: hidden;
 }
-.pro-det-visual__imagen {
-    position: relative; z-index: 1; display: block;
-    width: 100%; height: clamp(320px, 40vw, 500px);
-    object-fit: cover; border-radius: 20px;
-    border: 1px solid var(--primary-border);
-    box-shadow: 0 24px 64px rgba(49, 38, 131, 0.12);
-}
-.pro-det-visual__insignia {
-    position: absolute; bottom: 22px; left: 22px; z-index: 2;
-    display: flex; align-items: center; gap: 12px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    padding: 12px 18px; border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.5);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-}
-.pro-det-visual__insignia i { font-size: 1.5rem; color: var(--stripe-green); }
-.pro-det-visual__insignia--proceso i { color: var(--stripe-yellow); }
-.pro-det-visual__insignia-texto { display: flex; flex-direction: column; }
-.pro-det-visual__insignia-texto span {
-    font-family: var(--font-heading); font-size: 0.6rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);
-}
-.pro-det-visual__insignia-texto strong {
-    font-family: var(--font-heading); font-size: 0.95rem;
-    color: var(--text-body); line-height: 1.2;
-}
-
-/* ================================================================
-   SECCIÓN ALCANCE DEL PROYECTO (Bloque ancho estilo Servicios)
-   ================================================================ */
-.pro-det-alcance {
-    padding: 40px 5% 60px;
-    background-color: var(--bg-soft);
-    background-image: radial-gradient(rgba(49, 38, 131, 0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
-}
-.pro-det-alcance__bloque { max-width: 1200px; margin: 0 auto; }
-
-.pro-det-alcance__cuerpo {
-    padding: 35px 40px; position: relative; z-index: 2;
-    display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px;
-}
-.pro-det-alcance__texto p {
-    font-family: var(--font-body); font-size: clamp(0.95rem, 1vw, 1.02rem);
-    color: var(--text-muted); line-height: 1.85; margin: 0 0 18px;
-}
-.pro-det-alcance__texto p:last-child { margin-bottom: 0; }
-
-.pro-det-alcance__lista { list-style: none; padding: 0; margin: 0; }
 .pro-det-alcance__lista li {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-family: var(--font-body); font-size: 0.93rem; font-weight: 500;
-    color: var(--text-body); margin-bottom: 14px; line-height: 1.5;
+    background: var(--bg-main);
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px;
+    font-family: var(--font-body); font-size: 0.92rem; font-weight: 500;
+    color: var(--text-body); line-height: 1.4;
 }
-.pro-det-alcance__lista li:last-child { margin-bottom: 0; }
-.pro-det-alcance__lista li i { color: var(--stripe-green); font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
+.pro-det-alcance__item-num {
+    font-family: var(--font-heading); font-size: var(--fs-micro);
+    font-weight: 700; color: var(--primary);
+    background: var(--primary-soft);
+    width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+}
 
-/* --- Pie de Bloque (etiquetas + CTA) --- */
+/* --- Pie de lámina: etiquetas + CTA (columna centrada) ---      */
 .pro-det-alcance__pie {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 40px 30px; gap: 20px; flex-wrap: wrap;
-    position: relative; z-index: 2;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 20px;
+    padding: 20px clamp(24px, 3.5vw, 40px) 28px;
     border-top: 1px solid var(--primary-border);
 }
-.pro-det-alcance__etiquetas { display: flex; gap: 8px; flex-wrap: wrap; }
+.pro-det-alcance__etiquetas { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
 .pro-det-alcance__etiqueta {
-    font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700;
+    font-family: var(--font-heading); font-size: var(--fs-micro);
+    font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary);
     background: var(--primary-soft); padding: 6px 14px; border-radius: 50px;
     border: 1px solid var(--primary-border);
@@ -208,7 +408,8 @@
     display: inline-flex; align-items: center; gap: 8px;
     background: var(--primary); color: #fff; padding: 12px 28px;
     border-radius: 50px; font-family: var(--font-heading); font-weight: 700;
-    font-size: 0.85rem; text-transform: uppercase; text-decoration: none;
+    font-size: var(--fs-small);
+    text-transform: uppercase; text-decoration: none;
     box-shadow: 0 4px 15px rgba(49, 38, 131, 0.25); transition: all 0.3s ease;
 }
 .pro-det-alcance__cta:hover {
@@ -217,12 +418,16 @@
 }
 .pro-det-alcance__cta i { font-size: 0.8rem; transition: transform 0.3s ease; }
 .pro-det-alcance__cta:hover i { transform: translateX(4px); }
+.pro-det-alcance__cta:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+
 
 /* ================================================================
-   SECCIÓN GALERÍA (Carrusel + Lightbox)
+   05 · SECCIÓN GALERÍA (Carrusel + Lightbox)
+   Slides por aspect-ratio 4/3 (ley ANTI-ZOOM). Carrusel 1200px
+   (alineación de bordes con las secciones de la ficha).
    ================================================================ */
 .pro-det-galeria {
-    padding: 60px 5% 40px;
+    padding: 40px var(--pad-x);
     background-color: var(--bg-main);
     position: relative; overflow: hidden;
 }
@@ -236,18 +441,18 @@
 .pro-det-galeria .section-title-group {
     position: relative;
     z-index: 1;
-    margin-left: auto;    /* Centra el bloque fit-content */
+    margin-left: auto;
     margin-right: auto;
 }
 
 .pro-det-galeria__subtitulo {
-    font-family: var(--font-body); font-size: clamp(0.9rem, 1vw, 1rem);
+    font-family: var(--font-body); font-size: var(--fs-body);
     color: var(--text-muted); margin-top: 18px;
 }
 
 /* --- Carrusel --- */
 .pro-det-galeria__carrusel {
-    position: relative; max-width: 1300px;
+    position: relative; max-width: 1200px;
     margin: 50px auto 0; z-index: 1;
 }
 .pro-det-galeria__viewport { overflow: hidden; padding: 10px; margin: -10px; touch-action: pan-y; }
@@ -259,7 +464,8 @@
 .pro-det-galeria__slide {
     position: relative;
     flex: 0 0 calc((100% - 40px) / 3);
-    height: 320px; margin: 0;
+    aspect-ratio: 4 / 3;
+    margin: 0;
     border-radius: 16px; overflow: hidden;
     border: 1px solid var(--primary-border);
     box-shadow: 0 10px 30px rgba(49, 38, 131, 0.06);
@@ -271,7 +477,7 @@
 }
 .pro-det-galeria__slide:hover img { transform: scale(1.08); }
 
-/* Overlay con icono de expansión (hover escritorio) */
+/* Overlay con icono de expansión (hover escritorio)              */
 .pro-det-galeria__slide::after {
     content: '\f00e';
     font-family: 'Font Awesome 6 Free'; font-weight: 900;
@@ -294,6 +500,7 @@
 }
 .pro-det-galeria__btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); transform: translateY(-50%) scale(1.05); }
 .pro-det-galeria__btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.pro-det-galeria__btn:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
 .pro-det-galeria__btn--prev { left: -24px; }
 .pro-det-galeria__btn--next { right: -24px; }
 
@@ -308,18 +515,19 @@
     transition: all 0.3s var(--header-ease);
 }
 .pro-det-galeria__punto.es-activo { background: var(--primary); transform: scale(1.3); }
+.pro-det-galeria__punto:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
 
 /* ================================================================
-   NAVEGACIÓN ENTRE PROYECTOS (Estilo Editorial Numérica)
+   06 · NAVEGACIÓN ENTRE PROYECTOS (Estilo Editorial Numérica)
    ================================================================ */
-.pro-det-navegacion { padding: 0 5% 60px; background-color: var(--bg-main); }
+.pro-det-navegacion { padding: 0 var(--pad-x) 60px; background-color: var(--bg-main); }
 .pro-det-navegacion__contenedor {
     max-width: 1200px; margin: 0 auto;
     display: grid; grid-template-columns: 1fr auto 1fr;
     gap: 30px; align-items: stretch;
 }
 
-/* --- Enlace editorial: sin caja, línea superior + número + subrayado --- */
 .pro-det-navegacion__enlace {
     display: flex; align-items: flex-start; gap: 16px;
     padding: 18px 6px 10px;
@@ -333,7 +541,6 @@
 }
 .pro-det-navegacion__enlace--siguiente { justify-content: flex-end; text-align: right; }
 
-/* --- Índice numérico grande (decorativo) --- */
 .pro-det-navegacion__indice {
     font-family: var(--font-heading); font-size: 2rem; font-weight: 700;
     color: rgba(49, 38, 131, 0.18); line-height: 1;
@@ -342,11 +549,12 @@
 }
 .pro-det-navegacion__enlace--siguiente .pro-det-navegacion__indice { text-align: right; }
 
-/* --- Textos --- */
 .pro-det-navegacion__texto { min-width: 0; }
+
 .pro-det-navegacion__texto span {
     display: block;
-    font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700;
+    font-family: var(--font-heading); font-size: var(--fs-micro);
+    font-weight: 700;
     text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted);
     transition: color 0.3s ease;
 }
@@ -357,7 +565,6 @@
     transition: color 0.3s ease;
 }
 
-/* Subrayado que crece (dirección según el lado) */
 .pro-det-navegacion__texto strong::after {
     content: '';
     position: absolute; left: 0; bottom: -3px;
@@ -369,7 +576,6 @@
     transform-origin: right;
 }
 
-/* --- Hover (solo dispositivos con puntero real) --- */
 @media (hover: hover) and (pointer: fine) {
     .pro-det-navegacion__enlace:hover { border-top-color: var(--primary); }
     .pro-det-navegacion__enlace:hover .pro-det-navegacion__indice { color: var(--primary); }
@@ -378,21 +584,19 @@
     .pro-det-navegacion__enlace:hover .pro-det-navegacion__texto strong::after { transform: scaleX(1); }
 }
 
-/* --- Estado táctil (feedback de presión) --- */
 @media (hover: none) and (pointer: coarse) {
     .pro-det-navegacion__enlace:active { border-top-color: var(--primary); }
     .pro-det-navegacion__enlace:active .pro-det-navegacion__indice,
     .pro-det-navegacion__enlace:active .pro-det-navegacion__texto strong { color: var(--primary); }
 }
 
-/* --- Botón central "Ver todos" (barrido de relleno) --- */
 .pro-det-navegacion__todos {
     position: relative; overflow: hidden; isolation: isolate;
     align-self: center;
     display: inline-flex; align-items: center;
     padding: 14px 28px; border-radius: 50px;
     border: 1px solid var(--primary); color: var(--primary);
-    font-family: var(--font-heading); font-weight: 700; font-size: 0.8rem;
+    font-family: var(--font-heading); font-weight: 700; font-size: 0.8rem; /* EXCEPCIÓN: control (12.8px) */
     text-transform: uppercase; letter-spacing: 1px; text-decoration: none;
     white-space: nowrap;
     transition: color 0.35s ease, box-shadow 0.35s ease, transform 0.3s var(--header-ease);
@@ -416,15 +620,15 @@
     .pro-det-navegacion__todos:active { background: var(--primary); color: #fff; }
 }
 
-/* --- Accesibilidad teclado --- */
 .pro-det-navegacion__enlace:focus-visible,
 .pro-det-navegacion__todos:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 3px;
 }
 
+
 /* ================================================================
-   LIGHTBOX (Visor ampliado)
+   07 · LIGHTBOX (Visor ampliado + Zoom/Pan)
    ================================================================ */
 .pro-det-lightbox {
     position: fixed; inset: 0;
@@ -433,6 +637,7 @@
     z-index: 99999; display: flex; align-items: center; justify-content: center;
     padding: 20px; opacity: 0; visibility: hidden;
     transition: opacity 0.4s ease, visibility 0.4s;
+    overflow: hidden;
 }
 .pro-det-lightbox.esta-abierto { opacity: 1; visibility: visible; }
 .pro-det-lightbox__img {
@@ -467,82 +672,122 @@
 .pro-det-lightbox__contador {
     position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
     color: rgba(255,255,255,0.9); font-family: var(--font-heading);
-    font-size: 0.85rem; letter-spacing: 2px;
+    font-size: var(--fs-small);
+    letter-spacing: 2px;
     background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
     padding: 6px 16px; border-radius: 50px;
 }
 
-/* ================================================================
-   RESPONSIVE
-   ================================================================ */
-@media (max-width: 1024px) {
-    .pro-det-resumen { padding: 70px 4%; }
-    
-    .pro-det-resumen__contenedor { grid-template-columns: 1fr; gap: 50px; }
-
-    /* Marco desplazado desactivado en táctil (pedido de diseño) */
-    .pro-det-visual::before { display: none; }
-
-    /* Imagen insertada dentro de la Ficha Técnica (el JS la reubica tras la cabecera:
-    perspectiva Título → Imagen → Información) */
-    .pro-det-ficha.esta-reordenado .pro-det-visual { margin: 25px 40px 30px; }
-    .pro-det-ficha.esta-reordenado .pro-det-visual__imagen {
-        height: clamp(240px, 40vw, 380px);
-        border-radius: 12px;
+/* Estados de foco (gestión de foco WAI-ARIA del JS)              */
+.pro-det-lightbox__cerrar:focus-visible,
+.pro-det-lightbox__btn:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.85);
+    outline-offset: 3px;
 }
 
-    .pro-det-alcance { padding: 30px 4% 70px; }
-    .pro-det-alcance__cuerpo { grid-template-columns: 1fr; gap: 25px; }
+/* --- Zoom (doble click / doble tap) --- */
+.pro-det-lightbox__img {
+    cursor: zoom-in;
+    touch-action: none;
+    user-select: none; -webkit-user-select: none;
+    -webkit-user-drag: none;
+    will-change: transform;
+}
+.pro-det-lightbox.esta-zoom .pro-det-lightbox__img { cursor: zoom-out; }
 
-    .pro-det-galeria { padding: 70px 4% 50px; }
-    .pro-det-galeria__slide { flex: 0 0 calc((100% - 20px) / 2); height: 280px; }
-    .pro-det-galeria__btn { display: none; } /* Consistente con ini-valores: swipe + puntos */
 
-    .pro-det-navegacion { padding: 0 4% 70px; }
+/* ================================================================
+   08 · RESPONSIVE (escala oficial: 1024 / 767 / 480)
+   Tarjeta Imperio: solape escalonado -90 / -72 / -48px.
+   Lámina: cabecera reorganizada en móvil (título arriba, código
+   e icono abajo separados) y partidas a 1 columna.
+   ================================================================ */
+
+/* ── TABLET ≤1024 ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    :root {
+        --imp-solape: clamp(72px, 10vw, 110px);
+        --imp-respiro: clamp(24px, 3.5vw, 36px);
+    }
+    .pro-det-imp__tarjeta { margin-top: -72px; }
+
+    .pro-det-alcance { padding: 30px var(--pad-x-compacto) 40px; }
+
+    .pro-det-galeria { padding: 70px var(--pad-x-compacto) 50px; }
+    .pro-det-galeria__slide { flex: 0 0 calc((100% - 20px) / 2); }
+    .pro-det-galeria__btn { display: none; } /* swipe + puntos */
+
+    .pro-det-navegacion { padding: 0 var(--pad-x-compacto) 70px; }
     .pro-det-navegacion__contenedor {
-        grid-template-columns: 1fr 1fr;   /* Anterior | Siguiente lado a lado */
+        grid-template-columns: 1fr 1fr;
         gap: 20px;
     }
-    /* "Ver todos" sube como fila completa antes de los botones */
     .pro-det-navegacion__todos {
         grid-column: 1 / -1;
         order: -1;
         justify-content: center;
     }
-    .pro-det-navegacion__enlace { min-width: 0; } /* Evita overflow con nombres largos */
-
+    .pro-det-navegacion__enlace { min-width: 0; }
 }
 
-@media (max-width: 768px) {
-    .pro-det-resumen, .pro-det-alcance, .pro-det-galeria { padding-left: 4%; padding-right: 4%; }
-    .pro-det-resumen { padding-top: 60px; padding-bottom: 60px; }
+/* ── MÓVIL ≤767 ───────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    :root { --imp-solape: 64px; --imp-respiro: 24px; }
+
+    .bg-soft-pattern.dark.pro-det-hero {
+        padding-top: calc(var(--header-h) + 32px);
+        padding-left: var(--pad-x-compacto);
+        padding-right: var(--pad-x-compacto);
+    }
+    .pro-det-hero__titulo { font-size: 1.9rem; line-height: 1.15; } /* ⭐ v5.3 */
+    .pro-det__breadcrumb { gap: 8px; margin-top: 20px; font-size: var(--fs-micro); } /* 1 línea en 390px */
+
+    .pro-det-imp { padding: 0 var(--pad-x-compacto) 60px; }
+    .pro-det-imp__foto { border-radius: 16px; }
+    .pro-det-imp__foto img { aspect-ratio: 4 / 3; }
+    .pro-det-imp__estado { top: 14px; left: 14px; }
+    .pro-det-imp__tarjeta {
+        margin-top: -48px; width: calc(100% - 28px);
+        padding: 26px 20px 30px; border-radius: 14px;
+    }
+    .pro-det-imp__desc { margin-bottom: 20px; }
+    .pro-det-imp__datos { grid-template-columns: repeat(2, 1fr); margin-bottom: 18px; }
+    .pro-det-imp__compartir { padding: 12px 0; } /* hit-area ≥44px */
+
+    /* Lámina de alcance: título arriba, código | icono abajo     */
     .pro-det-alcance { padding-top: 25px; padding-bottom: 60px; }
-    .pro-det-galeria { padding-top: 25px; padding-bottom: 25px; }
+    .pro-det-alcance__lamina-cabecera {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        row-gap: 8px;
+        padding: 10px 16px;
+    }
+    .pro-det-alcance__lamina-titulo {
+        order: -1;
+        width: 100%;
+        flex: none;
+        text-align: left;
+    }
+    .pro-det-alcance__lamina-cuerpo { padding: 22px 18px; }
+    .pro-det-alcance__intro { margin-bottom: 20px; }
+    .pro-det-alcance__lista { grid-template-columns: 1fr; }
+    .pro-det-alcance__lista li { padding: 12px 14px; }
+    .pro-det-alcance__pie { padding: 18px 18px 24px; }
+    .pro-det-alcance__cta { width: 100%; justify-content: center; } /* hit + patrón táctil */
 
-    .pro-det-bloque__cabecera { padding: 25px 20px 15px; }
-    .pro-det-ficha__cuerpo { grid-template-columns: 1fr; gap: 18px; padding: 22px 20px 28px; }
-    .pro-det-alcance__cuerpo { padding: 22px 20px; }
-    .pro-det-alcance__pie { padding: 18px 20px 25px; flex-direction: column; align-items: center; text-align: center; }
-    .pro-det-alcance__etiquetas { justify-content: center; }
-    .pro-det-alcance__cta { width: 100%; justify-content: center; }
+    .pro-det-galeria { padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto); padding-top: 25px; padding-bottom: 25px; }
+    .pro-det-galeria__slide { flex: 0 0 100%; }
 
-
-    .pro-det-visual::before { display: none; }
-    .pro-det-ficha.esta-reordenado .pro-det-visual { margin: 20px 20px 22px; }
-    .pro-det-ficha.esta-reordenado .pro-det-visual__imagen { height: 240px; }
-
-    .pro-det-visual__insignia { padding: 10px 14px; bottom: 12px; left: 12px; }
-    .pro-det-visual__insignia i { font-size: 1.2rem; }
-
-    .pro-det-galeria__slide { flex: 0 0 100%; height: 240px; }
-
-    /* Navegación editorial: se mantiene horizontal, solo se compacta */
     .pro-det-navegacion { padding-bottom: 60px; }
     .pro-det-navegacion__contenedor { gap: 14px; }
     .pro-det-navegacion__enlace { gap: 10px; padding: 14px 2px 8px; }
     .pro-det-navegacion__indice { font-size: 1.4rem; min-width: 32px; }
-    .pro-det-navegacion__texto span { font-size: 0.58rem; letter-spacing: 1px; }
-    .pro-det-navegacion__texto strong { font-size: 0.82rem; line-height: 1.35; }
+    .pro-det-navegacion__texto { min-width: 0; }
+    .pro-det-navegacion__texto strong {
+        font-size: var(--fs-small);
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+    }
 
     .pro-det-lightbox__btn { width: 40px; height: 40px; }
     .pro-det-lightbox__btn--prev { left: 10px; }
@@ -550,21 +795,47 @@
     .pro-det-lightbox__contador { bottom: 15px; }
 }
 
-/* Accesibilidad */
-@media (prefers-reduced-motion: reduce) {
-    .pro-det-bloque, .pro-det-galeria__track, .pro-det-galeria__slide img,
-    .pro-det-lightbox, .pro-det-lightbox__img,
-    .pro-det-navegacion__enlace, .pro-det-alcance__cta { transition-duration: 0.01ms !important; }
-    .pro-det-bloque:hover, .pro-det-navegacion__enlace:hover, .pro-det-alcance__cta:hover { transform: none; }
+/* ── MÓVIL PEQUEÑO ≤480 ─────────────────────────────────────────
+   Compactación tipográfica v5.3 (H1 1.75rem) + compacidad fina
+   de lámina, tarjeta y badge.                                    */
+@media (max-width: 480px) {
+    .pro-det-hero__titulo { font-size: 1.75rem; } /* ⭐ v5.3 */
+    .pro-det__breadcrumb { gap: 6px; }
+
+    .pro-det-imp__estado { padding: 7px 13px; letter-spacing: 1px; }
+    .pro-det-imp__tarjeta { padding: 24px 18px 28px; }
+    .pro-det-imp__dato { padding: 12px 8px; }
+    .pro-det-imp__dato b { font-size: 0.78rem; } /* 12.48px — pasa el piso */
+
+    /* Lámina: compacidad fina                                     */
+    .pro-det-alcance__lamina-cuerpo { padding: 18px 14px; }
+    .pro-det-alcance__lista li { padding: 11px 12px; font-size: 0.9rem; }
+    .pro-det-alcance__item-num { width: 24px; height: 24px; }
+    .pro-det-alcance__pie { padding: 16px 14px 22px; }
 }
 
-/* --- Zoom (doble click / doble tap) --- */
-.pro-det-lightbox { overflow: hidden; }
-.pro-det-lightbox__img {
-    cursor: zoom-in;
-    touch-action: none;             /* Permite pan con dedo sin scroll */
-    user-select: none; -webkit-user-select: none;
-    -webkit-user-drag: none;        /* Evita arrastre nativo de imagen */
-    will-change: transform;
+
+/* ================================================================
+   09 · ACCESIBILIDAD — MOVIMIENTO REDUCIDO
+   Instantáneo pero FUNCIONAL: carrusel, lightbox (zoom/pan por
+   JS), compartir, lámina y navegación siguen operando.
+   ================================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .pro-det-hero__linea,
+    .pro-det-imp__foto img, .pro-det-imp__compartir i,
+    .pro-det-alcance__lamina, .pro-det-alcance__cta,
+    .pro-det-galeria__track, .pro-det-galeria__slide img,
+    .pro-det-galeria__slide::after, .pro-det-galeria__btn, .pro-det-galeria__punto,
+    .pro-det-lightbox, .pro-det-lightbox__img,
+    .pro-det-lightbox__cerrar, .pro-det-lightbox__btn,
+    .pro-det-navegacion__enlace, .pro-det-navegacion__todos,
+    .pro-det-navegacion__texto strong::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+    .pro-det-alcance__lamina:hover, .pro-det-navegacion__enlace:hover,
+    .pro-det-alcance__cta:hover { transform: none; }
+    /* Hover-zoom fotográfico: movimiento perceptible al puntero    */
+    .pro-det-galeria__slide:hover img { transform: none !important; }
+    .pro-det-imp__foto:hover img { transform: none !important; }
 }
-.pro-det-lightbox.esta-zoom .pro-det-lightbox__img { cursor: zoom-out; }

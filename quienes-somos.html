@@ -1,12 +1,22 @@
 <!-- quienes-somos.html -->
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BRIDA S.R.L. — Ingeniería de Proyectos, Oil & Gas Energía y Construcciones Metálicas. Conoce nuestra visión, misión, compromiso y estructura organizacional. Empresa boliviana con cobertura nacional.">
-    <title>Quiénes Somos | BRIDA S.R.L. - Ingeniería de Proyectos y Oil & Gas</title>
+
+    <!-- SEO básico (⭐ v2: consistencia con las páginas de servicio,
+         que ya llevan robots/author/theme-color)                    -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="BRIDA Ingeniería de Proyectos – Oil &amp; Gas Energía SRL">
+    <meta name="theme-color" content="#312683">
+
+    <!-- ⭐ v2: title + description ENRIQUECIDOS con el claim oficial
+         de marca del artículo "CONTACTO CONSTRUCCIÓN" (sept. 2026,
+         pp. 68–69): "Buscando el liderazgo en obras industriales y
+         civiles" (titular p. 68).                                   -->
+    <meta name="description" content="BRIDA S.R.L. — Consorcio boliviano que busca el liderazgo en obras industriales y civiles: visión, misión, compromiso y estructura organizacional. Ingeniería de Proyectos, Oil &amp; Gas y Construcciones Metálicas con cobertura nacional.">
+    <title>Quiénes Somos | BRIDA S.R.L. - Liderazgo en Obras Industriales y Civiles, Oil &amp; Gas Bolivia</title>
     
     <!-- Fuentes e Iconos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,8 +39,13 @@
          El estado is-active se detecta automáticamente según la URL. -->
     <div id="header-placeholder"></div>
 
-    <!-- ========== HERO INTERNO (Cabecera de Página) ========== -->
-    <section class="hero-interno">
+    <!-- ========== HERO INTERNO (Cabecera de Página) ==========
+         Estilo global en: assets/css/components/section-ui.css.
+         ⭐ v2: descripción enriquecida con el claim del artículo
+         (consorcio + liderazgo — CONTACTO CONSTRUCCIÓN p. 68)
+         + políticas oficiales del PDF de servicios (excelencia,
+         plazos — p. 2).                                            -->
+    <section class="hero-interno" aria-label="Presentación de Quiénes Somos">
         <div class="hero-interno__fondo" style="background-image: url('assets/img/proyectos/Inicio/Portada 2.jpeg');"></div>
         <div class="hero-interno__superposicion"></div>
         
@@ -42,7 +57,9 @@
             </div>
 
             <p class="hero-interno__descripcion">
-                BRIDA INGENIERÍA DE PROYECTOS – OIL &amp; GAS ENERGÍA S.R.L.: excelencia y confiabilidad en cada obra, con el cumplimiento de plazos y la calidad de los compromisos como base de nuestro éxito y constante crecimiento.
+                Consorcio boliviano que busca el <strong>liderazgo en obras industriales y civiles</strong>:
+                excelencia y confiabilidad en cada obra, con el cumplimiento de plazos y la calidad
+                de los compromisos como base de nuestro éxito y constante crecimiento.
             </p>
         </div>
     </section>
@@ -50,19 +67,28 @@
     <!-- ================================================================
          NUESTRA TRAYECTORIA (Timeline de fases reales)
          ================================================================
-         FUENTE: documento oficial de la empresa.
+         FUENTE: documento oficial de la empresa + artículo
+         "CONTACTO CONSTRUCCIÓN" (sept. 2026, pp. 68–69).
          IMPORTANTE: el documento NO registra fechas históricas, por
          lo que la línea de tiempo usa FASES (01–04) en lugar de años
          inventados. Cada fase está respaldada por contenido real:
          políticas de la empresa, alcance y portafolio verificado.
          Las imágenes usan fotos locales existentes del proyecto.
+         ⭐ v2.1 VISUAL — LÁMINA DE PLANO TÉCNICO (gemela de la
+         lámina de Quiénes Somos del index .ini-nosotros__lamina y
+         de la banda de servicios .srv-marco--banda):
+           · Cabecera: código de fase (FASE-01…04) + rubro.
+           · Lienzo con rejilla blueprint 32px (visible en carga y
+             como fallback de imagen rota — patrón del lienzo).
+           · Cota inferior con dato REAL de cada fase.
+         El marco desplazado pasa a ser LÍNEA DE CORTE dashed
+         (ornamento de plano técnico — ver quienes-somos.css v2.1).
          ⚠️ ESTRUCTURA DEL ITEM (orden obligatorio):
              contenido → separador → visual.
-         (Los PUNTOS TRICOLOR fueron retirados por decisión de
+         (Los PUNTOS TRICOLOR siguen retirados por decisión de
          diseño: la línea de progreso tricolor es la única
          protagonista sobre el riel — corre limpia de inicio a fin
-         con el efecto de scroll. El CSS y el JS ya no consumen
-         ningún marcador por-item.)
+         con el efecto de scroll.)
          ================================================================ -->
     <section class="qs-historia-seccion bg-soft-pattern" id="qs-historia">
         
@@ -80,7 +106,7 @@
             <div class="qs-historia-linea-base"></div>
             <div class="qs-historia-linea-progreso" id="qs-historia-progreso"></div>
 
-            <!-- Fase 01: Nuestro Inicio (Políticas de la empresa)
+            <!-- Fase 01: Nuestro Inicio (políticas de la empresa — PDF p. 2)
                  loading="lazy": las imágenes viven bajo el hero → el
                  navegador las trae al acercarse (el aspect-ratio del
                  CSS ya reservó su espacio → cero salto de layout). -->
@@ -96,15 +122,27 @@
                 </div>
                 <div class="qs-historia-separador"></div>
                 <div class="qs-historia-visual">
+                    <!-- ⭐ v2.1 Lámina de plano técnico (cabecera + lienzo
+                         con rejilla + cota) — ver CSS v2.1            -->
                     <div class="qs-historia-imagen-contenedor">
-                        <img src="assets/img/proyectos/Inicio/nosotros_1.png" alt="Equipo BRIDA S.R.L. en obra" class="qs-historia-imagen" loading="lazy" decoding="async">
-                        <div class="qs-historia-imagen-superposicion"></div>
+                        <div class="qs-historia-lamina-cabecera">
+                            <span class="qs-historia-lamina-codigo">FASE-01</span>
+                            <span class="qs-historia-lamina-rubro">BRIDA S.R.L.</span>
+                        </div>
+                        <div class="qs-historia-lamina-lienzo">
+                            <span class="qs-historia-lamina-rejilla" aria-hidden="true"></span>
+                            <img src="assets/img/proyectos/Inicio/nosotros_1.png" alt="Equipo BRIDA S.R.L. en obra" class="qs-historia-imagen" loading="lazy" decoding="async">
+                            <div class="qs-historia-imagen-superposicion"></div>
+                        </div>
+                        <div class="qs-historia-lamina-cota">
+                            <span>Fundación · Santa Cruz, Bolivia</span>
+                        </div>
                     </div>
                     <div class="qs-historia-marco"></div>
                 </div>
             </article>
 
-            <!-- Fase 02: Crecimiento (cita adaptada del alcance de la empresa) -->
+            <!-- Fase 02: Crecimiento (cita adaptada del alcance — PDF p. 5) -->
             <article class="qs-historia-item">
                 <div class="qs-historia-contenido">
                     <div class="qs-historia-anio">02</div>
@@ -118,14 +156,24 @@
                 <div class="qs-historia-separador"></div>
                 <div class="qs-historia-visual">
                     <div class="qs-historia-imagen-contenedor">
-                        <img src="assets/img/proyectos/Inicio/nosotros_2.png" alt="Trabajo técnico de BRIDA S.R.L." class="qs-historia-imagen" loading="lazy" decoding="async">
-                        <div class="qs-historia-imagen-superposicion"></div>
+                        <div class="qs-historia-lamina-cabecera">
+                            <span class="qs-historia-lamina-codigo">FASE-02</span>
+                            <span class="qs-historia-lamina-rubro">BRIDA S.R.L.</span>
+                        </div>
+                        <div class="qs-historia-lamina-lienzo">
+                            <span class="qs-historia-lamina-rejilla" aria-hidden="true"></span>
+                            <img src="assets/img/proyectos/Inicio/nosotros_2.png" alt="Trabajo técnico de BRIDA S.R.L." class="qs-historia-imagen" loading="lazy" decoding="async">
+                            <div class="qs-historia-imagen-superposicion"></div>
+                        </div>
+                        <div class="qs-historia-lamina-cota">
+                            <span>Constitución formal · Partidas de servicio</span>
+                        </div>
                     </div>
                     <div class="qs-historia-marco"></div>
                 </div>
             </article>
 
-            <!-- Fase 03: Expansión Nacional (cobertura real del documento) -->
+            <!-- Fase 03: Expansión Nacional (cobertura real — PDF pp. 35, 89) -->
             <article class="qs-historia-item">
                 <div class="qs-historia-contenido">
                     <div class="qs-historia-anio">03</div>
@@ -140,29 +188,52 @@
                 <div class="qs-historia-separador"></div>
                 <div class="qs-historia-visual">
                     <div class="qs-historia-imagen-contenedor">
-                        <img src="assets/img/proyectos/Inicio/nosotros_3.jpg" alt="Proyectos de BRIDA S.R.L. en campo" class="qs-historia-imagen" loading="lazy" decoding="async">
-                        <div class="qs-historia-imagen-superposicion"></div>
+                        <div class="qs-historia-lamina-cabecera">
+                            <span class="qs-historia-lamina-codigo">FASE-03</span>
+                            <span class="qs-historia-lamina-rubro">BRIDA S.R.L.</span>
+                        </div>
+                        <div class="qs-historia-lamina-lienzo">
+                            <span class="qs-historia-lamina-rejilla" aria-hidden="true"></span>
+                            <img src="assets/img/proyectos/Inicio/nosotros_3.jpg" alt="Proyectos de BRIDA S.R.L. en campo" class="qs-historia-imagen" loading="lazy" decoding="async">
+                            <div class="qs-historia-imagen-superposicion"></div>
+                        </div>
+                        <div class="qs-historia-lamina-cota">
+                            <span>Santa Cruz · La Paz · Cochabamba · Tarija</span>
+                        </div>
                     </div>
                     <div class="qs-historia-marco"></div>
                 </div>
             </article>
 
-            <!-- Fase 04: Respaldo Real (portafolio verificado del documento) -->
+            <!-- Fase 04: Respaldo Real (portafolio verificado + domos
+                 vidriados del artículo — CONTACTO CONSTRUCCIÓN p. 69) -->
             <article class="qs-historia-item">
                 <div class="qs-historia-contenido">
                     <div class="qs-historia-anio">04</div>
                     <h3 class="qs-historia-hito">Respaldo Real Hoy</h3>
                     <p class="qs-historia-descripcion">
-                        Nuestro portafolio incluye obras para Ventura Mall Sur, Supermercado TIA, 
-                        Hotel Radisson Urubo, galpones industriales y proyectos privados, respaldadas 
-                        por el cumplimiento de plazos y la calidad de los compromisos asumidos.
+                        Nuestro portafolio incluye las obras del centro comercial Ventura Mall Sur —donde
+                        construimos los <strong>domos vidriados y fachadas, primeros y únicos en
+                        Bolivia</strong>—, Supermercado TIA, Hotel Radisson Urubo, galpones industriales
+                        y proyectos privados, respaldadas por el cumplimiento de plazos y la calidad de
+                        los compromisos asumidos.
                     </p>
                 </div>
                 <div class="qs-historia-separador"></div>
                 <div class="qs-historia-visual">
                     <div class="qs-historia-imagen-contenedor">
-                        <img src="assets/img/proyectos/Inicio/nosotros_4.jpg" alt="Soldadura y metalmecánica BRIDA S.R.L." class="qs-historia-imagen" loading="lazy" decoding="async">
-                        <div class="qs-historia-imagen-superposicion"></div>
+                        <div class="qs-historia-lamina-cabecera">
+                            <span class="qs-historia-lamina-codigo">FASE-04</span>
+                            <span class="qs-historia-lamina-rubro">BRIDA S.R.L.</span>
+                        </div>
+                        <div class="qs-historia-lamina-lienzo">
+                            <span class="qs-historia-lamina-rejilla" aria-hidden="true"></span>
+                            <img src="assets/img/proyectos/Inicio/nosotros_4.jpg" alt="Soldadura y metalmecánica BRIDA S.R.L." class="qs-historia-imagen" loading="lazy" decoding="async">
+                            <div class="qs-historia-imagen-superposicion"></div>
+                        </div>
+                        <div class="qs-historia-lamina-cota">
+                            <span>Ventura Mall · TIA · Radisson Urubo</span>
+                        </div>
                     </div>
                     <div class="qs-historia-marco"></div>
                 </div>
@@ -177,7 +248,9 @@
          concisa para EQUILIBRAR LOS 3 PILARES (todos ~30 palabras,
          estructura paralela de tesis + desarrollo) para que ninguna
          tarjeta se vea más grande que las demás.
-         - Visión: objetivo de liderazgo (documento, pág. 3).
+         - Visión: objetivo de liderazgo (documento, pág. 3) + claim
+           oficial del artículo ("liderazgo en obras industriales y
+           civiles" — CONTACTO CONSTRUCCIÓN p. 68).
          - Misión: los 3 puntos reales (Calidad/ISO · Sistema
            Integrado de Gestión · Plazos y presupuesto).
          - Compromiso: políticas de la empresa (documento, pág. 2).
@@ -202,7 +275,9 @@
            columnas aprobado — el markup no cambia de forma, solo
            cambia el comportamiento.
          ================================================================ -->
-    <section class="qs-principios-seccion" id="qs-principios">
+
+
+    <section class="qs-principios-seccion bg-soft-pattern dark" id="qs-principios">
         <header>
             <div class="section-title-group center reveal-up">
                 <span class="section-eyebrow">Pilares Estratégicos</span>
@@ -215,14 +290,16 @@
         <div class="qs-principios-contenedor">
             <div class="qs-principios-grid">
                 
-                <!-- Tarjeta 1: Visión -->
+                <!-- Tarjeta 1: Visión (⭐ v2: claim oficial del artículo
+                     p. 68 integrado — "liderazgo en obras industriales
+                     y civiles")                                    -->
                 <article class="qs-principios-tarjeta">
                     <div class="qs-principios-contenido">
                         <h3 class="qs-principios-titulo">Visión</h3>
                         <p class="qs-principios-texto">
-                            Ser líderes en ingeniería, provisión y construcción. Ejecutamos obras civiles, 
-                            mecánicas, eléctricas y de automatización industrial con excelencia, mirando 
-                            siempre el futuro del sector.
+                            Buscar el liderazgo en obras industriales y civiles: ejecutar proyectos 
+                            civiles, mecánicos, eléctricos y de automatización industrial con 
+                            excelencia, mirando siempre el futuro del sector.
                         </p>
                     </div>
                 </article>
@@ -279,7 +356,10 @@
            Operaciones · Administración · Asesoría Legal.
          - Cada miembro lleva .qs-org-nodo → el JS existente conecta
            el modal de detalle sin cambios (data-* del nodo).
-         - NOMBRES PROVISIONALES: "Ejemplo 1…7" — reemplazar con el
+         ⭐ v2 NOMBRES: el Gerente General lleva su nombre REAL
+           (Ing. Víctor Hugo Aramayo — identificado en el artículo
+           "CONTACTO CONSTRUCCIÓN", sept. 2026, p. 69). El resto
+           ("Ejemplo 1, 3…7") sigue PROVISIONAL: reemplazar con el
            directorio real cuando esté disponible (data-img vacío
            muestra la silueta del modal).
          RESPONSIVE: 3 columnas (escritorio) → 2 columnas con
@@ -315,16 +395,20 @@
             <div class="qs-org-conector" aria-hidden="true"><span></span></div>
 
             <!-- ── NIVEL 2: GERENCIA GENERAL (tarjeta destacada) ─────
+                 ⭐ v2: nombre REAL — Ing. Víctor Hugo Aramayo,
+                 identificado como gerente general en el artículo
+                 "CONTACTO CONSTRUCCIÓN" (sept. 2026, p. 69).
+                 data-img sigue vacío: TODO foto del directivo.
                  Lleva .qs-org-nodo para que el JS existente conecte
-                 el modal sin cambios                                   -->
+                 el modal sin cambios.                                  -->
             <div class="qs-org-gerencia qs-org-nodo reveal-up"
-                 data-name="Ejemplo 2"
+                 data-name="Ing. Víctor Hugo Aramayo"
                  data-role="GERENTE GENERAL"
                  data-img=""
-                 data-desc="Lidera la ejecución operativa y estratégica de la empresa, asegurando el cumplimiento de los objetivos trazados por el Directorio y la satisfacción de nuestros clientes.">
+                 data-desc="Lidera la ejecución operativa y estratégica de la empresa, asegurando el cumplimiento de los objetivos trazados por el Directorio y la satisfacción de nuestros clientes en cada proyecto.">
                 <span class="qs-org-nodo-icono"><i class="fa-solid fa-user-tie" aria-hidden="true"></i></span>
                 <h3 class="qs-org-nodo-titulo">GERENTE GENERAL</h3>
-                <p class="qs-org-nodo-nombre">Ejemplo 2</p>
+                <p class="qs-org-nodo-nombre">Ing. Víctor Hugo Aramayo</p>
             </div>
 
             <!-- Conector distribuidor: Gerencia → 3 áreas.
@@ -505,7 +589,10 @@
          El año del copyright es dinámico. -->
     <div id="footer-placeholder"></div>
     
-    <!-- ========== SCRIPTS ========== -->
+    <!-- ========== SCRIPTS ==========
+         main.js enruta por body#page-quienes-somos y ejecuta
+         initQuienesSomos() (quienes-somos.js — SIN CAMBIOS v2.1:
+         todos los hooks del HTML preservados).                 -->
     <script type="module" src="assets/js/main.js"></script>
 
 </body>

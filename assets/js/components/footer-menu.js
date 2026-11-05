@@ -15,6 +15,17 @@
 //      su PROPIO IntersectionObserver (autocontenido — no depende
 //      del orden respecto a initFooter(), que observa el resto de
 //      la página). FALLBACK: sin IO o reduced-motion → todo visible.
+//
+// ⭐ v3 AUDITORÍA APLICADA:
+//   · H2: iconos de la columna Cobertura unificados al nombre
+//     canónico FA6 (fa-location-dot) — eran fa-map-marker-alt
+//     (alias deprecated de FA5; el resto del sitio ya usa el
+//     canónico en contacto-cta).
+//   · Canales sociales: 3 respaldados por el documento oficial
+//     (WhatsApp · Instagram · Correo). PENDIENTE CLIENTE: Facebook
+//     (URL real existente en el proyecto anterior) — ver marcador
+//     en .footer-brida__socials para restauración de una línea.
+//
 // CÓMO SE USA:
 //   · main.js → importar { initFooterMenu } y llamarla DESPUÉS de
 //     initFooter() (el observer global ya capturó los .reveal-up
@@ -55,6 +66,11 @@ export function initFooterMenu() {
                     <div class="footer-brida__socials">
                         <a href="https://wa.me/59176644531" target="_blank" rel="noopener noreferrer" class="footer-brida__social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
                         <a href="https://www.instagram.com/brida.bolivia" target="_blank" rel="noopener noreferrer" class="footer-brida__social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <!-- ⚠️ PENDIENTE CLIENTE (H3): Facebook tenía URL real
+                             en el proyecto anterior. Para restaurar,
+                             descomentar:
+                        <a href="https://www.facebook.com/bridabolivia" target="_blank" rel="noopener noreferrer" class="footer-brida__social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        -->
                         <a href="mailto:bridabolivia@gmail.com" class="footer-brida__social-link" aria-label="Correo Electrónico"><i class="fa-solid fa-envelope"></i></a>
                     </div>
                 </div>
@@ -88,24 +104,28 @@ export function initFooterMenu() {
                         </li>
                     </ul>
                 </div>
-                <!-- COLUMNA 4: COBERTURA -->
+                <!-- COLUMNA 4: COBERTURA (departamentos REALES del
+                     documento oficial — pp. 35 y 89 del PDF)       -->
                 <div class="footer-brida__col reveal-up">
                     <h3 class="footer-brida__title">Cobertura Nacional</h3>
                     <ul class="footer-brida__list footer-brida__list--contact">
                         <li class="footer-brida__contact-item">
-                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <!-- ⭐ v3 H2: fa-location-dot (nombre canónico
+                                 FA6 — era fa-map-marker-alt, alias
+                                 deprecated de FA5) -->
+                            <i class="fa-solid fa-location-dot footer-brida__icon"></i>
                             <div class="footer-brida__text"><strong>Santa Cruz de la Sierra</strong>Sede Principal</div>
                         </li>
                         <li class="footer-brida__contact-item">
-                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <i class="fa-solid fa-location-dot footer-brida__icon"></i>
                             <div class="footer-brida__text">La Paz</div>
                         </li>
                         <li class="footer-brida__contact-item">
-                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <i class="fa-solid fa-location-dot footer-brida__icon"></i>
                             <div class="footer-brida__text">Cochabamba</div>
                         </li>
                         <li class="footer-brida__contact-item">
-                            <i class="fa-solid fa-map-marker-alt footer-brida__icon"></i>
+                            <i class="fa-solid fa-location-dot footer-brida__icon"></i>
                             <div class="footer-brida__text">Tarija</div>
                         </li>
                     </ul>

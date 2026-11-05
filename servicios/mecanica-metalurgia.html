@@ -1,0 +1,938 @@
+<!-- servicios/mecanica-metalurgia.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- ════════════════════════════════════════════════════════════════
+         00 · HEAD / METADATOS / RECURSOS
+         ════════════════════════════════════════════════════════════════
+         Página: Mecánica & Metalurgia
+         Sistema: BRIDA S.R.L. — páginas de servicio detalle
+         Versión HTML: v4.6 — contenido OFICIAL. Fuente única de datos:
+           PDF "Presentación de Servicios" de la empresa
+           (pp. 6 · 7 · 13–18 · 21–22 · 27–28 · 106–107 · 4).
+           REGLA: no se inventa información (sin clientes, sin
+           certificaciones ni servicios ajenos al alcance oficial).
+         ════════════════════════════════════════════════════════════════
+         ÍNDICE DEL DOCUMENTO:
+           00 · HEAD / METADATOS / RECURSOS
+           01 · HEADER — componente global inyectado
+           02 · MAIN — contenido principal
+           03 · HERO INTERNO — componente global section-ui.css
+           04 · SECCIÓN 01 · ALCANCE DEL SERVICIO (Variante E · cards)
+           05 · SECCIÓN 02 · GALERÍA CARRUSEL SIN VISOR AMPLIADO
+           06 · SECCIÓN 03 · SUB-SERVICIOS / LÁMINAS TÉCNICAS
+           07 · SECCIÓN 04 · CTA FINAL — componente global contacto-cta
+           08 · FOOTER — componente global inyectado
+           09 · SCRIPTS — main.js enruta por body#page-servicio-detalle
+         ════════════════════════════════════════════════════════════════
+         CONTRATO COORDINADO (versiones reales):
+           · CSS: assets/css/pages/servicios-detalle.css — v4.6
+           · JS:  assets/js/pages/servicios-detalle.js  — v4.4
+           · main.js NO cambia (routing por body#page-servicio-detalle).
+
+         Reglas de estructura de ESTE documento:
+           · Sección 01 = Variante E (banda visual + intro + 3 cards).
+             NO usa rail sticky → NO lleva [data-rail-fijo].
+           · Sección 02 = galería como <section class="pro-det-galeria">
+             INDEPENDIENTE. Lleva el título .section-title-group con el
+             <h2 id="srv-galeria-titulo"> (destinatario de aria-labelledby).
+           · La galería NO debe tener lightbox, lupa, modal ni zoom.
+           · Las cards del alcance usan .srv-alcance-card-extra como
+             bloque colapsable en móvil (JS: initExpansionAlcanceCards).
+           · Los sub-servicios usan .srv-fases__item-extra como bloque
+             colapsable en móvil (JS: initExpansionFases).
+           · Los enlaces internos de sub-servicio usan .js-carga.
+           · WhatsApp y mailto NO usan .js-carga (canales externos).
+         ════════════════════════════════════════════════════════════════ -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO básico -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="BRIDA Ingeniería de Proyectos – Oil &amp; Gas Energía SRL">
+    <meta name="theme-color" content="#312683">
+
+    <meta name="description" content="Mecánica &amp; Metalurgia BRIDA S.R.L.: fabricación y montaje de estructuras metálicas, galpones y naves industriales, tanques de almacenamiento de hidrocarburos, puentes grúa y sistemas de izaje, escaleras y puertas metálicas, cubiertas, tinglados y fabricaciones metalmecánicas en general en Bolivia.">
+    <title>Mecánica &amp; Metalurgia | BRIDA S.R.L. - Ingeniería de Proyectos y Oil &amp; Gas</title>
+
+    <!-- Fuentes e iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicon — ruta de subpágina -->
+    <link rel="icon" type="image/png" href="../assets/img/icons/logo-brida.png">
+
+    <!-- Precarga de la imagen principal del hero interno
+         (Portada 5 = escena de estructuras metálicas y galpones
+         del carrusel del index — misma línea de servicio).      -->
+    <link rel="preload" as="image" href="../assets/img/proyectos/Inicio/Portada%205.jpeg" fetchpriority="high">
+
+    <!-- Estilos principales del sitio -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+
+<body id="page-servicio-detalle">
+
+    <!-- ════════════════════════════════════════════════════════════════
+         01 · HEADER — COMPONENTE GLOBAL
+         ════════════════════════════════════════════════════════════════
+         El menú completo vive en:
+           assets/js/components/header-menu.js
+
+         Detecta la subcarpeta /servicios/ y antepone ../ a sus rutas.
+         El estado is-active se detecta automáticamente según la URL.
+         ════════════════════════════════════════════════════════════════ -->
+    <div id="header-placeholder"></div>
+
+
+    <!-- ════════════════════════════════════════════════════════════════
+         02 · MAIN — CONTENIDO PRINCIPAL
+         ════════════════════════════════════════════════════════════════ -->
+    <main id="contenido-principal" aria-label="Contenido principal de Mecánica y Metalurgia">
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             03 · HERO INTERNO — COMPONENTE GLOBAL
+             ════════════════════════════════════════════════════════════════
+             Estilo global en:
+               assets/css/components/section-ui.css
+             No lleva CSS local.
+             ════════════════════════════════════════════════════════════════ -->
+        <section class="hero-interno" aria-label="Presentación de Mecánica y Metalurgia">
+
+            <!-- TODO: Confirmar portada definitiva de la línea.
+                 Se usa Portada 5 (escena de estructuras metálicas del
+                 carrusel del index — misma línea de servicio).         -->
+            <div
+                class="hero-interno__fondo"
+                style="background-image: url('../assets/img/servicios/Mecánica\ &\ Metalurgia.jpg');"
+                aria-hidden="true">
+            </div>
+
+            <div class="hero-interno__superposicion" aria-hidden="true"></div>
+
+            <div class="hero-interno__contenido hero-animar">
+                <div class="section-title-group">
+                    <span class="section-eyebrow">Línea de Servicio</span>
+                    <h1 class="section-title">MECÁNICA &amp; METALURGIA</h1>
+                    <span class="section-title-line" aria-hidden="true"></span>
+                </div>
+
+                <!-- Fuente: PDF p. 6 (proyectos mecánicos, estructuras,
+                     tanques) + pp. 13–18 (trabajos metalmecánicos).     -->
+                <p class="hero-interno__descripcion">
+                    Fabricación y montaje de estructuras metálicas, galpones y naves
+                    industriales, tanques de almacenamiento de hidrocarburos, puentes
+                    grúa y fabricaciones metalmecánicas en general. Proyectos mecánicos
+                    completos: del prefabricado en taller al montaje en campo.
+                </p>
+            </div>
+
+        </section>
+        <!-- ═════════════════════ /03 · HERO INTERNO ═════════════════════ -->
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             04 · SECCIÓN 01 · ALCANCE DEL SERVICIO — VARIANTE E · CARDS
+             ════════════════════════════════════════════════════════════════
+             Estructura:
+               · Miga de pan            — .srv-miga
+               · Banda visual superior  — .srv-marco--banda
+               · Intro editorial        — .srv-bloque-editorial--intro
+               · 3 cards técnicas       — .srv-alcance-card
+
+             Hooks JS/CSS:
+               · [data-aparicion]         → initAparicionArticulos()
+               · .srv-alcance-card        → initExpansionAlcanceCards()
+               · .srv-alcance-card-extra  → bloque colapsable en móvil
+               · .reveal-up               → observer global
+             ════════════════════════════════════════════════════════════════ -->
+        <section
+            class="srv-seccion_2 srv-seccion--alcance"
+            id="alcance-servicio"
+            aria-labelledby="alcance-servicio-titulo">
+
+            <div class="srv-contenedor">
+
+                <!-- ─────────────────────────────────────────────
+                     04.1 · MIGA DE PAN
+                     ───────────────────────────────────────────── -->
+                <nav class="srv-miga" aria-label="Ruta de navegación">
+                    <a class="srv-miga__link" href="../index.html">Inicio</a>
+                    <i class="fa-solid fa-chevron-right srv-miga__sep" aria-hidden="true"></i>
+
+                    <a class="srv-miga__link" href="../servicios.html">Servicios</a>
+                    <i class="fa-solid fa-chevron-right srv-miga__sep" aria-hidden="true"></i>
+
+                    <span class="srv-miga__actual" aria-current="page">Mecánica y Metalurgia</span>
+                </nav>
+
+                <!-- ─────────────────────────────────────────────
+                     04.2 · FICHA DEL SERVICIO — VARIANTE E CARDS
+                     ───────────────────────────────────────────── -->
+                <div class="srv-ficha srv-ficha--cards">
+
+                    <!-- Banda visual superior -->
+                    <figure class="srv-marco srv-marco--banda reveal-up">
+                        <div class="srv-marco__lienzo">
+                            <span class="srv-marco__rejilla" aria-hidden="true"></span>
+
+                            <img
+                                src="../assets/img/servicios/SRV-03 — Mecánica & Metalurgia.jpg"
+                                alt="Ilustración de marca BRIDA S.R.L. — grúa y silueta industrial de ingeniería de proyectos."
+                                loading="lazy"
+                                decoding="async">
+                            <!-- TODO: Reemplazar por imagen real de la línea cuando esté disponible. -->
+                        </div>
+
+                        <figcaption class="srv-marco__cota">
+                            <span>Cobertura nacional · Santa Cruz · La Paz · Cochabamba · Tarija</span>
+                        </figcaption>
+                    </figure>
+
+                    <!-- Bloques editoriales: intro + 3 cards -->
+                    <div
+                        class="srv-bloques-editoriales srv-bloques-editoriales--cards"
+                        data-aparicion>
+
+                        <!-- Intro editorial
+                             Fuente: PDF p. 6 (proyectos mecánicos, estructuras,
+                             tanques, soldadura en general).                  -->
+                        <article class="srv-bloque-editorial srv-bloque-editorial--intro">
+                            <h2 id="alcance-servicio-titulo">Alcance del servicio</h2>
+                            <p>
+                                BRIDA ejecuta <strong>proyectos mecánicos</strong> completos:
+                                fabricación y montaje de <strong>estructuras metálicas</strong>,
+                                galpones y naves industriales, e instalación y mantenimiento de
+                                <strong>tanques de almacenamiento de hidrocarburos</strong>. La línea
+                                cubre del prefabricado en taller al montaje en campo, con
+                                <strong>trabajos de soldadura en general</strong> y gestión bajo
+                                Sistema Integrado de Calidad, Seguridad y Salud Ocupacional.
+                            </p>
+                        </article>
+
+                        <!-- Card 1 — Fuente: PDF p. 6 "Proyectos mecánicos galpones y
+                             naves industriales, estructuras metálicas, trabajos de
+                             soldadura en general" + pp. 15–17 (cubiertas metálicas,
+                             tinglados, galpones tipo parabólica).                  -->
+                        <article
+                            class="srv-bloque-editorial srv-alcance-card"
+                            id="alcance-estructuras">
+
+                            <div class="srv-alcance-card-cabecera">
+                                <span class="srv-alcance-card-icono">
+                                    <i class="fa-solid fa-industry" aria-hidden="true"></i>
+                                </span>
+
+                                <h3 class="srv-alcance-card-titulo">
+                                    Estructuras metálicas y naves industriales
+                                </h3>
+                            </div>
+
+                            <div class="srv-alcance-card-extra">
+                                <p>
+                                    <strong>Proyectos mecánicos</strong> de galpones y naves
+                                    industriales con estructuras metálicas y
+                                    <strong>trabajos de soldadura en general</strong>: montaje de
+                                    cubiertas metálicas, tinglados y galpones de
+                                    <strong>tipo parabólica</strong>.
+                                </p>
+                            </div>
+                        </article>
+
+                        <!-- Card 2 — Fuente: PDF p. 6 "Fabricación y Mantenimiento de
+                             tanques de Almacenamiento de Hidrocarburos".           -->
+                        <article
+                            class="srv-bloque-editorial srv-alcance-card"
+                            id="alcance-tanques">
+
+                            <div class="srv-alcance-card-cabecera">
+                                <span class="srv-alcance-card-icono">
+                                    <i class="fa-solid fa-oil-can" aria-hidden="true"></i>
+                                </span>
+
+                                <h3 class="srv-alcance-card-titulo">
+                                    Tanques de almacenamiento de hidrocarburos
+                                </h3>
+                            </div>
+
+                            <div class="srv-alcance-card-extra">
+                                <p>
+                                    <strong>Fabricación y mantenimiento</strong> de tanques de
+                                    almacenamiento de hidrocarburos: infraestructura clave para la
+                                    <strong>industria energética</strong>, ejecutada con estándares
+                                    de calidad y seguridad.
+                                </p>
+                            </div>
+                        </article>
+
+                        <!-- Card 3 — Fuente: PDF p. 7 "Provisión, Instalación y
+                             Mantenimiento de Puentes Grúas y Sistemas de Izajes" +
+                             p. 6 "Importaciones y Representación de Maquinarias y
+                             Equipos Industriales" + pp. 13, 15, 18 (escaleras,
+                             puertas, vigas H, casamatas).                          -->
+                        <article
+                            class="srv-bloque-editorial srv-alcance-card"
+                            id="alcance-equipos-fabricaciones">
+
+                            <div class="srv-alcance-card-cabecera">
+                                <span class="srv-alcance-card-icono">
+                                    <i class="fa-solid fa-gears" aria-hidden="true"></i>
+                                </span>
+
+                                <h3 class="srv-alcance-card-titulo">
+                                    Equipos industriales y fabricaciones especializadas
+                                </h3>
+                            </div>
+
+                            <div class="srv-alcance-card-extra">
+                                <p>
+                                    <strong>Puentes grúa</strong> y sistemas de izajes: provisión,
+                                    instalación y mantenimiento. Importación y representación de
+                                    <strong>maquinarias y equipos industriales</strong>, más
+                                    fabricaciones metalmecánicas: escaleras, puertas metálicas,
+                                    <strong>vigas H</strong> y casetas.
+                                </p>
+                            </div>
+                        </article>
+
+                    </div>
+                    <!-- /Bloques editoriales -->
+
+                </div>
+                <!-- ─────────────────────────────────────────────
+                     /04.2 · FICHA DEL SERVICIO — VARIANTE E CARDS
+                     ───────────────────────────────────────────── -->
+
+            </div>
+        </section>
+        <!-- ═════════════════════ /04 · SECCIÓN 01 · ALCANCE — VARIANTE E ═════════════════════ -->
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             05 · SECCIÓN 02 · GALERÍA — CARRUSEL SIN VISOR AMPLIADO
+             ════════════════════════════════════════════════════════════════
+             Sección INDEPENDIENTE (no fusionada con la 01).
+
+             Comportamiento aprobado:
+               · Escritorio: 3 slides visibles + flechas.
+               · Tablet: 2 slides visibles + puntos + swipe.
+               · Móvil: 1 slide visible + puntos + swipe.
+
+             Prohibido en esta página:
+               · SIN lightbox. · SIN lupa. · SIN zoom modal.
+               · SIN cursor zoom-in. · SIN visor ampliado.
+
+             Accesibilidad:
+               · aria-labelledby apunta al <h2 id="srv-galeria-titulo">
+                 (bloque .section-title-group presente en esta sección).
+
+             NOTA DE RUTAS: los slides 2, 3 y 5 consumen FOTOS REALES de obra
+             del repositorio (01-galpones-industriales). Los nombres de archivo
+             llevan espacios y tildes → URLs encodadas. NO renombrar aquí:
+             la corrección pertenece al plan de renombrado kebab-case.
+
+             Dependencias:
+               · CSS: bloque de galería independiente de servicios-detalle.css v4.6
+               · JS: initGaleriaServicio() en servicios-detalle.js v4.4
+             ════════════════════════════════════════════════════════════════ -->
+        <section
+            class="pro-det-galeria"
+            id="srv-galeria-pro"
+            aria-labelledby="srv-galeria-titulo">
+
+            <!-- Destellos decorativos de fondo -->
+            <div class="pro-det-galeria__destello pro-det-galeria__destello--1" aria-hidden="true"></div>
+            <div class="pro-det-galeria__destello pro-det-galeria__destello--2" aria-hidden="true"></div>
+
+            <!-- Título de la galería (destinatario real de aria-labelledby) -->
+            <div class="section-title-group center reveal-up">
+                <span class="section-eyebrow">Trabajo Técnico</span>
+                <h2 class="section-title" id="srv-galeria-titulo">GALERÍA</h2>
+                <span class="section-title-line" aria-hidden="true"></span>
+                <p class="pro-det-galeria__subtitulo">
+                    Registro fotográfico de fabricación y montaje: galpones metálicos,
+                    estructuras y tanques de hidrocarburos.
+                </p>
+            </div>
+
+            <!-- Carrusel -->
+            <div
+                class="pro-det-galeria__carrusel reveal-up"
+                aria-roledescription="carrusel"
+                aria-label="Galería fotográfica de Mecánica y Metalurgia">
+
+                <!-- Flecha anterior: visible solo en escritorio según CSS -->
+                <button
+                    class="pro-det-galeria__btn pro-det-galeria__btn--prev"
+                    id="galeria-prev"
+                    type="button"
+                    aria-label="Imagen anterior"
+                    aria-controls="galeria-track">
+                    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                </button>
+
+                <!-- Viewport: área visible del carrusel -->
+                <div class="pro-det-galeria__viewport" id="galeria-viewport">
+
+                    <!-- Track: pista deslizante controlada por JS -->
+                    <div class="pro-det-galeria__track" id="galeria-track">
+
+                        <!-- Slide 1 — Fuente: PDF p. 6 (tanques de hidrocarburos).
+                             Imagen oficial de la línea en el repositorio.      -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/Inicio/Servicio_Instalaci%C3%B3n%20y%20Mantenimiento%20de%20Tanques%20de%20Almacenamiento%20de%20Hidrocarburos.jpg"
+                                alt="Mecánica y metalurgia BRIDA — instalación y mantenimiento de tanques de almacenamiento de hidrocarburos"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                        <!-- Slide 2 — Fuente: PDF pp. 21–22 (Galpón Metálico Remax).
+                             FOTO REAL de obra en el repositorio.               -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/01-galpones-industriales/galpon-metalico-remax/Proyecto%20Galp%C3%B3n%20Met%C3%A1lico%20Remax_1.jpg"
+                                alt="Mecánica y metalurgia BRIDA — galpón metálico Remax, armado y desarrollo"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                        <!-- Slide 3 — Fuente: PDF pp. 27–28 (Galpón Sifón Santa Cruz).
+                             FOTO REAL de montaje de estructura en el repositorio. -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/01-galpones-industriales/galpon-sifon-santa-cruz/Proyecto%20Galp%C3%B3n%20Sif%C3%B3n%20Santa%20Cruz_1.jpg"
+                                alt="Mecánica y metalurgia BRIDA — montaje de estructura metálica del galpón Sifón Santa Cruz"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                        <!-- Slide 4 — Fuente: PDF p. 6 (estructuras y galpones).
+                             Portada del index de la misma línea de servicio.  -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/Inicio/Portada%205.jpeg"
+                                alt="Mecánica y metalurgia BRIDA — estructuras metálicas y galpones industriales"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                        <!-- Slide 5 — Fuente: PDF pp. 21–22 (desarrollo Remax).
+                             FOTO REAL de obra en el repositorio.               -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/01-galpones-industriales/galpon-metalico-remax/Proyecto%20Galp%C3%B3n%20Met%C3%A1lico%20Remax_2.jpg"
+                                alt="Mecánica y metalurgia BRIDA — desarrollo del proyecto de galpón metálico Remax"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                        <!-- Slide 6 -->
+                        <figure class="pro-det-galeria__slide">
+                            <img
+                                src="../assets/img/proyectos/Inicio/Portada%201.jpeg"
+                                alt="Mecánica y metalurgia BRIDA — obra ejecutada vista"
+                                loading="lazy"
+                                decoding="async">
+                        </figure>
+
+                    </div>
+                    <!-- /Track -->
+
+                </div>
+                <!-- /Viewport -->
+
+                <!-- Flecha siguiente: visible solo en escritorio según CSS -->
+                <button
+                    class="pro-det-galeria__btn pro-det-galeria__btn--next"
+                    id="galeria-next"
+                    type="button"
+                    aria-label="Imagen siguiente"
+                    aria-controls="galeria-track">
+                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </button>
+
+            </div>
+            <!-- /Carrusel -->
+
+            <!-- Puntos de paginación: generados por JS -->
+            <div
+                class="pro-det-galeria__puntos"
+                id="galeria-puntos"
+                role="group"
+                aria-label="Paginación de galería">
+            </div>
+
+        </section>
+        <!-- ═════════════════════ /05 · SECCIÓN 02 · GALERÍA ═════════════════════ -->
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             06 · SECCIÓN 03 · SUB-SERVICIOS — LÁMINAS TÉCNICAS
+             ════════════════════════════════════════════════════════════════
+             Gemelas visuales de .ini-servicios__lamina del index.
+             5 láminas: el CSS v4.6 (bloque 03.1) centra la fila inferior
+             con :nth-child(4):nth-last-child(2) y :nth-child(5):nth-last-child(1).
+
+             Estructura por lámina:
+               · .srv-fases__item-cabecera
+                 - código ME-01…05
+                 - icono en caja morada
+               · .srv-fases__item-cuerpo
+                 - título
+                 - .srv-fases__item-extra
+                   * lista de checks
+                   * enlace texto-con-línea .js-carga
+
+             Comportamiento responsive:
+               · Escritorio: grid técnico 6 columnas.
+               · Tablet: 2 columnas (última centrada si hay impar).
+               · Móvil ≤767: lámina comprimida.
+                 El bloque .srv-fases__item-extra se expande solo si el JS
+                 añade .js-fases-expansion en <html>.
+                 Sin JS: contenido visible por seguridad.
+
+             Hooks JS/CSS:
+               · .srv-fases__item        → initExpansionFases()
+               · .srv-fases__item-extra  → bloque colapsable en móvil
+               · .srv-fases__item-link   → .js-carga (nav-carga.js)
+               · .reveal-up              → observer global
+
+             REGLA DE MANTENIMIENTO:
+               Todo contenido colapsable debe ir DENTRO de
+               .srv-fases__item-extra.
+
+             TRAZABILIDAD DE CONTENIDO (PDF pp. 6, 7, 13–18, 21–28, 106–107):
+               ME-01 → "estructuras metálicas, trabajos de soldadura en
+                        general" (p. 6) + "Montaje de Cubierta" (p. 13) +
+                        "Montaje de Tinglados para Coliseo" (p. 15) +
+                        "Armado de Vigas H para Casetas de Instrumentación"
+                        (p. 15) + "Estructura para Letreros Hotel Radisson
+                        Urubo" (pp. 14–15)
+               ME-02 → "Proyectos mecánicos galpones y naves industriales"
+                        (p. 6) + "Prefabricado y Montaje de Galpón M." (p. 13)
+                        + "Galpón tipo Parabólica" (pp. 16–17) + "Galpón para
+                        Colegio" (p. 16) + Galpón Remax (pp. 21–22) + Galpón
+                        Sifón Santa Cruz (pp. 27–28)
+               ME-03 → "Fabricación y Mantenimiento de tanques de
+                        Almacenamiento de Hidrocarburos" (p. 6) + Sistema
+                        Integrado de Gestión (p. 4)
+               ME-04 → "Importaciones y Representación de Maquinarias y
+                        Equipos Industriales" (p. 6) + "Provisión, Instalación
+                        y Mantenimiento de Puentes Grúas y Sistemas de Izajes"
+                        (p. 7) + "Estructura Metálica para Cubierta de
+                        Chillers" (pp. 106–107)
+               ME-05 → "Fabricación de Escaleras Metálicas" (p. 13) +
+                        "Fabricación y Colocado de Puertas M." (p. 13) +
+                        "Casamata para Canchas Deportivas" (p. 18) +
+                        "Mezzanine Industrial" (p. 18) + "Parque Infantiles
+                        para Balnearios o Colegios" (p. 18)
+             ════════════════════════════════════════════════════════════════ -->
+        <section
+            class="srv-seccion srv-seccion--laminas bg-soft-pattern"
+            id="subservicios-mecanica"
+            aria-labelledby="subservicios-mecanica-titulo">
+
+            <div class="srv-contenedor">
+                <div class="srv-fases">
+
+                    <!-- Cabecera de sección -->
+                    <header class="srv-fases__cabecera reveal-up">
+                        <div class="section-title-group center">
+                            <span class="section-eyebrow">Alcance de la Línea</span>
+                            <h2 class="section-title" id="subservicios-mecanica-titulo">SUB-SERVICIOS</h2>
+                            <span class="section-title-line" aria-hidden="true"></span>
+                        </div>
+                    </header>
+
+                    <!-- Grid de láminas técnicas -->
+                    <div class="srv-fases__grid" role="list">
+
+                        <!-- ─────────────────────────────────────────
+                             ME-01 · Estructuras Metálicas
+                             ───────────────────────────────────────── -->
+                        <article
+                            class="srv-fases__item reveal-up"
+                            id="estructuras-metalicas"
+                            role="listitem"
+                            aria-labelledby="srv-sub-me-01-titulo">
+
+                            <div class="srv-fases__item-cabecera">
+                                <span class="srv-fases__item-codigo">ME-01</span>
+                                <span class="srv-fases__item-icono">
+                                    <i class="fa-solid fa-industry" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="srv-fases__item-cuerpo">
+                                <h3 class="srv-fases__item-titulo" id="srv-sub-me-01-titulo">
+                                    Estructuras Metálicas y Trabajos de Soldadura
+                                </h3>
+
+                                <div class="srv-fases__item-extra">
+                                    <ul class="srv-fases__item-lista">
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Estructuras metálicas y trabajos de soldadura en general
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Montaje de cubiertas metálicas y tinglados para coliseo
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Armado de vigas H para casetas de instrumentación
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Montaje de estructura para letreros (Hotel Radisson Urubo)
+                                        </li>
+                                    </ul>
+
+                                    <a
+                                        href="../contacto.html"
+                                        class="srv-fases__item-link js-carga"
+                                        aria-label="Solicitar asesoría sobre estructuras metálicas y trabajos de soldadura">
+                                        Solicitar asesoría
+                                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- ─────────────────────────────────────────
+                             ME-02 · Galpones y Naves Industriales
+                             ───────────────────────────────────────── -->
+                        <article
+                            class="srv-fases__item reveal-up"
+                            id="galpones-industriales"
+                            role="listitem"
+                            aria-labelledby="srv-sub-me-02-titulo">
+
+                            <div class="srv-fases__item-cabecera">
+                                <span class="srv-fases__item-codigo">ME-02</span>
+                                <span class="srv-fases__item-icono">
+                                    <i class="fa-solid fa-warehouse" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="srv-fases__item-cuerpo">
+                                <h3 class="srv-fases__item-titulo" id="srv-sub-me-02-titulo">
+                                    Galpones y Naves Industriales
+                                </h3>
+
+                                <div class="srv-fases__item-extra">
+                                    <ul class="srv-fases__item-lista">
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Prefabricado y montaje de galpones metálicos
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Galpones de estructura tipo parabólica
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Fabricación y montaje de galpón para colegio
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Proyectos concluidos: Galpón Remax y Galpón Sifón Santa Cruz
+                                        </li>
+                                    </ul>
+
+                                    <a
+                                        href="../contacto.html"
+                                        class="srv-fases__item-link js-carga"
+                                        aria-label="Solicitar asesoría sobre galpones y naves industriales">
+                                        Solicitar asesoría
+                                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- ─────────────────────────────────────────
+                             ME-03 · Tanques de Hidrocarburos
+                             ───────────────────────────────────────── -->
+                        <article
+                            class="srv-fases__item reveal-up"
+                            id="tanques-hidrocarburos"
+                            role="listitem"
+                            aria-labelledby="srv-sub-me-03-titulo">
+
+                            <div class="srv-fases__item-cabecera">
+                                <span class="srv-fases__item-codigo">ME-03</span>
+                                <span class="srv-fases__item-icono">
+                                    <i class="fa-solid fa-oil-can" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="srv-fases__item-cuerpo">
+                                <h3 class="srv-fases__item-titulo" id="srv-sub-me-03-titulo">
+                                    Tanques de Almacenamiento de Hidrocarburos
+                                </h3>
+
+                                <div class="srv-fases__item-extra">
+                                    <ul class="srv-fases__item-lista">
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Fabricación de tanques de almacenamiento de hidrocarburos
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Mantenimiento de tanques e infraestructura asociada
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Infraestructura para la industria energética
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Gestión bajo Sistema Integrado de Calidad, Seguridad y Salud Ocupacional
+                                        </li>
+                                    </ul>
+
+                                    <a
+                                        href="../contacto.html"
+                                        class="srv-fases__item-link js-carga"
+                                        aria-label="Solicitar asesoría sobre tanques de almacenamiento de hidrocarburos">
+                                        Solicitar asesoría
+                                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- ─────────────────────────────────────────
+                             ME-04 · Equipos Industriales y Sistemas de Izaje
+                             ───────────────────────────────────────── -->
+                        <article
+                            class="srv-fases__item reveal-up"
+                            id="equipos-industriales-izaje"
+                            role="listitem"
+                            aria-labelledby="srv-sub-me-04-titulo">
+
+                            <div class="srv-fases__item-cabecera">
+                                <span class="srv-fases__item-codigo">ME-04</span>
+                                <span class="srv-fases__item-icono">
+                                    <i class="fa-solid fa-gears" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="srv-fases__item-cuerpo">
+                                <h3 class="srv-fases__item-titulo" id="srv-sub-me-04-titulo">
+                                    Equipos Industriales y Sistemas de Izaje
+                                </h3>
+
+                                <div class="srv-fases__item-extra">
+                                    <ul class="srv-fases__item-lista">
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Provisión, instalación y mantenimiento de puentes grúa
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Sistemas de izajes
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Importación y representación de maquinarias y equipos industriales
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Estructura metálica para cubierta de chillers
+                                        </li>
+                                    </ul>
+
+                                    <a
+                                        href="../contacto.html"
+                                        class="srv-fases__item-link js-carga"
+                                        aria-label="Solicitar asesoría sobre equipos industriales y sistemas de izaje">
+                                        Solicitar asesoría
+                                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- ─────────────────────────────────────────
+                             ME-05 · Fabricaciones Especializadas
+                             ───────────────────────────────────────── -->
+                        <article
+                            class="srv-fases__item reveal-up"
+                            id="fabricaciones-especializadas"
+                            role="listitem"
+                            aria-labelledby="srv-sub-me-05-titulo">
+
+                            <div class="srv-fases__item-cabecera">
+                                <span class="srv-fases__item-codigo">ME-05</span>
+                                <span class="srv-fases__item-icono">
+                                    <i class="fa-solid fa-hammer" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="srv-fases__item-cuerpo">
+                                <h3 class="srv-fases__item-titulo" id="srv-sub-me-05-titulo">
+                                    Fabricaciones Metalmecánicas Especializadas
+                                </h3>
+
+                                <div class="srv-fases__item-extra">
+                                    <ul class="srv-fases__item-lista">
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Fabricación de escaleras metálicas
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Fabricación y colocado de puertas metálicas
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Casamatas para canchas deportivas
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            Mezzanines y parques infantiles para balnearios o colegios
+                                        </li>
+                                    </ul>
+
+                                    <a
+                                        href="../contacto.html"
+                                        class="srv-fases__item-link js-carga"
+                                        aria-label="Solicitar asesoría sobre fabricaciones metalmecánicas especializadas">
+                                        Solicitar asesoría
+                                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                    </div>
+                    <!-- /Grid de láminas técnicas -->
+
+                </div>
+            </div>
+        </section>
+        <!-- ═════════════════════ /06 · SECCIÓN 03 · SUB-SERVICIOS ═════════════════════ -->
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             07 · SECCIÓN 04 · CTA FINAL — COMPONENTE GLOBAL
+             ════════════════════════════════════════════════════════════════
+             Componente global:
+               .contacto-cta
+
+             Regla documentada:
+               · Las tarjetas NO llevan .js-carga.
+               · WhatsApp y mailto son canales externos del sistema.
+               · El feedback táctil lo gobierna el componente global.
+               · WhatsApp conserva el mensaje prellenado de la línea.
+             ════════════════════════════════════════════════════════════════ -->
+        <section
+            id="contacto-cta"
+            class="contacto-cta"
+            aria-labelledby="contacto-cta-titulo">
+
+            <div class="contacto-cta__contenedor">
+                <div class="contacto-cta__grid">
+
+                    <!-- Panel izquierdo: título + descripción -->
+                    <div class="contacto-cta__panel-izq reveal-up">
+                        <div class="section-title-group left">
+                            <span class="section-eyebrow">Contacto Directo</span>
+                            <h2 class="section-title" id="contacto-cta-titulo">SOLICITE UNA ASESORÍA</h2>
+                            <span class="section-title-line" aria-hidden="true"></span>
+                        </div>
+
+                        <p class="contacto-cta__descripcion">
+                            <strong>Obtenga la asesoría que su proyecto necesita</strong>
+                            contactando a uno de nuestros consultores expertos en estructuras
+                            metálicas, galpones industriales y tanques de almacenamiento
+                            de hidrocarburos.
+                        </p>
+                    </div>
+
+                    <!-- Panel derecho: tarjetas de contacto -->
+                    <div class="contacto-cta__panel-der">
+
+                        <!-- WhatsApp — canal externo, sin .js-carga -->
+                        <a
+                            href="https://wa.me/59176644531?text=Hola%20BRIDA%20S.R.L.%2C%20quisiera%20asesor%C3%ADa%20sobre%20Mec%C3%A1nica%20y%20Metalurgia"
+                            class="contacto-cta__tarjeta"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Contactar por WhatsApp">
+                            <div class="contacto-cta__icono">
+                                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                            </div>
+                            <div class="contacto-cta__contenido">
+                                <span class="contacto-cta__etiqueta">Respuesta Inmediata</span>
+                                <span class="contacto-cta__titulo">WhatsApp</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-right contacto-cta__flecha" aria-hidden="true"></i>
+                        </a>
+
+                        <!-- Correo — canal externo, sin .js-carga -->
+                        <a
+                            href="mailto:bridabolivia@gmail.com"
+                            class="contacto-cta__tarjeta"
+                            aria-label="Escribir por correo electrónico">
+                            <div class="contacto-cta__icono">
+                                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                            </div>
+                            <div class="contacto-cta__contenido">
+                                <span class="contacto-cta__etiqueta">Consulta Directa</span>
+                                <span class="contacto-cta__titulo">Correo Electrónico</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-right contacto-cta__flecha" aria-hidden="true"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- ═════════════════════ /07 · SECCIÓN 04 · CTA FINAL ═════════════════════ -->
+
+
+    </main>
+    <!-- ═════════════════════ /02 · MAIN ═════════════════════ -->
+
+
+    <!-- ════════════════════════════════════════════════════════════════
+         08 · FOOTER — COMPONENTE GLOBAL
+         ════════════════════════════════════════════════════════════════
+         El footer completo vive en:
+           assets/js/components/footer-menu.js
+
+         Detecta /servicios/ y antepone ../ a sus rutas automáticamente.
+         ════════════════════════════════════════════════════════════════ -->
+    <div id="footer-placeholder"></div>
+
+
+    <!-- ════════════════════════════════════════════════════════════════
+         09 · SCRIPTS
+         ════════════════════════════════════════════════════════════════
+         main.js enruta por:
+           body#page-servicio-detalle
+
+         y ejecuta initServicioDetalle() (servicios-detalle.js v4.4),
+         que inicializa en este orden:
+           · initAparicionArticulos()        → Sección 01 (intro + cards)
+           · initExpansionAlcanceCards()     → Sección 01 (acordeón móvil)
+           · initGaleriaServicio()           → Sección 02 (carrusel)
+           · initExpansionFases()            → Sección 03 (acordeón móvil)
+           · initFallbackFotos()             → transversal
+
+         ⚠️ initRailFijo() YA NO se llama: la Sección 01 es Variante E
+            (banda + cards), sin rail sticky.
+         ════════════════════════════════════════════════════════════════ -->
+    <script type="module" src="../assets/js/main.js"></script>
+
+</body>
+</html>

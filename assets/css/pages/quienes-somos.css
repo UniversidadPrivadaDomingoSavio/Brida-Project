@@ -23,9 +23,14 @@
    ────────────────────────────────────────────────────────────────
    01. SECCIÓN: NUESTRA TRAYECTORIA (timeline)
        · Línea tricolor con scroll, foco/difuminado, SIN puntos.
-       · ⭐ IMÁGENES CON aspect-ratio (sin alturas fijas): el
-         contenedor escala con su ancho → la foto conserva su
-         encuadre natural y NUNCA se percibe "zoomiada".
+       · ⭐ v2.1 VISUAL = LÁMINA DE PLANO TÉCNICO (gemela de la
+         lámina del index y de la banda de servicios): cabecera
+         FASE-0N + lienzo con rejilla blueprint 32px + cota inferior
+         con dato real. El marco desplazado pasa a LÍNEA DE CORTE
+         dashed (ornamento técnico).
+       · Imágenes con aspect-ratio (en el LIENZO — sin alturas
+         fijas): la foto conserva su encuadre y NUNCA se ve
+         "zoomiada".
    02. SECCIÓN: NUESTROS PRINCIPIOS (VMO)
        2a. Grid glassmorphism de escritorio (simetría garantizada,
            hover de solo crecimiento, título tokenizado --fs-h3)
@@ -44,10 +49,25 @@
          autocontenido en esta sección.
    05. RESPONSIVE general de la página (1024 / 767 / landscape)
        · Breakpoints de landscape alineados (767/768: sin hueco).
+       · ⭐ v2.1: el aspect-ratio de fase vive en el LIENZO.
    06. ACCESIBILIDAD — movimiento reducido
        · ⭐ Regla dedicada de la línea-progreso: preserva su
          centrado translateX(-50%) (un transform:none genérico
          desplazaría el riel 2px a la derecha).
+   ════════════════════════════════════════════════════════════════
+   ⭐ CHANGELOG v2.1:
+   · SECCIÓN 01: visual de fase rediseñado como LÁMINA DE PLANO
+     (nuevas clases .qs-historia-lamina-*; cabecera código/rubro,
+     lienzo con rejilla 32px, cota con dato real). El marco
+     desplazado ahora es dashed (línea de corte). HOOKS JS
+     PRESERVADOS: .qs-historia-imagen-contenedor (parallax de
+     ratón) y .qs-historia-imagen (zoom/filtro) — quienes-somos.js
+     NO cambia.
+   · SECCIÓN 05: aspect-ratio de fase migrado al LIENZO (móvil
+     4/3 · landscape 16/9) + compacidad de cabecera/cota en móvil.
+   · SECCIÓN 06: bloque reduced-motion del carrusel COMPLETADO
+     (la fuente anterior estaba truncada): tarjetas apiladas,
+     clon y controles ocultos, estados a plena visibilidad.
    ════════════════════════════════════════════════════════════════ */
 
 
@@ -142,32 +162,102 @@
     align-items: center; justify-content: center; position: relative;
 }
 
-/* ── IMAGEN DE FASE — PROPORCIÓN NATURAL (fix anti-zoom) ────────
-   ⭐ aspect-ratio sustituye a la altura fija: el contenedor
-   escala con su ancho (38% desktop · 45% tablet · 100% móvil) y
-   `object-fit: cover` solo recorta lo mínimo. Antes, las alturas
-   fijas (300/250/200px) obligaban a cover a ampliar mucho la
-   imagen en pantallas angostas → sensación de zoom excesivo.
-   · 16/10 ≈ ratio de fotografía documental → desktop/tablet.
-   · Sin soporte de aspect-ratio (navegadores muy viejos): el
-     contenedor envuelve la imagen con su proporción natural
-     (fallback elegante, no colapsa).
-   · object-position: center (neutro) — el sesgo `center 20%`
-     contribuía al encuadre forzado.                              */
+/* ── VISUAL DE FASE — LÁMINA DE PLANO TÉCNICO (⭐ v2.1) ──────────
+   Rediseño al lenguaje blueprint del sitio: gemela de la lámina
+   de Quiénes Somos del index (.ini-nosotros__lamina) y de la
+   banda visual de servicios (.srv-marco--banda). Estructura:
+     · Lámina (contenedor): borde 2px var(--primary), radius 4px
+       (EXCEPCIÓN: esquinas de plano técnico), sombra de lámina.
+     · Cabecera: código de fase (FASE-01…04) + rubro — fondo
+       rgba(49,38,131,0.04), borde inferior 2px (control).
+     · Lienzo: el aspect-ratio VIVE AQUÍ (la lámina completa es de
+       altura variable por su cabecera+cota). Rejilla blueprint
+       32px de FONDO (visible en carga y como fallback de imagen
+       rota — con cover la foto la tapa, patrón del lienzo).
+     · Cota inferior: dato REAL de cada fase, borde superior 2px.
+   · El marco desplazado pasa de sólido a DASHED: LÍNEA DE CORTE
+     de plano técnico — se diferencia del borde principal y
+     refuerza el lenguaje de lámina (radius 4px).
+   HOOKS JS PRESERVADOS (quienes-somos.js v2 — sin cambios):
+     · .qs-historia-imagen-contenedor → parallax de ratón
+       (mousemove/mouseleave) y estados es-visible/esta-enfocado.
+     · .qs-historia-imagen → zoom/filtro del parallax.
+   ANTI-ZOOM: aspect-ratio en el lienzo (16/10 esc · 4/3 móvil
+   vía sección 05) — cero alturas fijas.                         */
 .qs-historia-visual { width: 38%; position: relative; }
+
 .qs-historia-imagen-contenedor {
     position: relative;
-    aspect-ratio: 16 / 10;   /* ← reemplaza a la altura fija       */
+    background: var(--bg-main);
+    border: 2px solid var(--primary);
+    border-radius: 4px; /* EXCEPCIÓN: esquinas de plano técnico */
+    box-shadow: 0 14px 36px rgba(49, 38, 131, 0.12);
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(49, 38, 131, 0.08); background: var(--bg-main);
-    border: 1px solid var(--primary-border); border-radius: 12px;
+    display: flex;
+    flex-direction: column;
     transform: scale(0.9) translateY(30px); opacity: 0;
     transition: transform 0.9s var(--header-ease), opacity 0.9s var(--header-ease), box-shadow 0.4s ease, border-color 0.3s ease;
 }
 .qs-historia-item.es-visible .qs-historia-imagen-contenedor { transform: scale(1) translateY(0); opacity: 1; }
-.qs-historia-item.esta-enfocado .qs-historia-imagen-contenedor { box-shadow: 0 20px 40px rgba(49, 38, 131, 0.15); border-color: rgba(49, 38, 131, 0.25); }
+/* Foco: la sombra sube (el borde 2px primary es la identidad de
+   la lámina — NO se debilita con un color más claro, como hacía
+   la versión anterior en el estado enfocado).                   */
+.qs-historia-item.esta-enfocado .qs-historia-imagen-contenedor { box-shadow: 0 20px 40px rgba(49, 38, 131, 0.18); }
 
+/* Cabecera de lámina (gemela de .srv-fases__item-cabecera)      */
+.qs-historia-lamina-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--sp-2);
+    flex-wrap: wrap; /* defensa: nunca desborda en pantallas mínimas */
+    padding: 8px 14px; /* EXCEPCIÓN: control de cabecera de plano */
+    border-bottom: 2px solid var(--primary);
+    background: rgba(49, 38, 131, 0.04);
+}
+.qs-historia-lamina-codigo {
+    font-family: var(--font-heading);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--primary);
+    white-space: nowrap;
+}
+.qs-historia-lamina-rubro {
+    font-family: var(--font-heading);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Lienzo de imagen: el aspect-ratio vive aquí (no en la lámina)  */
+.qs-historia-lamina-lienzo {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--bg-soft);
+}
+
+/* Rejilla blueprint 32px — jerarquía de tinta 0.05 (canvas global).
+   Fondo del lienzo: visible durante la carga y como fallback si
+   la imagen falta (misma mecánica del lienzo de servicios).      */
+.qs-historia-lamina-rejilla {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(49, 38, 131, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(49, 38, 131, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+/* Imagen: HOOK del parallax del JS (transform inline) — la clase
+   y el overflow:hidden del lienzo no cambian.                    */
 .qs-historia-imagen {
+    position: relative;
+    z-index: 1;
     width: 100%; height: 100%; object-fit: cover; object-position: center;
     transition: transform 0.6s var(--header-ease), filter 0.6s var(--header-ease);
     filter: grayscale(30%) brightness(0.95); /* efecto "foto de archivo" por defecto */
@@ -181,20 +271,47 @@
    lo asigna quienes-somos.js)                                     */
 @media (hover: none) and (pointer: coarse) {
     .qs-historia-item.zoom-activo .qs-historia-imagen { transform: scale(1.03); filter: grayscale(0%) brightness(1); }
-    .qs-historia-item.zoom-activo .qs-historia-imagen-contenedor { box-shadow: 0 20px 40px rgba(49, 38, 131, 0.15); border-color: rgba(49, 38, 131, 0.25); }
+    .qs-historia-item.zoom-activo .qs-historia-imagen-contenedor { box-shadow: 0 20px 40px rgba(49, 38, 131, 0.18); }
 }
 
-.qs-historia-imagen-superposicion { position: absolute; bottom: 0; left: 0; width: 100%; height: 45%; background: linear-gradient(transparent, rgba(49, 38, 131, 0.12)); pointer-events: none; }
+/* Velo inferior morado (profundidad fotográfica — se mantiene).
+   Vive DENTRO del lienzo (position:relative de este) → anclado
+   a su borde inferior, no al de la lámina completa.              */
+.qs-historia-imagen-superposicion {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    z-index: 1; height: 45%;
+    background: linear-gradient(transparent, rgba(49, 38, 131, 0.12));
+    pointer-events: none;
+}
 
-/* Marco desplazado: aparece cuando el item es visible y se
-   intensifica cuando está enfocado                                */
+/* Cota de lámina (gemela de .srv-marco__cota): dato REAL de la
+   fase — borde superior 2px, fondo tinte 0.04 (control).         */
+.qs-historia-lamina-cota {
+    border-top: 2px solid var(--primary);
+    padding: 10px 14px; /* EXCEPCIÓN: control de cota de plano */
+    background: rgba(49, 38, 131, 0.04);
+    text-align: center;
+}
+.qs-historia-lamina-cota span {
+    font-family: var(--font-heading);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--primary);
+}
+
+/* Línea de CORTE de plano (antes "marco"): dashed + radius 4px —
+   ornamento técnico que se diferencia del borde sólido de la
+   lámina. Aparece con la entrada y se intensifica al enfocar.    */
 .qs-historia-marco {
     position: absolute; width: 100%; height: 100%; top: 14px; left: 14px;
-    border: 2px solid var(--primary); opacity: 0; transform: translate(10px, 10px);
-    pointer-events: none; transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s; border-radius: 12px;
+    border: 2px dashed rgba(49, 38, 131, 0.35);
+    opacity: 0; transform: translate(10px, 10px);
+    pointer-events: none; transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s; border-radius: 4px;
 }
-.qs-historia-item.es-visible .qs-historia-marco { opacity: 0.15; transform: translate(0, 0); }
-.qs-historia-item.esta-enfocado .qs-historia-marco { opacity: 0.3; }
+.qs-historia-item.es-visible .qs-historia-marco { opacity: 0.35; transform: translate(0, 0); }
+.qs-historia-item.esta-enfocado .qs-historia-marco { opacity: 0.6; }
 
 /* Entrada lateral de los items (antes de ser visibles):
    impares desde la izquierda, pares desde la derecha              */
@@ -211,7 +328,37 @@
    ╚══════════════════════════════════════════════════════════════╝ */
 
 /* ── 2a. BASE — ESCRITORIO (grid 3 columnas, simetría) ──────────
-   Ritmo: --seccion-pad-destacada (sección oscura de impacto).    */
+   ⭐ FONDO = CANVAS GLOBAL (contrato con section-ui.css):
+   la rejilla blueprint ya NO se declara en esta hoja. La sección
+   lleva en el HTML las clases `bg-soft-pattern dark` y es el
+   canvas global quien pinta:
+   · base oscura institucional (--bg-dark)
+   · rejilla técnica de 32px, líneas claras (jerarquía 0.05)
+   QUÉ SE ELIMINÓ DE LA VERSIÓN ANTERIOR:
+   · background-color #0a0a12 → color duro ajeno al sistema. Si
+     --bg-dark es exactamente ese valor, el cambio es invisible;
+     si no, la sección se alinea al resto de oscuras del sitio.
+   · rejilla local de 40px rgba(255,255,255,.03) → celda distinta
+     a la del sitio (40px ≠ 32px): era el motivo por el que las
+     líneas de fondo "no coincidían".
+   · 2 radial-gradient azulados → brillos exclusivos de esta
+     sección. Si se quieren de vuelta, es una decisión del CANVAS
+     global (todas las oscuras a la vez), nunca de una suelta.
+   ⚠️ REGLA DE ORO: ninguna rejilla en el CSS de página.
+   · Claras: .bg-soft-pattern (0,1,0) EMPATA con la clase de
+     página → el orden de carga decide y un background local
+     borra el canvas.
+   · Oscuras: .bg-soft-pattern.dark (0,2,0) gana hoy, pero la
+     regla local queda como mina retroactiva (si el canvas cambia
+     de nombre, la rejilla vieja resucitaría sin que nadie la
+     busque). Fuente única: section-ui.css.
+   Solo se conserva un background-color de DEFENSA (mismo token
+   del canvas): si mañana se quitan las clases del HTML, la
+   sección no cae a transparente.
+   Ritmo: --seccion-pad-destacada (sección oscura de impacto).
+   ⚠️ PENDIENTE en variables.css: el token está definido como
+   clamp(64px, 9vw, 60px) (mín > máx) → resuelve SIEMPRE 64px.
+   El uso aquí es correcto; la corrección va en el token.        */
 .qs-principios-seccion {
     position: relative;
     width: 100%;
@@ -223,14 +370,9 @@
     overflow: hidden;
     padding: var(--seccion-pad-destacada) var(--pad-x);
 
-    /* Fondo oscuro personalizado con rejilla y brillos azulados    */
-    background-color: #0a0a12;
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(92, 107, 192, 0.1) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(92, 107, 192, 0.1) 0%, transparent 20%),
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    /* DEFENSA (mismo token que aporta .bg-soft-pattern.dark).
+       La REJILLA no se declara: la pinta el canvas global.     */
+    background-color: var(--bg-dark);
 }
 
 /* Forzar estilos de título claros sobre fondo oscuro             */
@@ -904,8 +1046,8 @@
     .qs-historia-item:nth-child(even) .qs-historia-contenido { padding: var(--sp-2) 0 var(--sp-2) var(--sp-2); }
     .qs-historia-separador { width: var(--sp-7); min-width: var(--sp-7); }
     .qs-historia-visual { width: 45%; }
-    /* ⚠️ SIN altura fija aquí: el aspect-ratio 16/10 de la base
-       escala la imagen con su ancho → sin zoom percibido         */
+    /* ⚠️ SIN altura fija aquí: el aspect-ratio 16/10 del LIENZO
+       (base) escala la imagen con su ancho → sin zoom percibido  */
 
     .qs-principios-seccion { padding-left: var(--pad-x-compacto); padding-right: var(--pad-x-compacto); }
 
@@ -953,7 +1095,13 @@
     .qs-historia-separador { display: none; }
     .qs-historia-contenido { width: 100%; padding: 0; margin-bottom: var(--sp-2); }
     .qs-historia-visual { width: 100%; }
-    .qs-historia-imagen-contenedor { aspect-ratio: 4 / 3; }
+    /* ⭐ v2.1: el aspect-ratio vive en el LIENZO (antes estaba en
+       el contenedor de imagen — la lámina es de altura variable
+       por su cabecera+cota)                                      */
+    .qs-historia-lamina-lienzo { aspect-ratio: 4 / 3; }
+    /* Lámina compacta en móvil (control de cabecera/cota)         */
+    .qs-historia-lamina-cabecera { padding: 8px 12px; }
+    .qs-historia-lamina-cota { padding: 8px 12px; }
     .qs-historia-marco { display: none; }
     .qs-historia-item:not(.es-visible),
     .qs-historia-item:nth-child(odd):not(.es-visible),
@@ -968,7 +1116,8 @@
 /* LANDSCAPE MÓVIL (≤767px girado)                                 */
 @media (max-width: 767px) and (orientation: landscape) {
     .qs-historia-item { margin-bottom: var(--sp-5); }
-    .qs-historia-imagen-contenedor { aspect-ratio: 16 / 9; }
+    /* ⭐ v2.1: migrado al lienzo (16/9 panorámico)                */
+    .qs-historia-lamina-lienzo { aspect-ratio: 16 / 9; }
 }
 
 /* LANDSCAPE TABLET (768–1199px)                                   */
@@ -1019,7 +1168,12 @@
 /* CARRUSEL con movimiento reducido: las 3 tarjetas se APILAN en
    columna (lista) y el clon desaparece. Consulta combinada
    (reduce + ≤1024px) para NO tocar el grid de escritorio.
-   El JS tampoco monta el carrusel en este modo.                   */
+   El JS tampoco monta el carrusel en este modo (initPrincipios
+   retorna temprano → sin clon, sin transform inline, sin timer).
+   ⭐ v2.1 BLOQUE COMPLETADO: la fuente anterior estaba truncada
+   en la regla de los controles — se restaura con la lógica
+   completa del contrato (tarjetas apiladas, clon y puntos fuera,
+   estados a plena visibilidad).                                   */
 @media (prefers-reduced-motion: reduce) and (max-width: 1024px) {
     .qs-principios-contenedor { max-width: 600px; overflow: visible; }
     .qs-principios-grid {
@@ -1029,8 +1183,14 @@
         transform: none !important;
         transition: none !important;
     }
-    .qs-principios-tarjeta { flex: 0 0 auto; }
+    .qs-principios-tarjeta {
+        flex: 0 0 auto;
+        transform: none !important;
+        opacity: 1 !important;
+    }
     .qs-principios-tarjeta.es-clon { display: none; }
+    /* Sin carrusel no hay navegación que indicar (el JS no monta
+       el modo) → los puntos se retiran con la lista              */
     .qs-principios-controles { display: none; }
 }
 

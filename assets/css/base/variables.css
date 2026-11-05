@@ -23,6 +23,7 @@
     --primary-border: rgba(49, 38, 131, 0.15);
     --bg-main: #FFFFFF;
     --bg-soft: #F6F5F9;
+    --bg-dark: #0a0a12;
     --bg-hover: #F3F4F8;
     --text-body: #1F2937;
     --text-muted: #6B7280;
@@ -69,6 +70,7 @@
        DESTACADA:     secciones oscuras de impacto (Pilares,
                       Valores, Contacto CTA) — más presencia      */
     --seccion-pad: clamp(48px, 7vw, 60px);
+    --seccion-pad_2: clamp(35px, 7vw, 50px);
     --seccion-pad-destacada: clamp(64px, 9vw, 60px);
 
     /* RITMO LATERAL

@@ -1,35 +1,178 @@
 /* assets/css/components/buttons.css */
+/* ════════════════════════════════════════════════════════════════
+   COMPONENTES DE BOTÓN GLOBAL — BRIDA S.R.L.
+   ════════════════════════════════════════════════════════════════
+   ⚠️ SISTEMA DE DISEÑO (variables.css):
+   - Tipografía: --font-heading + tokens --fs-*.
+   - Táctil: presión :active (patrón global).
+   - Reduced-motion: presente en cada componente (ley del proyecto).
 
+   ⭐ v6.3 DOCTRINA DE LA LÍNEA — MECANISMO ÚNICO (fin del bucle):
+   TODOS los CTAs de navegación (.js-carga) usan el MISMO span
+   inyectado por nav-carga.js en los 3 viewports:
+   · Reposo: línea 30px bajo el texto (mismo look everywhere).
+   · Desktop: hover expande la línea al ancho del texto.
+   · Táctil: tap expande la línea como CARGA (~450ms) y navega.
+   LA POSICIÓN la calcula el JS midiendo el TEXTO real (Range API):
+   alineada al inicio del texto y a 3px bajo él — funciona con
+   contenido centrado (píldora) o alineado (hero), sin CSS extra.
+   Los botones ya NO pintan fondos/bordes en hover/active: la línea
+   ES el feedback. Cero rutas duales → cero desfaces de versión.
+
+   MAPA DEL ARCHIVO:
+   01. Botón píldora primario (.btn-primary-pill) — texto-con-línea
+   02. Línea de carga (.js-carga .nav-carga__linea) — global
+   ════════════════════════════════════════════════════════════════ */
+
+
+/* ════════════════════════════════════════════════════════════════
+   01. BOTÓN PÍLDORA PRIMARIO — v6.3 TEXTO-CON-LÍNEA
+   Rediseño aprobado: transparente, sin borde, sin sombra — el
+   botón ES texto con su línea (lenguaje unificado con los demás
+   CTAs). EXCEPCIÓN DOCUMENTADA: font-size 0.9rem = control.
+   SIN hover de relleno: la expansión de la línea ES el hover.
+   ════════════════════════════════════════════════════════════════ */
 .btn-primary-pill {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
     padding: 15px 40px;
-    width: 100%; 
-    background: var(--bg-main);
+    width: 100%; /* CONTRATO: ancho del contenedor padre */
+    background: transparent;
     color: var(--primary);
-    border: 1px solid var(--primary-border);
+    border: none;
     font-family: var(--font-heading);
-    font-size: 0.9rem;
+    font-size: 0.9rem; /* EXCEPCIÓN: control de botón */
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
     text-decoration: none;
-    border-radius: 50px; 
     cursor: pointer;
-    transition: all 0.4s var(--header-ease);
-    box-shadow: 0 4px 12px rgba(49, 38, 131, 0.05);
+    position: relative; /* ancla del span de línea */
+    transition: color 0.3s ease;
 }
-.btn-primary-pill i { font-size: 12px; transition: transform 0.3s ease; }
-.btn-primary-pill:hover {
-    background: var(--primary); color: #fff; border-color: var(--primary);
-    box-shadow: 0 12px 28px rgba(49, 38, 131, 0.25); transform: translateY(-2px);
-}
-.btn-primary-pill:hover i { transform: translateX(4px); }
+.btn-primary-pill i { font-size: 12px; transition: transform 0.3s ease; } /* icono decorativo */
+/* Hover desktop: la LÍNEA se expande (regla global del bloque 02).
+   Sin relleno de fondo: la línea ES el feedback.                  */
 
-/* Comportamiento táctil del botón */
-@media (hover: none) and (pointer: coarse) {
-    .btn-primary-pill:hover { transform: none; background: var(--bg-main); color: var(--primary); border-color: var(--primary-border); box-shadow: 0 4px 12px rgba(49, 38, 131, 0.05); }
-    .btn-primary-pill:active { background: var(--primary); color: #fff; border-color: var(--primary); }
+/* Comportamiento táctil: sin pintado — el efecto de carga de la
+   línea (bloque 02) es el único feedback                          */
+
+/* ⭐ v6 Accesibilidad — movimiento reducido                       */
+@media (prefers-reduced-motion: reduce) {
+    .btn-primary-pill,
+    .btn-primary-pill i,
+    .btn-primary-pill .nav-carga__linea {
+        transition: none !important;
+    }
 }
+
+
+/* ════════════════════════════════════════════════════════════════
+   02. ⭐ LÍNEA DE CARGA — v6.3 MECANISMO ÚNICO
+   El span lo inyecta y posiciona nav-carga.js (inline styles,
+   derivados del TEXTO real medido con Range API). Este archivo
+   define apariencia + transición (hover) + animación (carga).
+   COLOR: var(--nav-carga-line, currentColor) — hereda el texto.
+   ANIMACIÓN: width 30px → var(--nav-carga-end) (el JS expone el
+   ancho del texto) → termina exactamente donde termina el texto.
+   DURACIÓN: 450ms (el JS navega por animationend — el CSS manda).
+   ════════════════════════════════════════════════════════════════ */
+
+/* Apariencia — SIEMPRE (los 3 viewports: reposo 30px visible)     */
+.js-carga {
+    position: relative; /* ancla del span */
+}
+.js-carga .nav-carga__linea {
+    position: absolute;
+    /* top/left: INLINE del JS (derivados del texto real medido)   */
+    width: 30px;
+    height: 2px;
+    background: var(--nav-carga-line, currentColor);
+    border-radius: 1px;
+    transform-origin: left;
+    pointer-events: none;
+    transition: width 0.3s var(--header-ease); /* hover desktop    */
+}
+
+/* DESKTOP: hover expande la línea al ancho del texto              */
+@media (hover: hover) and (pointer: fine) {
+    .js-carga:hover .nav-carga__linea {
+        width: var(--nav-carga-end, 100%);
+    }
+}
+
+/* TÁCTIL: tap expande la línea como CARGA y navega (el JS
+   intercepta el clic SOLO aquí)                                   */
+@media (hover: none) and (pointer: coarse) {
+    .js-carga.esta-cargando .nav-carga__linea {
+        animation: nav-carga-linea 450ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+}
+
+@keyframes nav-carga-linea {
+    from { width: 30px; }
+    to   { width: var(--nav-carga-end, 100%); }
+}
+
+/* Reduced-motion: sin animación de carga (el JS ni siquiera la
+   activa en este modo — navegación nativa inmediata)              */
+@media (prefers-reduced-motion: reduce) {
+    .js-carga .nav-carga__linea { transition: none !important; }
+    .js-carga.esta-cargando .nav-carga__linea { animation: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   03. VARIANTE CENTRADA — .js-carga--centrado
+   PARA composiciones centradas (píldora sola en su contenedor).
+   QUÉ CAMBIA — solo GEOMETRÍA del reposo: mismo span, mismo JS,
+   mismas variables (--nav-carga-end) → CERO rutas duales.
+   · Reposo: la línea de 30px se CENTRA bajo el texto (el anclaje
+     al inicio del texto es correcto en botones alineados, pero
+     óptimamente torcido en centrados — causa del "no centrado").
+   · Hover/carga: expansión SIMÉTRICA (del centro hacia afuera)
+     hasta cubrir exactamente el texto — mismo estado final que
+     la variante base.
+   CÓMO: translateX sobre el span ya posicionado por el JS. El
+   left inline queda intacto (sin !important, sin pisar nada).
+   El centro del texto == el centro del botón (padding simétrico
+   + justify-content:center) → calc con --nav-carga-end.
+   REQUISITO: el anchor lleva class="… js-carga js-carga--centrado".
+   ════════════════════════════════════════════════════════════════ */
+
+.js-carga--centrado .nav-carga__linea {
+    /* Reposo: desplaza la línea para centrarla bajo el texto.
+       Desplazamiento = (ancho de texto / 2) − (30px / 2).         */
+    transform: translateX(calc(var(--nav-carga-end, 60px) / 2 - 15px));
+    transition: width 0.3s var(--header-ease), transform 0.3s var(--header-ease);
+}
+
+/* DESKTOP: hover expande al ancho del texto y returns a
+   translateX(0) → los dos bordes salen del centro a la vez.      */
+@media (hover: hover) and (pointer: fine) {
+    .js-carga--centrado:hover .nav-carga__linea {
+        width: var(--nav-carga-end, 100%);
+        transform: translateX(0);
+    }
+}
+
+/* TÁCTIL: la carga barre del centro hacia afuera hasta cubrir
+   el texto (keyframes propias: width + transform en tándem —
+   las del bloque 02 solo animan width y dejarían la línea
+   corrida a la derecha).                                         */
+@media (hover: none) and (pointer: coarse) {
+    .js-carga--centrado.esta-cargando .nav-carga__linea {
+        animation: nav-carga-linea-centrada 450ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+}
+
+@keyframes nav-carga-linea-centrada {
+    from { width: 30px; transform: translateX(calc(var(--nav-carga-end, 60px) / 2 - 15px)); }
+    to   { width: var(--nav-carga-end, 100%); transform: translateX(0); }
+}
+
+/* Reduced-motion: hereda los cortes del bloque 02 (mismos
+   selectores base). El reposo centrado queda estático.           */
+
+   

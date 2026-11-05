@@ -1,90 +1,98 @@
 // ══════════════════════════════════════════════════════════════════
 // CONTROLADOR — PÁGINA CONTACTO (BRIDA S.R.L.)
-// Archivo: assets/js/pages/contacto.js
+// Archivo: assets/js/pages/contacto.js — v2
 // ══════════════════════════════════════════════════════════════════
 // QUÉ HACE ESTE ARCHIVO:
 //   1. SELECTS DEPENDIENTES (catálogo de servicios A–F):
 //      al elegir un Tipo de Servicio se llena el select de Servicio
 //      Específico con las partidas reales de esa línea.
+//      ⭐ v2: catálogo alineado al TEXTO del PDF "Presentación de
+//      Servicios" (pp. 5–7) — lo que elige el usuario es lo que
+//      llega al correo. Duplicado de Balanzas eliminado (F tenía
+//      "Provisión y Calibración…" + "Calibración…" repetidos).
 //   2. ENVÍO mailto FORMATEADO: intercepta el submit y construye un
-//      enlace mailto con asunto y cuerpo legibles (Nombre, Empresa,
-//      servicio seleccionado, mensaje) — el correo llega estructurado
-//      en lugar de los campos codificados del envío nativo.
-//      ⭐ LIMPIEZA POST-ENVÍO: como el mailto no recarga la página,
-//      el formulario se resetea y el select dependiente se
-//      resincroniza disparando un evento 'change' SINTÉTICO sobre
-//      la categoría → reutiliza la MISMA lógica de llenado/limpieza
-//      sin duplicar una línea.
+//      enlace mailto con asunto y cuerpo legibles.
+//      ⭐ v2 VALIDACIÓN DEL SELECT DEPENDIENTE: un campo `disabled`
+//      está EXCLUIDO de la validación nativa (constraint validation
+//      lo salta) → sin esta red, el formulario se enviaba con el
+//      Servicio Específico vacío cuando el usuario no lo eligió
+//      (el required nativo solo actúa cuando el select está
+//      habilitado). El JS verifica y devuelve el foco al campo.
+//      ⭐ LIMPIEZA POST-ENVÍO: reset + resincronización con
+//      'change' SINTÉTICO (reutiliza la lógica del módulo 1).
 //      🔄 MIGRACIÓN A FORMSPREE: al cambiar el action del form,
-//      ELIMINAR initEnvioMailto() del orquestador y listo — el resto
-//      del archivo no depende del método de envío.
-//   3. COMPUERTAS DE CONTACTO (paneles verticales expandibles):
-//      gestiona qué panel está expandido (.es-activa). Desktop:
-//      mouseenter recorre + click en cerrado activa. Táctil: el tap
-//      es la única vía. NUNCA navega al expandir — el CTA real es
-//      el <a> interno del panel abierto.
+//      ELIMINAR initEnvioMailto() del orquestador y listo.
+//   3. COMPUERTAS DE CONTACTO: sin cambios funcionales.
 // NOMBRES: sincronizados con contacto.html y contacto.css (prefijo
 //      ctt-). main.js NO cambia (mismo export).
 // ══════════════════════════════════════════════════════════════════
 
 
 /* ================================================================
-   1. SELECTS DEPENDIENTES (CATÁLOGO DE SERVICIOS)
+   1. SELECTS DEPENDIENTES (CATÁLOGO DE SERVICIOS) — ⭐ v2 alineado
    QUÉ HACE: #ctt-categoria (A–F) gobierna #ctt-servicio.
    · Sin categoría  → servicio deshabilitado + clase visual.
    · Con categoría  → servicio habilitado + opciones del catálogo.
-   ⭐ El texto de cada opción usa el NOMBRE del servicio (no el
-   value "A") — lo que ve el usuario en el select es lo mismo que
-   llegará al correo.
+   ⭐ v2 TRAZABILIDAD (PDF "Presentación de Servicios"):
+   · A → pp. 5 y 7 (diseño/estudios/consultoría/avalúos/asesoramiento)
+   · B → p. 5 (obras civiles, caminos, topografía, arquitectónicos)
+   · C → p. 6 (mecánicos, tanques, puente de medición, puentes grúa)
+   · D → pp. 6–7 (eléctricos, redes, subestaciones, automatización)
+   · E → p. 6 (gas B/A presión, redes y acometidas, fibra óptica)
+   · F → pp. 5–7 (personal, importaciones, balanzas, imprenta,
+         red contra incendio)
+   ⭐ El texto de cada opción usa el NOMBRE textual del servicio —
+   lo que ve el usuario en el select es lo mismo que llegará al
+   correo.
    ================================================================ */
 function initSelectsDependientes() {
-    /* Base de datos del catálogo (partidas reales por línea)       */
+    /* Base de datos del catálogo (partidas textuales del PDF)      */
     const catalogoServicios = {
         A: [
             "Diseño e Ingeniería de Obras Civiles, Mecánicas y Eléctricas",
             "Estudios de Ingeniería, Diseño, Rediseño y Evaluación de Proyectos",
-            "Consultoría, Asesoría Técnica e Inspección",
+            "Consultoría, Acompañamiento y Asesoría Técnica e Inspección",
             "Avalúos y Peritajes de Proyectos",
             "Asesoramiento Técnico y Profesional Especializado"
         ],
         B: [
             "Construcción de Obras Civiles en General",
             "Caminos y Planchadas con Movimientos de Tierras",
-            "Proyectos Arquitectónicos y Reparaciones",
-            "Levantamiento Topográfico",
-            "Obras Civiles Específicas (Losas, Canales, Cámaras, Fosas, Muros)"
+            "Construcción y/o Ejecución de Proyectos Arquitectónicos",
+            "Reparación, Refacciones y Puesta en Marcha",
+            "Levantamiento Topográfico para la Industria",
+            "Obras Civiles Específicas (Losas, Canales, Cámaras, Fosas)"
         ],
         C: [
             "Proyectos Mecánicos, Galpones y Naves Industriales",
-            "Estructuras Metálicas y Soldadura en General",
+            "Estructuras Metálicas y Trabajos de Soldadura en General",
             "Inspección, Supervisión y Fiscalización de Soldadura",
             "Fabricación y Mantenimiento de Tanques de Hidrocarburos",
             "Fabricación y Montaje de Puente de Medición y Regulación de Gas",
             "Provisión y Mantenimiento de Puentes Grúas y Sistemas de Izaje",
-            "Montaje de Estructuras (Parabólicas, Cubiertas, Escaleras, Casamatas)"
+            "Montajes Especiales (Cubiertas, Escaleras, Puertas, Mezzanines)"
         ],
         D: [
-            "Obras Eléctricas, Instrumentación y Automatización Industrial",
-            "Proyectos Eléctricos (Industrial y Comercial)",
-            "Trabajos de Baja, Media y Alta Tensión",
-            "Supervisión de Instalaciones Eléctricas",
-            "Mantenimiento Preventivo y Correctivo de Equipos Eléctricos",
+            "Trabajos Eléctricos de Baja, Media y Alta Tensión",
+            "Proyectos Eléctricos para el Rubro Industrial y Comercial",
+            "Provisión y Montaje Electromecánico de Subestaciones",
+            "Automatización de Procesos Industriales y Electromecánicos",
             "Diseño y Construcción de Redes Eléctricas de Distribución",
-            "Montaje Electromecánico de Subestaciones",
-            "Automatización de Procesos (Electromecánicos, Hidráulicos, Sanitarios)"
+            "Mantenimiento Preventivo y Correctivo de Equipos Eléctricos",
+            "Supervisión en todo tipo de Instalaciones Eléctricas"
         ],
         E: [
-            "Mantenimiento y Tendido de Línea de Gas (Baja y Alta Presión)",
-            "Instalación de Red Primaria, Secundaria y Acometidas de Gas",
+            "Mantenimiento y Tendido de Líneas de Gas (Baja y Alta Presión)",
+            "Fabricación y Montaje de Puentes de Medición y Regulación de Gas",
+            "Instalación de Red Primaria, Secundaria y Acometidas Domiciliarias",
             "Provisión, Tendido y Etiquetado de Fibra Óptica"
         ],
         F: [
+            "Tendido de Red contra Incendio para Edificios y Plantas",
             "Provisión de Personal Calificado, Técnico y Mano de Obra",
-            "Importaciones y Representación de Maquinarias y Equipos",
-            "Provisión y Calibración de Balanzas Electrónicas",
-            "Imprenta, Gigantografía y Sublimación",
-            "Tendido de Red contra Incendio",
-            "Calibración de Balanzas Electrónicas"
+            "Importación y Representación de Maquinarias y Equipos",
+            "Provisión y Calibración de todo tipo de Balanzas Electrónicas",
+            "Imprenta, Gigantografía y Sublimación"
         ]
     };
 
@@ -130,29 +138,33 @@ function initSelectsDependientes() {
 
 
 /* ================================================================
-   2. ENVÍO mailto FORMATEADO
+   2. ENVÍO mailto FORMATEADO — ⭐ v2 con validación del dependiente
    QUÉ HACE: intercepta el submit del formulario (#ctt-formulario),
    compone un asunto + cuerpo legibles y abre el cliente de correo
    del usuario con TODO el contenido estructurado.
    POR QUÉ: el envío nativo de un <form action="mailto:"> con
    enctype text/plain entrega los campos como cadena codificada
-   ("Nombre=Juan&Pregunta=...") que muchos clientes muestran mal.
-   Con el cuerpo construido a mano, el correo llega limpio y el
-   equipo comercial puede responder sin descifrar nada.
+   que muchos clientes muestran mal. Con el cuerpo construido a
+   mano, el correo llega limpio al equipo comercial.
    GARANTÍAS:
    · El navegador valida los required ANTES de disparar submit →
-     al entrar al handler todos los campos son válidos.
+     al entrar al handler los campos habilitados son válidos.
+   · ⭐ v2 VALIDACIÓN DEL SELECT DEPENDIENTE: un campo `disabled`
+     está excluido de la validación nativa (constraint validation
+     lo salta) → el required del #ctt-servicio NO actúa mientras
+     esté deshabilitado y el form pasaba sin servicio. Esta red
+     verifica: si el select está HABILITADO y vacío → foco al
+     campo y envío cancelado (con el required nativo cubriendo el
+     caso habilitado y esta guardia cubriendo el caso disabled,
+     el envío sin servicio queda imposible por las dos vías).
    · encodeURIComponent en asunto y cuerpo (acentos/saltos seguros).
    · Si el usuario no tiene cliente de correo configurado, el
      comportamiento es el mismo que con el mailto nativo (no rompe).
    · Respeta el destino real: bridabolivia@gmail.com.
-   ⭐ LIMPIEZA POST-ENVÍO: el mailto NO recarga la página → sin
-   reset el formulario quedaría lleno de datos ya enviados (y el
-   usuario podría reenviar por accidente o pensar que no salió).
-   Se resetea el form y se resincroniza el select dependiente
+   ⭐ LIMPIEZA POST-ENVÍO: el mailto NO recarga la página → se
+   resetea el form y se resincroniza el select dependiente
    disparando un 'change' SINTÉTICO sobre la categoría → la MISMA
-   lógica del módulo 1 se encarga de deshabilitar/limpiar el
-   select de servicio (cero duplicación).
+   lógica del módulo 1 deshabilita/limpia (cero duplicación).
    ================================================================ */
 function initEnvioMailto() {
     const formulario = document.getElementById('ctt-formulario');
@@ -167,6 +179,19 @@ function initEnvioMailto() {
     formulario.addEventListener('submit', function (e) {
         e.preventDefault(); /* Reemplaza el mailto nativo crudo      */
 
+        const selectCategoria = document.getElementById('ctt-categoria');
+        const selectServicio = document.getElementById('ctt-servicio');
+
+        /* ⭐ v2 RED DE SEGURIDAD: el select dependiente deshabilitado
+           se salta la validación nativa → si quedó sin elegir (o sin
+           habilitar), se cancela el envío y el foco regresa al
+           campo. Mensaje honesto: el equipo necesita saber QUÉ
+           servicio cotizar.                                        */
+        if (!selectServicio.disabled && selectServicio.value === '') {
+            selectServicio.focus();
+            return;
+        }
+
         const datos = new FormData(formulario);
 
         const nombre    = (datos.get('Nombre') || '').toString().trim();
@@ -177,8 +202,8 @@ function initEnvioMailto() {
 
         /* Textos de los selects (no sus values: "A" no dice nada
            en un correo) — el value de #ctt-servicio ya es el nombre */
-        const categoria = textoSeleccionado(document.getElementById('ctt-categoria'));
-        const servicio  = textoSeleccionado(document.getElementById('ctt-servicio'));
+        const categoria = textoSeleccionado(selectCategoria);
+        const servicio  = textoSeleccionado(selectServicio);
 
         /* ASUNTO: identificable en la bandeja del equipo comercial */
         const asunto = 'Solicitud de Cotización — ' + (nombre || 'Sitio Web BRIDA');
@@ -206,14 +231,13 @@ function initEnvioMailto() {
 
         /* ⭐ LIMPIEZA POST-ENVÍO (ver documentación de cabecera)   */
         formulario.reset();
-        const selectCategoria = document.getElementById('ctt-categoria');
         if (selectCategoria) selectCategoria.dispatchEvent(new Event('change'));
     });
 }
 
 
 /* ================================================================
-   3. COMPUERTAS DE CONTACTO (paneles verticales expandibles)
+   3. COMPUERTAS DE CONTACTO (paneles verticales expandibles) — sin cambios
    QUÉ HACE: gestiona qué panel está expandido (.es-activa) en la
    escena #ctt-compuertas (ver CSS sección 01 y markup del HTML).
    · ESCRITORIO: mouseenter cambia la compuerta abierta (efecto

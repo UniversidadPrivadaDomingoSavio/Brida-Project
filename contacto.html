@@ -5,8 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO básico (⭐ v2: consistencia con las demás páginas)      -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="BRIDA Ingeniería de Proyectos – Oil &amp; Gas Energía SRL">
+    <meta name="theme-color" content="#312683">
+
     <meta name="description" content="Contacte a BRIDA S.R.L. — WhatsApp, correo y oficina en Santa Cruz de la Sierra. Solicite cotización de proyectos de ingeniería, Oil & Gas, obras civiles, metalmecánica, electricidad y automatización en Bolivia.">
-    <title>Contacto | BRIDA S.R.L. - Ingeniería de Proyectos y Oil & Gas</title>
+    <title>Contacto | BRIDA S.R.L. - Ingeniería de Proyectos y Oil &amp; Gas Bolivia</title>
 
     <!-- Fuentes e Iconos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,7 +35,7 @@
     <div id="header-placeholder"></div>
 
     <!-- ========== HERO INTERNO (Cabecera de Página - Componente Global) ========== -->
-    <section class="hero-interno">
+    <section class="hero-interno" aria-label="Presentación de Contacto">
         <!-- TODO: Confirmar portada. Se usa imagen local del repositorio
              (la versión anterior cargaba Unsplash, externa y no controlada). -->
         <div class="hero-interno__fondo" style="background-image: url('assets/img/proyectos/Inicio/Portada 3.jpeg');"></div>
@@ -66,7 +72,7 @@
          - Los paneles entran por animation propia (NO reveal-up:
            el delay inline contaminaría la transición flex).
          ================================================================ -->
-    <section id="ctt-contacto" class="ctt-seccion bg-soft-pattern">
+    <section id="ctt-contacto" class="ctt-seccion bg-soft-pattern ">
         <div class="ctt-contenedor">
 
             <!-- Cabecera Reutilizable -->
@@ -153,7 +159,7 @@
            LIMPIA el formulario después (reset + resincronización
            del select dependiente).
          ================================================================ -->
-    <section id="ctt-form" class="ctt-form">
+    <section id="ctt-form" class="ctt-form bg-soft-pattern dark">
         <div class="ctt-form__contenedor">
 
             <!-- Cabecera -->

@@ -14,6 +14,13 @@
      CONTROL y quedan en px con comentario — tokenizarlos forzaría
      valores inexistentes en la escala de 8px.
 
+   ⭐ v3 AUDITORÍA APLICADA:
+   - H1: línea fiscal 11px → var(--fs-micro) (12px) — texto REAL
+     (NIT · Registro de Comercio) bajo el piso era inaceptable
+     (mismo criterio que el chip de estado en proyectos.css).
+   - Menor: títulos de columna 0.85rem → var(--fs-small)
+     (valor idéntico — tokenización de coherencia).
+
    MAPA DEL ARCHIVO:
    01. Base (franja tricolor preparada, container, grid)
    02. Columna marca (logo, desc, redes)
@@ -26,17 +33,20 @@
    09. Accesibilidad — movimiento reducido
    ════════════════════════════════════════════════════════════════ */
 
-/* ── 01. BASE ────────────────────────────────────────────────────
-   margin-top:auto: preparado para sticky-footer (footer abajo con
-   contenido corto) — requiere el setup flex en body del reset;
-   sin él es inofensivo.                                          */
+/* ⭐ v4 ARMONÍA BLUEPRINT: el border-top usaba --primary-border
+   (alpha 0.15) — 3× la tinta de la rejilla técnica (0.05) → junto
+   al nuevo canvas se leía como barra. Nivel intermedio 0.08:
+   separador estructural perceptible pero de la misma familia
+   visual que la textura (jerarquía 0.05 textura / 0.08 estructura
+   / 0.15 elementos interactivos).                                */
 .footer-brida {
     position: relative; width: 100%; background: var(--bg-main);
-    font-family: var(--font-body); overflow: hidden; border-top: 1px solid var(--primary-border); margin-top: auto;
+    font-family: var(--font-body); overflow: hidden; border-top: 1px solid rgba(49, 38, 131, 0.08); margin-top: auto;
 }
 
 /* Franja tricolor superior (PREPARADA — el markup del componente
-   aún no la incluye; lista para activarse editando solo el JS)  */
+   aún no la incluye; lista para activarse editando solo el JS.
+   DECISIÓN PENDIENTE de diseño — ver footer-menu.js).            */
 .footer-brida__stripes { position: relative; width: 100%; height: 5px; display: flex; }
 .footer-brida__stripe { flex: 1; }
 .footer-brida__stripe--red { background: var(--stripe-red); }
@@ -63,10 +73,19 @@
 /* Desc: margin-top 12px = ritmo fino de control (excepción doc.) */
 .footer-brida__desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.8; margin-bottom: var(--sp-3); margin-top: 12px; max-width: 320px; }
 /* Línea fiscal (NIT · Registro): ex-estilo inline del markup.
-   11px consciente: dato legal secundario, no lectura principal.  */
-.footer-brida__desc--fiscal { font-size: 11px; opacity: 0.75; margin-top: -18px; } /* -18 = sp-3 −6: compensa el margin del desc anterior */
+   ⭐ v3 AUDITORÍA H1: 11px violaba el piso de legibilidad de 12px —
+   es TEXTO REAL (dato legal de la empresa) → var(--fs-micro),
+   mismo criterio que el chip de estado en proyectos.css.
+   ⚠️ FRAGILIDAD documentada: el margin-top negativo compensa el
+   margin-bottom del .desc hermano (sp-3 − 6px). Si ese margin
+   cambia, este valor se recalcula (acoplamiento local).          */
+.footer-brida__desc--fiscal { font-size: var(--fs-micro); opacity: 0.75; margin-top: -18px; } /* -18 = sp-3 −6: compensa el margin del desc anterior */
 
-/* ── REDES SOCIALES ────────────────────────────────────────────── */
+/* ── REDES SOCIALES ──────────────────────────────────────────────
+   El markup actual (v3) expone 3 canales respaldados por el
+   documento oficial: WhatsApp · Instagram · Correo.
+   ⚠️ PENDIENTE CLIENTE (H3): si confirma Facebook/TikTok, añadir
+   los <a> en footer-menu.js — este CSS ya cubre cualquier icono. */
 .footer-brida__socials { display: flex; gap: 12px; }
 .footer-brida__social-link {
     width: 42px; height: 42px; background: var(--primary-soft); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -77,8 +96,10 @@
 .footer-brida__social-link:hover { background: var(--primary); color: #fff; border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(49, 38, 131, 0.25); }
 
 /* ── 03. COLUMNAS GENERALES ────────────────────────────────────── */
+/* ⭐ v3 menor: 0.85rem → var(--fs-small) (valor idéntico —
+   tokenización de coherencia de auditoría).                      */
 .footer-brida__title {
-    font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--text-body);
+    font-family: var(--font-heading); font-size: var(--fs-small); font-weight: 700; color: var(--text-body);
     text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: var(--sp-3); /* 24px — antes 25px */
     position: relative; padding-bottom: 14px; /* ritmo fino de control */
 }
@@ -101,7 +122,9 @@
 .footer-brida__text-link { color: var(--text-muted); text-decoration: none; display: block; transition: color 0.3s ease; }
 .footer-brida__text-link:hover { color: var(--primary); }
 
-/* ── 05. HORARIO (PREPARADO — sin uso en el markup actual) ─────── */
+/* ── 05. HORARIO (PREPARADO — sin uso en el markup actual) ───────
+   Activa junto con la columna cuando el cliente confirme el
+   horario de atención (pendiente registrado).                    */
 .footer-brida__schedule-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--primary-border); }
 .footer-brida__schedule-item:last-child { border-bottom: none; }
 .footer-brida__day { color: var(--text-body); font-size: 0.9rem; font-weight: 500; }

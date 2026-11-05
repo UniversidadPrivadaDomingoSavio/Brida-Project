@@ -7,8 +7,19 @@
    de variables.css (espaciado, tipografía) — NO define valores
    mágicos verticales fuera del sistema.
 
+   ⭐ v5 CANVAS BLUEPRINT GLOBAL (el "juego de planos" del sitio):
+   La rejilla técnica 32px es la identidad de TODAS las superficies
+   de patrón — claras (.bg-soft-pattern) y oscuras
+   (.bg-soft-pattern.dark). Fuente ÚNICA: ninguna página redefine
+   este trío background localmente.
+   JERARQUÍA DE LÍNEAS del sistema (orden de tinta):
+   · 0.05  → textura de fondo (canvas, esta clase)
+   · 0.08  → separadores estructurales (footer)
+   · 0.15  → bordes interactivos (--primary-border)
+   · 0.35  → ornamentos técnicos deliberados (cota de lámina)
+
    MAPA DEL ARCHIVO:
-   01. Fondo de sección reutilizable (.bg-soft-pattern)
+   01. Canvas blueprint global (.bg-soft-pattern + variante .dark)
    02. Sistema de títulos de sección (eyebrow, title, línea tricolor)
    03. Hero interno de páginas internas
        3a. Estructura y fondo (parallax, degradado)
@@ -16,18 +27,44 @@
        3c. Descripciones (sistema unificado: base + variantes color)
        3d. Responsive del hero (tablet / móvil / landscape)
    04. Contacto CTA (glassmorphism oscuro, cierre de página)
+   05. ⭐ v5 Accesibilidad — movimiento reducido
    ════════════════════════════════════════════════════════════════ */
 
 
 /* ════════════════════════════════════════════════════════════════
-   01. FONDO DE SECCIÓN REUTILIZABLE
-   QUÉ HACE: fondo gris suave + textura de puntos BRIDA. Alterna
-            visualmente secciones contiguas sin tocar espaciados.
+   01. CANVAS BLUEPRINT GLOBAL
+   QUÉ HACE: rejilla técnica 32px + tinte de base. La consumen las
+            secciones claras del sitio (index 02/03, compuertas de
+            contacto, etc. — con la clase en el HTML).
+   VARIANTE DARK: misma rejilla sobre --bg-dark — para superficies
+            oscuras de patrón (disponible; el index actual usa
+            escenas fotográficas en sus secciones oscuras).
+   ⚠️ NINGÚN archivo de página redefine este trío: si el canvas
+   cambia, se edita SOLO aquí.
    ════════════════════════════════════════════════════════════════ */
 .bg-soft-pattern {
     background-color: var(--bg-soft);
-    background-image: radial-gradient(rgba(49, 38, 131, 0.03) 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-image:
+        linear-gradient(rgba(49, 38, 131, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(49, 38, 131, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+.bg-soft-pattern.dark {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: var(--seccion-pad-destacada) var(--pad-x);
+    background-color: var(--bg-dark); /* ⭐ v5: token (era literal) */
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(49, 38, 131, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(49, 38, 131, 0.15) 0%, transparent 20%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px; /* ⭐ v5: 32px (era 40px) */
 }
 
 
@@ -84,7 +121,7 @@
     width: 100%;
     height: 4px;
     border-radius: 2px;
-    margin-top: var(--sp-3); /* 24px — antes 20px (fuera de escala) */
+    margin-top: var(--sp-1); /* 24px — antes 20px (fuera de escala) */
     background: linear-gradient(to right, var(--stripe-red) 33.33%, var(--stripe-yellow) 33.33%, var(--stripe-yellow) 66.66%, var(--stripe-green) 66.66%);
     transform: scaleX(0);
     transform-origin: left;
@@ -126,7 +163,32 @@
 
 /* ════════════════════════════════════════════════════════════════
    03. HERO INTERNO DE PÁGINAS INTERNAS
-   Se utiliza en: Quiénes Somos, Servicios, Proyectos, Contacto.
+   Se utiliza en: Quiénes Somos, Servicios, Proyectos, Contacto
+   y las 6 páginas de servicio (subcarpeta /servicios/).
+   ════════════════════════════════════════════════════════════════
+   ⭐ v5.2 UNIFICACIÓN DEL H1 DEL HERO (aprobada):
+   Antes existían DOS tamaños (--fs-h1-hero para títulos cortos y
+   la variante .section-title--largo para los largos) → páginas
+   gemelas con H1 de tamaño distinto = inconsistencia visual.
+   AHORA: UN SOLO clamp para TODOS los H1 del hero interno,
+   calibrado para que el título MÁS LARGO de las 6 líneas de
+   servicio ("ELECTRICIDAD & AUTOMATIZACIÓN" ≈ 16.5em, medido en
+   Space Grotesk 700 uppercase; se calcula con 17em de margen)
+   quepa en UNA fila en todo el rango desktop:
+     · Contenedor: width 58% (antes 55%) hasta que actúe el
+       max-width 900px (antes 850px) — a partir de ~1552px de vw.
+     · Factor vw: 3.25vw × 17em = 55.25%… sobre el ancho 58% hay
+       margen de 4.7% en todo el rango gobernado por width.
+     · Techo: 3.2rem (51.2px) × 17em = 870px < 900px (margen 30px).
+   JERARQUÍA PRESERVADA (ley del sitio H1 > H2 = --fs-display):
+     · Flujo: 3.25vw > 3vw (--fs-display) ✓
+     · Techo: 3.2rem > 2.8rem (--fs-display) ✓
+     · Piso: 2.1rem > 1.8rem (--fs-display) ✓
+   NOTA: --fs-h1-hero (variables.css) queda consumido SOLO por el
+   carrusel del index (.ini-hero__content h2 — escena fullscreen
+   con <br> forzado, títulos cortos). No se toca: mínimo cambio.
+   La variante .section-title--largo fue RETIRADA (cero código
+   muerto) — no requiere ninguna clase en el HTML.
    ════════════════════════════════════════════════════════════════ */
 
 /* ── 3a. ESTRUCTURA Y FONDO ────────────────────────────────────── */
@@ -170,8 +232,14 @@
     top: 55%;
     left: 8%;
     transform: translateY(-55%);
-    width: 55%;
-    max-width: 700px;
+    width: 58%;       /* ⭐ v5.2 antes 55% — aire para el H1 unificado
+                         (ver cálculo en la cabecera del bloque 03).  */
+    max-width: 900px; /* ⭐ v5.2 antes 850 — techo del H1 unificado:
+                         3.2rem × 17em = 870px < 900px (margen 30px).
+                         SEGURO: .hero-interno__descripcion conserva su
+                         max-width: 700px propio (bloque 3c) → el ancho
+                         visible del párrafo NO cambia; solo gana el
+                         título. La línea del title-group es fit-content. */
     z-index: 3;
     color: white;
 }
@@ -187,11 +255,32 @@
 }
 
 /* Colores de títulos sobre fondo oscuro
-   JERARQUÍA: el H1 del hero es MAYOR que los H2 de sección
-   (--fs-h1-hero > --fs-display) — antes compartían tamaño y la
-   jerarquía se aplanaba.                                          */
+   ⭐ v5.2 TAMAÑO UNIFICADO (todos los H1 del hero interno):
+   clamp(2.1rem, 3.25vw, 3.2rem) — ver cálculo completo en la
+   cabecera del bloque 03. Garantiza 1 fila para el título más
+   largo ("ELECTRICIDAD & AUTOMATIZACIÓN") de 1200 a 1920px y
+   mantiene la jerarquía H1 > H2 en todo el rango.
+   VERIFICACIÓN POR RANGO (título a 17em vs contenedor disponible):
+     · 1200px → 39px  ×17 = 663px < 696px (58% de vw)   ✓ margen 33px
+     · 1366px → 44.4px×17 = 755px < 792px (58% de vw)   ✓ margen 37px
+     · 1440px → 46.8px×17 = 796px < 835px (58% de vw)   ✓ margen 39px
+     · 1552px → 50.4px×17 = 857px < 900px (max-width)   ✓ margen 43px
+     · ≥1575px → techo 51.2px×17 = 870px < 900px        ✓ margen 30px
+     · ≤1199px (tablet) → contenedor centrado 800px:
+       39px×17 = 663px < 800px → 1 fila también ✓
+     · Móvil vertical ≤480px → 2 filas naturales (comportamiento
+       esperado del centrado táctil, no es bug).                     */
 .hero-interno .section-eyebrow { color: rgba(255, 255, 255, 0.9); }
-.hero-interno .section-title { color: #ffffff; font-size: var(--fs-h1-hero); }
+.hero-interno .section-title {
+    color: #ffffff;
+    font-size: clamp(2.1rem, 3.25vw, 3.2rem); /* ⭐ v5.2 unificado */
+    font-weight: 700;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    margin-bottom: 0;
+    position: relative;
+}
 
 .hero-interno .section-title-group {
     display: inline-flex;
@@ -221,7 +310,9 @@
    AHORA: propiedades compartidas en la BASE; las variantes SOLO
    cambian el color. Un solo clamp fluido (mismo min 0.95rem en las
    3) → el override de fuente en ≤767px dejó de ser necesario.
-   Tokens: --fs-body gobierna el tamaño.                           */
+   Tokens: --fs-body gobierna el tamaño.
+   ⭐ v5.1 NOTA: max-width 700px propio — sigue gobernando el ancho
+   del párrafo aunque el contenedor (3b) creció a 900px.          */
 .hero-interno__descripcion,
 .hero-interno__descripcion_blanco,
 .hero-interno__descripcion_negro {
@@ -297,12 +388,73 @@
     .hero-interno__descripcion_negro { line-height: 1.7; }
 }
 
-/* MÓVIL landscape                                                 */
+/* MÓVIL landscape
+   ⭐ v5.3 CAMBIO: el override font-size: 1.8rem fue ELIMINADO —
+   el H1 ahora hereda la compactación del bloque 3e (≤767px:
+   1.9rem · ≤480px: 1.75rem) → ambas orientaciones comparten el
+   MISMO tamaño (antes landscape 1.8rem ≠ vertical 33.6px, y en
+   landscape el H1 quedaba IGUAL al H2 — jerarquía plana).
+   El padding y la altura fullscreen de la escena se mantienen.    */
 @media (max-width: 767px) and (orientation: landscape) {
     .hero-interno { min-height: 100vh; }
     .hero-interno__contenido { padding: 40px 8%; max-width: 700px; }
-    .hero-interno .section-title { font-size: 1.8rem; }
     .hero-interno__fondo { background-position: center 15%; }
+}
+
+/* ── 3e. ⭐ v5.3 COMPACTACIÓN TIPOGRÁFICA MÓVIL ──────────────────
+   QUÉ RESUELVE (auditoría responsive):
+   · H1 del hero: el piso 2.1rem (33.6px) del clamp v5.2 es grande
+     en móviles — en 320–375px ocupa ~10% del ancho y los títulos
+     largos de línea ("INFRAESTRUCTURA GAS & DATOS") quiebran en 2
+     líneas muy anchas.
+   · H2 de sección: 28.8px (piso --fs-display) es correcto en
+     tablet, pero grande en móviles chicos ≤480px.
+   · Jerarquía H1 > H2 (ley del sitio) quedaba débil en móvil
+     (+4.8px) y PLANA en landscape (0px).
+
+   ESCALONADO APROBADO (jerarquía preservada en TODO el rango):
+     · ≥1025px   → sin cambios (clamp v5.2 fluido)
+     · 481–767px → H1 1.9rem (30.4px) · H2 1.8rem (28.8px) = +1.6px
+     · ≤480px    → H1 1.75rem (28px) · H2 1.6rem (25.6px) = +2.4px
+
+   MECÁNICA DE CASCADA (por qué funciona sin !important):
+   · H1: .hero-interno .section-title (0,2,0) pisa a .section-title
+     (0,1,0) → el valor 1.6rem del bloque ≤480 NO toca al H1.
+   · H2: la regla ≤480 con el mismo selector que la base (0,1,0)
+     gana por ORDEN (este bloque va después del bloque 02).
+   · Landscape: el override 1.8rem de 3d fue retirado → los H1
+     heredan 1.9rem (≤767) o 1.75rem (≤480) en AMBAS orientaciones.
+
+   CONTEXTOS AFECTADOS: .section-title vive en TODOS los display
+   headings del sitio (hero interno + secciones + contacto-cta) →
+   la compactación es uniforme en todo el sistema (uniformidad de
+   páginas gemelas). --fs-display NO se toca en variables.css:
+   override local por breakpoint (sancionado por la ley de tokens).
+   Los H1 del carrusel del index (.ini-hero) NO se afectan: su
+   escena fullscreen tiene tipografía propia (inicio.css).        */
+@media (max-width: 767px) {
+    /* H1 del hero: 33.6px → 30.4px (títulos largos en 2 líneas
+       más equilibradas) + line-height 1.15 (respiración de las
+       2 líneas — antes 1.1, apretado en quiebres móviles)         */
+    .hero-interno .section-title {
+        font-size: 1.9rem;
+        line-height: 1.15;
+    }
+}
+
+@media (max-width: 480px) {
+    /* H1 del hero en móviles chicos: 28px (sobre .section-title
+       de 1.6rem — jerarquía +2.4px)                               */
+    .hero-interno .section-title {
+        font-size: 1.75rem;
+    }
+
+    /* H2 de sección GLOBAL: 28.8px → 25.6px. Compactación fina
+       solo en móviles chicos (481–767px conserva 1.8rem).
+       Afecta coherentemente: secciones, galerías y contacto-cta.  */
+    .section-title {
+        font-size: 1.6rem;
+    }
 }
 
 
@@ -310,8 +462,15 @@
    04. CONTACTO CTA (Glassmorphism Oscuro)
    QUÉ ES:  banda de cierre con tarjetas de contacto directo.
    Se utiliza en: Inicio, Quiénes Somos, Servicios, Proyectos.
-   RITMO: usa --seccion-pad-destacada (sección oscura de impacto,
-          mismo ritmo que Pilares/Valores — antes 50px aislados).
+   RITMO: usa --seccion-pad-destacada (sección oscura de impacto).
+   ⭐ v5 ALINEACIÓN AL CANVAS:
+   · background-color: var(--bg-dark) (token existente en
+     variables.css — antes literal #0a0a12, deuda cerrada).
+   · Rejilla blanca 0.03 a 32px — MISMA ESCALA de celda que el
+     canvas claro (era 40px): el "juego de planos" tiene un solo
+     tamaño de rejilla en todo el sitio. El alpha 0.03 y el color
+     blanco se mantienen: traducción de la rejilla a fondo oscuro.
+   EXCEPCIÓN DOCUMENTADA: padding de tarjeta 28px 32px (control).
    ════════════════════════════════════════════════════════════════ */
 .contacto-cta {
     position: relative;
@@ -321,13 +480,13 @@
     justify-content: center;
     overflow: hidden;
     padding: var(--seccion-pad-destacada) var(--pad-x);
-    background-color: #0a0a12;
+    background-color: var(--bg-dark); /* ⭐ v5: token (era literal) */
     background-image:
         radial-gradient(circle at 10% 20%, rgba(49, 38, 131, 0.15) 0%, transparent 20%),
         radial-gradient(circle at 90% 80%, rgba(49, 38, 131, 0.15) 0%, transparent 20%),
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px; /* ⭐ v5: 32px (era 40px) */
 }
 
 .contacto-cta__contenedor {
@@ -371,7 +530,9 @@
 /* Panel Derecho: tarjetas de contacto                             */
 .contacto-cta__panel-der { display: flex; flex-direction: column; gap: var(--sp-2); }
 
-/* Tarjetas Glassmorphism                                          */
+/* Tarjetas Glassmorphism
+   EXCEPCIÓN: padding 28px 32px = dimensión de CONTROL (área táctil
+   generosa), no ritmo de layout.                                  */
 .contacto-cta__tarjeta {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -427,7 +588,7 @@
 
 /* ── Responsive Contacto ───────────────────────────────────────── */
 @media (max-width: 1024px) {
-    .contacto-cta__grid { gap: 50px; }
+    .contacto-cta__grid { gap: var(--sp-6); } /* ⭐ v5: 50px → --sp-6 (48px, en escala) */
 }
 @media (max-width: 768px) {
     .contacto-cta { padding: var(--seccion-pad) var(--pad-x-compacto); }
@@ -458,4 +619,36 @@
     .contacto-cta__tarjeta:active { background: rgba(49, 38, 131, 0.25); border-color: rgba(49, 38, 131, 0.8); transform: translateX(4px); }
     .contacto-cta__tarjeta:active::before { transform: scaleY(1); }
     .contacto-cta__tarjeta:active .contacto-cta__flecha { opacity: 1; transform: translateX(0); color: #fff; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   05. ⭐ v5 NUEVO — ACCESIBILIDAD: MOVIMIENTO REDUCIDO
+   QUÉ HACE: anula las transiciones de los componentes de ESTE
+   archivo (antes: no existía — quedaban vivas en este modo).
+   FUNCIONALIDAD PRESERVADA: la línea tricolor y los reveals siguen
+   activándose (instantáneos, sin animación); las tarjetas del CTA
+   responden a foco/touch con el cambio de estado inmediato.
+   ⚠️ NOTA: los reveals también los cubren los bloques
+   reduced-motion de cada página (quienes-somos, footer, etc.);
+   este bloque garantiza la BASE global (reveal-up/section-title/
+   contacto-cta) dondequiera que se use sin cobertura local.
+   ════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+    .reveal-up,
+    .section-title-line,
+    .contacto-cta__tarjeta,
+    .contacto-cta__tarjeta::before,
+    .contacto-cta__tarjeta i,
+    .contacto-cta__icono,
+    .contacto-cta__icono i,
+    .contacto-cta__flecha {
+        transition-duration: 0.01ms !important;
+    }
+    /* Parallax del hero interno: movimiento perceptible al
+       scrollear → a scroll normal (cubre el landscape fijo)       */
+    .hero-interno__fondo {
+        background-attachment: scroll !important;
+        transform: none !important;
+    }
 }
